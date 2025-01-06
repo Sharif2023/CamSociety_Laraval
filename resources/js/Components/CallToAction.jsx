@@ -9,7 +9,7 @@ const CallToAction = () => (
       </p>
       <button
         className="px-6 py-3 bg-black text-white font-semibold rounded-lg hover:bg-gray-800"
-        onClick={() => window.location.href = '/signup'}
+        onClick={() => window.location.href = '/register'}
       >
         Sign Up Now
       </button>
