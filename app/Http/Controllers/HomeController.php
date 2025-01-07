@@ -8,12 +8,27 @@ class HomeController extends Controller
 {
     public function index()
     {
-        return view('LandingPage.index');
+        return Inertia::render('Welcome');
     }
 
     public function login()
     {
         return view('LandingPage.login');
+    }
+
+    public function admin()
+    {
+        return Inertia::render('Admin/Index');
+    }
+
+    public function dashboard()
+    {
+        return Inertia::render('Dashboard');
+    }
+
+    public function logout()
+    {
+        return Inertia::render('LandingPage/Index');
     }
 
     public function signup()

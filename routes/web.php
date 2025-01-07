@@ -1,23 +1,30 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use App\Http\Controllers\HomeController;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+// Public routes
+Route::get('/', [HomeController::class, 'index'])->name('landing'); // Landing page
+Route::get('/login', [HomeController::class, 'login'])->name('login');
+Route::get('/signup', [HomeController::class, 'signup'])->name('signup');
+
+
+// Admin routes
+Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
+    Route::get('/admin', [HomeController::class, 'admin'])->name('admin.dashboard');
+    Route::redirect('/dashboard', '/admin'); // Redirect dashboard to admin
+
+    Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users');
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// User routes
+Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
+    Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -33,4 +40,4 @@ Route::middleware(['auth', 'verified'])->group(function () {
     
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
