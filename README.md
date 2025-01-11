@@ -28,7 +28,7 @@ cp .env.example .env
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=uiu_healthcare
+DB_DATABASE=camsocity
 DB_USERNAME=your_db_username
 DB_PASSWORD=your_db_password
 ```
