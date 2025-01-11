@@ -1,3 +1,64 @@
+### **Setup Instructions**
+
+
+#### **Step 1: Clone the Repository**
+```bash
+git clone https://github.com/YourUsername/UIU-Health-Care-System.git
+cd UIU-Health-Care-System
+```
+
+#### **Step 2: Install Laravel Backend Dependencies**
+Run the following command to install PHP dependencies:
+```bash
+composer install
+```
+#### **Step 3: Install Frontend Dependencies**
+Run the following command to install Node.js dependencies:
+```bash
+npm install
+```
+#### **Step 4: Configure Environment Variables**
+1. Copy the `.env.example` file and rename it to `.env`:
+```bash
+cp .env.example .env
+```
+2. Open the `.env` file in a text editor and update the following configurations:
+*Database Settings:
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=uiu_healthcare
+DB_USERNAME=your_db_username
+DB_PASSWORD=your_db_password
+```
+
+#### **Step 5: Generate Application Key**
+Run the following command to generate a unique application key:
+```bash
+php artisan key:generate
+```
+#### **Step 6: Run Database Migrations and Seeders**
+Set up the database schema and populate it with initial data:
+```bash
+php artisan migrate --seed
+```
+#### **Step 7: Build the Frontend**
+Build the ReactJS frontend using InertiaJS:
+```bash
+npm run dev
+```
+#### **Step 8: Start the Application**
+Start the Laravel development server:
+```
+php artisan serve
+```
+#### **Step 9: Access the Application**
+Open your browser and navigate to:
+```plaintext
+http://localhost:8000
+```
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
