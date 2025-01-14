@@ -16,14 +16,14 @@ export default function Register() {
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('register'), {
+        post(route('admin.register'), {
             onFinish: () => reset('password', 'password_confirmation'),
         });
     };
 
     return (
         <GuestLayout>
-            <Head title="Register" />
+            <Head title="Admin Register" />
 
             <form onSubmit={submit}>
                 <div>

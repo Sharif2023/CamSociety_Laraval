@@ -16,14 +16,14 @@ export default function Login({ status, canResetPassword }) {
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('login'), {
+        post(route('admin.login'), {
             onFinish: () => reset('password'),
         });
     };
 
     return (
         <GuestLayout>
-            <Head title="Log in" />
+            <Head title="Admin Log in" />
 
             {status && (
                 <div className="mb-4 text-sm font-medium text-green-600">

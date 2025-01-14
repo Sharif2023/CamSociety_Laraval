@@ -13,16 +13,16 @@ Route::get('/login', [HomeController::class, 'login'])->name('login');
 Route::get('/signup', [HomeController::class, 'signup'])->name('signup');
 
 
-// Admin routes
-Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
-    Route::get('/admin', [HomeController::class, 'admin'])->name('admin.dashboard');
-    Route::redirect('/dashboard', '/admin'); // Redirect dashboard to admin
+// // Admin routes
+// Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
+//     Route::get('/admin', [HomeController::class, 'admin'])->name('admin.dashboard');
+//     Route::redirect('/dashboard', '/admin'); // Redirect dashboard to admin
 
-    Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users');
-});
+//     Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users');
+// });
 
 // User routes
-Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
 });
 
@@ -41,3 +41,4 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 require __DIR__ . '/auth.php';
+require __DIR__ . '/admin-auth.php';
