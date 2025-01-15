@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PhotographerController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -12,18 +12,14 @@ Route::get('/', [HomeController::class, 'index'])->name('landing'); // Landing p
 Route::get('/login', [HomeController::class, 'login'])->name('login');
 Route::get('/signup', [HomeController::class, 'signup'])->name('signup');
 
-
-// // Admin routes
-// Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
-//     Route::get('/admin', [HomeController::class, 'admin'])->name('admin.dashboard');
-//     Route::redirect('/dashboard', '/admin'); // Redirect dashboard to admin
-
-//     Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users');
-// });
-
 // User routes
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
+});
+
+// Photographer routes
+Route::prefix('photographer')->middleware(['auth', 'verified', 'role:photographer'])->group(function () {
+    Route::get('/dashboard', [PhotographerController::class, 'index'])->name('photographer.dashboard');
 });
 
 Route::middleware('auth')->group(function () {
