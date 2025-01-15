@@ -26,6 +26,9 @@ export default function Register() {
             <Head title="Admin Register" />
 
             <form onSubmit={submit}>
+            <div className='text-2xl font-bold mb-4'>
+                    Admin Register
+                </div>
                 <div>
                     <InputLabel htmlFor="name" value="Name" />
 

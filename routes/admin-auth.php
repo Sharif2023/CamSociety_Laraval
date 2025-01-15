@@ -15,6 +15,8 @@ Route::prefix('admin')->middleware('guest:admin')->group(function () {
         ->name('admin.login');
 
     Route::post('login', [LoginController::class, 'store']);
+
+    Route::redirect('/', '/admin/login', 301);
 });
 
 Route::prefix('admin')->middleware('auth:admin')->group(function () {
@@ -23,6 +25,7 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
     return Inertia::render('Admin/Dashboard');
     })->name('admin.dashboard');
 
+  Route::redirect('/', '/admin/dashboard', 301);
 
     Route::post('logout', [LoginController::class, 'destroy'])
         ->name('admin.logout');

@@ -32,6 +32,9 @@ export default function Login({ status, canResetPassword }) {
             )}
 
             <form onSubmit={submit}>
+                <div className='text-2xl font-bold mb-4'>
+                    Admin login
+                </div>
                 <div>
                     <InputLabel htmlFor="email" value="Email" />
 

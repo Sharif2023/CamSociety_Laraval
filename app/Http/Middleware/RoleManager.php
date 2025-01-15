@@ -24,15 +24,15 @@ class RoleManager
         $authUserRole = Auth::user()->role; // Assume `role` is an integer: 0 = admin, 1 = user
 
         // Role-based access control
-        if (($role === 'user' && $authUserRole === 1)) {
+        if (($role === 'user' && $authUserRole === 0) || ($role === 'photographer' && $authUserRole === 1)) {
             return $next($request);
         }
 
         // Redirect to respective dashboards if unauthorized
         if ($authUserRole === 0) {
-            // return redirect()->route('admin.dashboard');
-        } elseif ($authUserRole === 1) {
             return redirect()->route('dashboard');
+        } elseif ($authUserRole === 1) {
+            return redirect()->route('photographer.dashboard');
         }
 
         // Fallback for unexpected roles
