@@ -39,6 +39,8 @@ class DatabaseSeeder extends Seeder
             'role' => 1,
         ]);
 
-        PhotoSell::factory()->count(10)->create();
+        PhotoSell::factory()
+            ->count(30)
+            ->create();
     }
 }

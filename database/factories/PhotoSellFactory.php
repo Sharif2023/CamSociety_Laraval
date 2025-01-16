@@ -17,12 +17,47 @@ class PhotoSellFactory extends Factory
      */
     public function definition(): array
     {
+
+        $imageServices = [
+            'https://picsum.photos/200/300', // Random image from Picsum
+            'https://picsum.photos/seed/photo1/200/300', // Random seed-based image from Picsum
+        ];
+        
+        $categories = [
+            "All",
+            "Nature",
+            "People",
+            "Food",
+            "Architecture",
+            "Travel",
+            "Technology",
+            "Animals",
+            "Fashion",
+            "Health",
+            "Art",
+            "Business",
+            "Sports",
+            "Science",
+            "Education",
+            "Music",
+            "Transportation",
+            "Holidays",
+            "Religion",
+            "Backgrounds",
+            "Textures",
+            "Patterns",
+            "Colors",
+            "Abstract"
+        ];
+        
+
         return [
-            'user_id' => User::inRandomOrder()->first()->user_id, // Random user from Users table
+            'created_by' => User::inRandomOrder()->first()->id, // Random user from Users table
             'title' => $this->faker->word(), // Random title
             'description' => $this->faker->sentence(), // Random description
             'price' => $this->faker->randomFloat(2, 10, 500), // Random price between 10 and 500
-            'image_url' => $this->faker->imageUrl(640, 480, 'nature', true, 'photo'), // Random image URL
+            'category' => $this->faker->randomElement($categories), // Random category
+            'image_url' => $this->faker->randomElement($imageServices),
         ];
     }
 }

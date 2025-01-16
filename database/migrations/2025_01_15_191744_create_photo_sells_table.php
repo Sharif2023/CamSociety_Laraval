@@ -11,18 +11,48 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('photo_sells', function (Blueprint $table) {
-            $table->id('photo_id'); // Primary key
-            $table->unsignedBigInteger('user_id'); // Foreign key to Users table
-            $table->string('title'); // Title of the photo
-            $table->text('description')->nullable(); // Optional description
-            $table->decimal('price', 10, 2); // Price of the photo
-            $table->string('image_url')->nullable(); // Image URL
+
+        $categories = [
+            "All",
+            "Nature",
+            "People",
+            "Food",
+            "Architecture",
+            "Travel",
+            "Technology",
+            "Animals",
+            "Fashion",
+            "Health",
+            "Art",
+            "Business",
+            "Sports",
+            "Science",
+            "Education",
+            "Music",
+            "Transportation",
+            "Holidays",
+            "Religion",
+            "Backgrounds",
+            "Textures",
+            "Patterns",
+            "Colors",
+            "Abstract"
+        ];
+
+
+        Schema::create('photo_sells', function (Blueprint $table) use ($categories) {
+            $table->id(); // Primary key
+            $table->string('title');
+            $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
+            $table->text('description')->nullable();
+            $table->decimal('price', 10, 2);
+            $table->enum('category', $categories);
+            $table->string('image_url')->nullable();
             $table->timestamps(); // Created_at and updated_at columns
 
 
             // Foreign key constraint to ensure the user_id exists in the Users table
-            $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
+            // $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
         });
     }
 

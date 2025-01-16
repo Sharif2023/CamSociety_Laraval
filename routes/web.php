@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PhotographerController;
+use App\Http\Controllers\PhotoSellController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -29,7 +30,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/photomarket', [HomeController::class, 'photomarket'])->name('photomarket');
+    Route::get('/photomarket', [PhotoSellController::class, 'index'])->name('photomarket');
     Route::get('/hirephotographer', [HomeController::class, 'hirephotographer'])->name('hirephotographer');
     Route::get('/eventbook', [HomeController::class, 'eventbook'])->name('eventbook');
     Route::get('/blogsntips', [HomeController::class, 'blogsntips'])->name('blogsntips');

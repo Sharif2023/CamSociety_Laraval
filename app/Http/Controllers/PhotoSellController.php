@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePhotoSellRequest;
 use App\Http\Requests\UpdatePhotoSellRequest;
 use App\Models\PhotoSell;
+use Inertia\Inertia;
+use App\Http\Resources\PhotoSellResource;
 
 class PhotoSellController extends Controller
 {
@@ -13,7 +15,22 @@ class PhotoSellController extends Controller
      */
     public function index()
     {
-        //
+        $query = PhotoSell::query();
+
+        if (request('title')) {
+            $query->where('title', 'like', '%' . request('title') . '%');
+        }
+        if (request('category')) {
+            $query->where('category', request('category'));
+        }
+
+
+        $photoSells = $query->paginate(12)->onEachSide(1);
+
+        return Inertia::render('PhotoMarket/Index', [
+            'photoSells' => PhotoSellResource::collection($photoSells),
+            'queryParams' => request()->query()?: null,
+        ]);
     }
 
     /**

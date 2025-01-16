@@ -36,11 +36,6 @@ class HomeController extends Controller
         return view('LandingPage.signup');
     }
 
-    public function photomarket()
-    {
-        return Inertia::render('PhotoMarket/Index');
-    }
-
     public function hirephotographer()
     {
         return Inertia::render('HirePhotographer/Index');

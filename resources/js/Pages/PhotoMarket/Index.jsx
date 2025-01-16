@@ -1,90 +1,49 @@
-import { useState } from "react";
-import { Head } from "@inertiajs/react";
+import { useState, useEffect } from "react";
+import { Head, router } from "@inertiajs/react";
 import PhotographerLayout from "../Photographer/Layout/PhotographerLayout";
-import Pagination from "./Components/Pagination";
 import CategoryFilter from "./Components/CategoryFilter";
 import SearchBar from "./Components/SearchBar";
 import ProductCard from "./Components/ProductCard";
 import Modal from "./Components/Modal";
+import Pagination from "@/Components/Pagination";
+import SelectInput from "@/Components/SelectInput";
+import TextInput from "@/Components/TextInput";
 
-export default function Index() {
+export default function Index({ photoSells, queryParams = null }) {
+    // Initialize state with the dynamic photoSells data
+    const [photos, setPhotoSells] = useState(photoSells.data);
+    
+    // Extract unique categories from photoSells data
+    const categories = [
+        ...new Set(photoSells.data.map((photo) => photo.category)),
+    ];
+    
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [searchQuery, setSearchQuery] = useState("");
-    const [selectedCategory, setSelectedCategory] = useState("All");
-    const [currentPage, setCurrentPage] = useState(1);
-    const productsPerPage = 4; // Number of products to show per page
-
-    const [products, setProducts] = useState([
-        {
-            name: "Photo 1",
-            price: "$100",
-            category: "Landscape",
-            image: "https://picsum.photos/200?random=1",
-        },
-        {
-            name: "Photo 2",
-            price: "$200",
-            category: "Portrait",
-            image: "https://picsum.photos/200?random=2",
-        },
-        {
-            name: "Photo 3",
-            price: "$300",
-            category: "Nature",
-            image: "https://picsum.photos/200?random=3",
-        },
-        {
-            name: "Photo 4",
-            price: "$400",
-            category: "Landscape",
-            image: "https://picsum.photos/200?random=4",
-        },
-        {
-            name: "Photo 5",
-            price: "$500",
-            category: "Nature",
-            image: "https://picsum.photos/200?random=5",
-        },
-        {
-            name: "Photo 6",
-            price: "$600",
-            category: "Portrait",
-            image: "https://picsum.photos/200?random=6",
-        },
-        {
-            name: "Photo 7",
-            price: "$700",
-            category: "Landscape",
-            image: "https://picsum.photos/200?random=7",
-        },
-        {
-            name: "Photo 8",
-            price: "$800",
-            category: "Nature",
-            image: "https://picsum.photos/200?random=8",
-        },
-    ]);
-
     const handleModalOpen = () => setIsModalOpen(true);
     const handleModalClose = () => setIsModalOpen(false);
 
-    const handleSearchChange = (e) => setSearchQuery(e.target.value);
-    const handleCategoryChange = (e) => setSelectedCategory(e.target.value);
 
-    const filteredProducts = products.filter((product) => {
-        const matchesCategory =
-            selectedCategory === "All" || product.category === selectedCategory;
-        const matchesSearch =
-            product.name.toLowerCase().includes(searchQuery.toLowerCase());
-        return matchesCategory && matchesSearch;
-    });
+    queryParams = queryParams || {};
 
-    const indexOfLastProduct = currentPage * productsPerPage;
-    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-    const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
-    const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+    // Search Field Change
+    const searchFieldChange = (name, value) => {
+        if (value) {
+            queryParams[name] = value;
+        } else {
+            delete queryParams[name];
+        }
 
-    const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
+        router.get(route("photomarket", queryParams));
+    };
+
+    // On Key Press
+    const onKeyPress = (name, e) => {
+        if (e.key !== "Enter") {
+            return;
+        }
+
+        searchFieldChange(name, e.target.value);
+    };
 
     return (
         <PhotographerLayout
@@ -96,15 +55,37 @@ export default function Index() {
         >
             <Head title="Photo Market" />
 
-            <div className="container mx-auto px-4 py-4">
-                {/* Search Bar */}
-                <SearchBar value={searchQuery} onChange={handleSearchChange} />
+            {/* Debug JSON output */}
+            {/* <pre>{JSON.stringify(photoSells, undefined, 2)}</pre> */}
 
-                {/* Category Filter aligned to the right */}
-                <CategoryFilter
-                    selectedCategory={selectedCategory}
-                    onChange={handleCategoryChange}
+            <div className="container mx-auto px-4 py-4">
+              
+              <div className="flex justify-between items-center mb-6">
+
+                <TextInput
+                    className="bg-white text-gray-800 border border-gray-300 rounded-full py-2 px-4 w-1/4 focus:ring-2 focus:ring-blue-500"
+                    placeholder="Search Photos"
+                    defaultValue={queryParams.title}
+                    onBlur={(e) => searchFieldChange("title", e.target.value)}
+                    onKeyPress={(e) => onKeyPress("title", e)}
                 />
+
+                <SelectInput
+                    className="bg-gray-100 border border-gray-300 text-gray-800 text-sm rounded-full focus:ring-2 focus:ring-blue-500"
+                    defaultValue={queryParams.category}
+                    onChange={(e) =>
+                        searchFieldChange("category", e.target.value)
+                    }
+                >
+                    <option value="">All</option>
+                    {categories.map((category, index) => (
+                        <option key={index} value={category}>
+                            {category}
+                        </option>
+                    ))}
+                </SelectInput>
+
+                </div>
 
                 {/* List Photos Button */}
                 <div className="flex justify-center mb-6">
@@ -118,17 +99,13 @@ export default function Index() {
 
                 {/* Product Grid */}
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                    {currentProducts.map((product, index) => (
-                        <ProductCard key={index} product={product} />
+                    {photos.map((photo) => (
+                        <ProductCard key={photos.id} product={photo} />
                     ))}
                 </div>
 
                 {/* Pagination Controls */}
-                <Pagination
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    onPageChange={handlePageChange}
-                />
+                <Pagination links={photoSells.meta.links} />
             </div>
 
             {/* Modal for Adding Product */}
