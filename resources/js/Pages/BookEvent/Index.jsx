@@ -3,9 +3,10 @@ import { Head } from "@inertiajs/react";
 import { useState } from "react";
 import EventGrid from "./Components/EventGrid";
 import EventSearch from "./Components/EventSearch";
+import PhotographerLayout from "../Photographer/Layout/PhotographerLayout";
 
 
-export default function About() {
+export default function index({ auth }) {
     const [events] = useState([
         {
           id: 1,
@@ -50,8 +51,12 @@ export default function About() {
         // Add search functionality here
     };
 
+
+    const Layout = auth.role === "photographer" ? PhotographerLayout : AuthenticatedLayout;
+    
+
     return (
-        <AuthenticatedLayout
+        <Layout
             header={
                 <h2 className="text-xl font-semibold text-center leading-tight text-gray-800">
                     Book Event
@@ -64,6 +69,6 @@ export default function About() {
                 <EventSearch onSearch={handleSearch} />
                 <EventGrid events={events} />
             </div>
-        </AuthenticatedLayout>
+        </Layout>
     );
 }

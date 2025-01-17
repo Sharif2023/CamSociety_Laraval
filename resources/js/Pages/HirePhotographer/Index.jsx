@@ -1,7 +1,8 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
+import PhotographerLayout from "../Photographer/Layout/PhotographerLayout";
 
-export default function Index() {
+export default function Index({ auth }) {
 
     const photographers = [
         {
@@ -63,10 +64,12 @@ export default function Index() {
     ];
     
     
+    const Layout = auth.role === "photographer" ? PhotographerLayout : AuthenticatedLayout;
+    
 
 
     return (
-        <AuthenticatedLayout
+        <Layout
             header={
                 <h2 className="text-xl text-center font-semibold leading-tight text-gray-800">
                     Hire Photographer
@@ -179,6 +182,6 @@ export default function Index() {
                     ))}
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </Layout>
     );
 }

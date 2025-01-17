@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PhotographerController;
@@ -36,6 +37,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/blogsntips', [HomeController::class, 'blogsntips'])->name('blogsntips');
     
 });
+
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
+    Route::delete('/cart/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
+});
+
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin-auth.php';

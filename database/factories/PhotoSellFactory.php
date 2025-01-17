@@ -20,7 +20,11 @@ class PhotoSellFactory extends Factory
 
         $imageServices = [
             'https://picsum.photos/200/300', // Random image from Picsum
-            'https://picsum.photos/seed/photo1/200/300', // Random seed-based image from Picsum
+            'https://picsum.photos/200/300?grayscale', // Random image from Picsum in grayscale
+            'https://picsum.photos/200/300?blur', // Random image from Picsum with blur
+            'https://picsum.photos/200/300?random', // Random image from Picsum with random effect
+            'https://picsum.photos/200/300?random=1', // Random image from Picsum with random effect
+            'https://picsum.photos/200/300?random=2', // Random image from Picsum with random effect
         ];
         
         $categories = [

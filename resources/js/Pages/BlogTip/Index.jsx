@@ -1,9 +1,14 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
+import PhotographerLayout from '../Photographer/Layout/PhotographerLayout';
 
-export default function About() {
+export default function index({ auth }) {
+
+    const Layout = auth.role === "photographer" ? PhotographerLayout : AuthenticatedLayout;
+    
+
     return (
-        <AuthenticatedLayout
+        <Layout
             header={
                 <h2 className="text-xl font-semibold text-center leading-tight text-gray-800">
                     Blog & Tips
@@ -21,6 +26,6 @@ export default function About() {
                     </div>
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </Layout>
     );
 }

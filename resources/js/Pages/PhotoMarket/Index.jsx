@@ -1,15 +1,14 @@
 import { useState, useEffect } from "react";
 import { Head, router } from "@inertiajs/react";
-import PhotographerLayout from "../Photographer/Layout/PhotographerLayout";
-import CategoryFilter from "./Components/CategoryFilter";
-import SearchBar from "./Components/SearchBar";
 import ProductCard from "./Components/ProductCard";
 import Modal from "./Components/Modal";
 import Pagination from "@/Components/Pagination";
 import SelectInput from "@/Components/SelectInput";
 import TextInput from "@/Components/TextInput";
+import PhotographerLayout from "../Photographer/Layout/PhotographerLayout";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 
-export default function Index({ photoSells, queryParams = null }) {
+export default function Index({ auth, photoSells, queryParams = null }) {
     // Initialize state with the dynamic photoSells data
     const [photos, setPhotoSells] = useState(photoSells.data);
     
@@ -45,8 +44,10 @@ export default function Index({ photoSells, queryParams = null }) {
         searchFieldChange(name, e.target.value);
     };
 
+    const Layout = auth.role === "photographer" ? PhotographerLayout : AuthenticatedLayout;
+
     return (
-        <PhotographerLayout
+        <Layout
             header={
                 <h2 className="text-3xl font-bold text-center text-gray-900 mt-4 mb-6">
                     Photo Market
@@ -110,6 +111,6 @@ export default function Index({ photoSells, queryParams = null }) {
 
             {/* Modal for Adding Product */}
             <Modal isOpen={isModalOpen} onClose={handleModalClose} />
-        </PhotographerLayout>
+        </Layout>
     );
 }
