@@ -4,7 +4,7 @@ export default function ProductCard({ product }) {
     // Initialize useForm once outside the function
     const { data, setData, post, processing, errors, reset } = useForm({
         item_type: "photo",
-        photo_item_id: product.id,
+        cart_item_id: product.id,
         quantity: 1,
         price: product.price,
     });

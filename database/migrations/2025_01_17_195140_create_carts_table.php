@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->enum('item_type', ['photo', 'product']);
             // $table->unsignedBigInteger('item_id');
-            $table->foreignId('photo_item_id')->constrained('photo_sells')->onDelete('cascade')->nullable();
-            $table->integer('quantity')->default(1);
+            $table->foreignId('cart_item_id')->constrained('photo_sells')->onDelete('cascade')->nullable();
+            $table->integer('quantity');
             $table->decimal('price', 10, 2);
             $table->timestamps();
         });

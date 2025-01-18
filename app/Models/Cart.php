@@ -14,7 +14,7 @@ class Cart extends Model
     protected $fillable = [
         'user_id',
         'item_type',
-        'photo_item_id',
+        'cart_item_id',
         'quantity',
         'price',
     ];
@@ -23,5 +23,10 @@ class Cart extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function photoSell()
+    {
+        return $this->belongsTo(PhotoSell::class, 'cart_item_id', 'id');
     }
 }
