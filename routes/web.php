@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+use App\Http\Controllers\EventController;
+
+Route::get('/eventbooking', [EventController::class, 'showEvents']);
+Route::get('/photographer_eventbooking', [EventController::class, 'showPhotographerEvents']);
