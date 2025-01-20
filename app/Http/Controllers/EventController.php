@@ -22,6 +22,7 @@ class EventController extends Controller
             'description' => 'nullable|string',
             'photo' => 'nullable|image|mimes:jpg,png,jpeg,gif|max:2048',
         ]);
+
         // Save the event
         $event = new Event();
         $event->event_name = $request->event_name;
@@ -45,5 +46,21 @@ class EventController extends Controller
 
 
         return redirect()->back()->with('success', 'Event created successfully!');
+    }
+
+    //fetch data for eventbooking
+    public function showEvents()
+    {
+        // Fetch all events from the database
+        $events = Event::all();
+
+        return view('eventbooking', compact('events'));
+    }
+
+    //To show eventdetails
+    public function show($id)
+    {
+        $event = Event::findOrFail($id); // Fetch the event by its ID
+        return view('eventdetails', ['event' => $event]);
     }
 }

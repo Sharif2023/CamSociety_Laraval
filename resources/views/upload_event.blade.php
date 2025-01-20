@@ -60,7 +60,7 @@
     <main class="max-w-4xl mx-auto p-6 mt-6 border border-b-gray-200 bg-white rounded-lg shadow-lg">
         <h1 class="text-3xl font-bold mb-6 text-center">List a New Event</h1>
         <form action="{{ route('events.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
-        @csrf
+            @csrf
             <div class="mb-6">
                 <label for="default-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Event
                     Name</label>
