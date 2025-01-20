@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('location');
             $table->date('start_date');
             $table->date('end_date');
-            $table->timestamp('duration_start')->nullable();
-            $table->timestamp('duration_end')->nullable();
+            $table->time('start_time');
+            $table->time('end_time');
             $table->decimal('rate', 8, 2);
             $table->text('description');
             $table->string('photo_url')->nullable();

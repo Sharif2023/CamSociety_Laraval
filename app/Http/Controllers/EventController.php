@@ -4,52 +4,46 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Event;
+use Carbon\Carbon;
 
 class EventController extends Controller
 {
+
     public function store(Request $request)
     {
-        $request->validate([
-            'event_name' => 'required|string',
-            'location' => 'required|string',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date',
+        $validatedData = $request->validate([
+            'event_name' => 'required|string|max:255',
+            'location' => 'required|string|max:255',
+            'start_date' => 'required|date_format:d/m/Y',
+            'end_date' => 'required|date_format:d/m/Y',
             'start_time' => 'required',
             'end_time' => 'required',
-            'rate' => 'required|numeric',  // Changed this to match your form input
+            'rate' => 'required|numeric|min:0',
             'description' => 'nullable|string',
-            'photo' => 'nullable|image|max:2048',
+            'photo' => 'nullable|image|mimes:jpg,png,jpeg,gif|max:2048',
         ]);
+        // Save the event
+        $event = new Event();
+        $event->event_name = $request->event_name;
+        $event->location = $request->location;
+        $event->start_date = Carbon::createFromFormat('d/m/Y', $request->start_date)->format('Y-m-d');
+        $event->end_date = Carbon::createFromFormat('d/m/Y', $request->end_date)->format('Y-m-d');
+        $event->start_time = $request->start_time;
+        $event->end_time = $request->end_time;
+        $event->rate = $request->rate;
+        $event->description = $request->description;
+        $event->save();
 
-        $photoPath = $request->file('photo') ? $request->file('photo')->store('photos', 'public') : null;
+        // Handling file upload
+        if ($request->hasFile('photo')) {
+            $validatedData['photo'] = $request->file('photo')->store('events');
+        }
 
-        Event::create([
-            'user_id' => 1, //auth()->id(),
-            'event_name' => $request->event_name,
-            'location' => $request->location,
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
-            'start_time' => $request->start_time,
-            'end_time' => $request->end_time,
-            'rate' => $request->rate,  // Changed this to match your form input
-            'description' => $request->description,
-            'photo_url' => $photoPath,
-        ]);
+        // Save to database
+        Event::create($validatedData);
+        dd($request->all());
+
 
         return redirect()->back()->with('success', 'Event created successfully!');
-    }
-
-    public function showEvents()
-    {
-        // Fetch events from the database
-        $events = Event::all();
-        return view('eventbooking', compact('events'));
-    }
-
-    public function showPhotographerEvents()
-    {
-        // Fetch events for photographers (same as users, but may be filtered differently)
-        $events = Event::all();
-        return view('photographer_eventbooking', compact('events'));
     }
 }
