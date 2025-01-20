@@ -1,5 +1,5 @@
 import { Head, router } from "@inertiajs/react";
-import React from "react";
+import React, { useState } from "react";
 import PhotographerLayout from "../Photographer/Layout/PhotographerLayout";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 
@@ -32,7 +32,7 @@ export default function Cart({ auth, cartItems }) {
         return price ? `$${price.toFixed(2)}` : "$0.00";
     };
 
-    console.log(cartItems); // Add this inside your component
+    // console.log(cartItems); // Add this inside your component
 
     // Calculate the Subtotal
     const subtotal = cartItems.reduce((total, item) => {
@@ -50,6 +50,48 @@ export default function Cart({ auth, cartItems }) {
     // Total calculation
     const total = subtotal + shipping + tax;
 
+    const [errors, setErrors] = useState({});
+
+    const [userDetails, setUserDetails] = useState({
+        name: "",
+        email: "",
+        phone: "",
+    });
+
+    const handleInputChange = (e) => {
+        setUserDetails({
+            ...userDetails,
+            [e.target.name]: e.target.value,
+        });
+    };
+
+    const validateInputs = () => {
+        const newErrors = {};
+
+        if (!userDetails.name.trim()) {
+            newErrors.name = "Name is required.";
+        }
+        if (
+            !userDetails.email ||
+            !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userDetails.email)
+        ) {
+            newErrors.email = "Invalid email address.";
+        }
+        if (!userDetails.phone || !/^\d+$/.test(userDetails.phone)) {
+            newErrors.phone = "Phone number must be numeric.";
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
+    const handleCheckout = () => {
+        if (validateInputs()) {
+            // route checkout get method with userDetails
+            router.get(route("checkout"), userDetails);
+        }
+    };
+
     return (
         <Layout>
             <Head title="Shopping Cart" />
@@ -57,7 +99,6 @@ export default function Cart({ auth, cartItems }) {
                 <h1 className="text-3xl font-bold text-gray-800 text-center">
                     Shopping Cart
                 </h1>
-
                 <div className="grid md:grid-cols-3 gap-8 mt-16">
                     <div className="md:col-span-2 space-y-4">
                         {cartItems.length === 0 ? (
@@ -173,8 +214,15 @@ export default function Cart({ auth, cartItems }) {
                                     <div class="relative flex items-center">
                                         <input
                                             type="text"
-                                            placeholder="Full Name"
-                                            class="px-4 py-2.5 bg-white text-gray-800 rounded-md w-full text-sm border-b focus:border-gray-800 outline-none"
+                                            name="name"
+                                            value={userDetails.name}
+                                            onChange={handleInputChange}
+                                            className={`mt-1 block w-full rounded-md border ${
+                                                errors.name
+                                                    ? "border-red-500"
+                                                    : "border-gray-300"
+                                            } shadow-sm`}
+                                            placeholder="Name"
                                         />
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
@@ -199,8 +247,15 @@ export default function Cart({ auth, cartItems }) {
                                     <div class="relative flex items-center">
                                         <input
                                             type="email"
+                                            name="email"
                                             placeholder="Email"
-                                            class="px-4 py-2.5 bg-white text-gray-800 rounded-md w-full text-sm border-b focus:border-gray-800 outline-none"
+                                            value={userDetails.email}
+                                            onChange={handleInputChange}
+                                            className={`mt-1 block w-full rounded-md border ${
+                                                errors.email
+                                                    ? "border-red-500"
+                                                    : "border-gray-300"
+                                            } shadow-sm`}
                                         />
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
@@ -242,8 +297,15 @@ export default function Cart({ auth, cartItems }) {
                                     <div class="relative flex items-center">
                                         <input
                                             type="number"
+                                            name="phone"
                                             placeholder="Phone No."
-                                            class="px-4 py-2.5 bg-white text-gray-800 rounded-md w-full text-sm border-b focus:border-gray-800 outline-none"
+                                            value={userDetails.phone}
+                                            onChange={handleInputChange}
+                                            className={`mt-1 block w-full rounded-md border ${
+                                                errors.phone
+                                                    ? "border-red-500"
+                                                    : "border-gray-300"
+                                            } shadow-sm`}
                                         />
                                         <svg
                                             fill="#bbb"
@@ -256,6 +318,11 @@ export default function Cart({ auth, cartItems }) {
                                             ></path>
                                         </svg>
                                     </div>
+                                    {errors.phone && (
+                                        <p className="text-red-500 text-sm">
+                                            {errors.phone}
+                                        </p>
+                                    )}
                                 </div>
                             </div>
                         </form>
@@ -290,12 +357,23 @@ export default function Cart({ auth, cartItems }) {
                         </ul>
 
                         <div class="mt-6 space-y-3">
-                        <button type="button" class="text-sm px-4 py-2.5 w-full font-semibold tracking-wide bg-gray-800 hover:bg-gray-900 text-white rounded-md">Checkout</button>
-                        <button type="button" class="text-sm px-4 py-2.5 w-full font-semibold tracking-wide bg-transparent text-gray-800 border border-gray-300 rounded-md">Continue Shopping  </button>
+                            <button
+                                type="button"
+                                onClick={handleCheckout}
+                                class="text-sm px-4 py-2.5 w-full font-semibold tracking-wide bg-gray-800 hover:bg-gray-900 text-white rounded-md"
+                            >
+                                Checkout
+                            </button>
+                            <button
+                                type="button"
+                                class="text-sm px-4 py-2.5 w-full font-semibold tracking-wide bg-transparent text-gray-800 border border-gray-300 rounded-md"
+                            >
+                                Continue Shopping{" "}
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
         </Layout>
     );
 }

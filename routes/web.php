@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PhotographerController;
 use App\Http\Controllers\PhotoSellController;
+use App\Http\Controllers\PaymentController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -35,7 +36,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/hirephotographer', [HomeController::class, 'hirephotographer'])->name('hirephotographer');
     Route::get('/eventbook', [HomeController::class, 'eventbook'])->name('eventbook');
     Route::get('/blogsntips', [HomeController::class, 'blogsntips'])->name('blogsntips');
-    
 });
 
 
@@ -46,6 +46,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/cart/{id}', [CartController::class, 'update'])->name('cart.update');
 });
 
+
+
+// Route::post('/payment/initiate', [PaymentController::class, 'initiatePayment']);
+// Route::post('/payment/verify', [PaymentController::class, 'verifyPayment']);
+
+Route::get('/payment/sendmail', [PaymentController::class, 'sendMail']);
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/checkout', [PaymentController::class, 'index'])->name('checkout');
+    Route::post('send-otp', [PaymentController::class, 'sendOTP']);
+    Route::post('verify-otp', [PaymentController::class, 'verifyOTP']);
+});
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin-auth.php';
