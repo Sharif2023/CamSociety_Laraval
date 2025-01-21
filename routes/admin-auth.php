@@ -11,12 +11,12 @@ Route::prefix('admin')->middleware('guest:admin')->group(function () {
 
     Route::post('register', [RegisteredUserController::class, 'store']);
 
-    Route::get('login', [LoginController::class, 'create'])
+    Route::get('/login', [LoginController::class, 'create'])
         ->name('admin.login');
 
     Route::post('login', [LoginController::class, 'store']);
 
-    Route::redirect('/', '/admin/login', 301);
+    // Route::redirect('/', '/admin/login', 301);
 });
 
 Route::prefix('admin')->middleware('auth:admin')->group(function () {

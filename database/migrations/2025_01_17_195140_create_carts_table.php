@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('cart_item_id')->constrained('photo_sells')->onDelete('cascade')->nullable();
             $table->integer('quantity');
             $table->decimal('price', 10, 2);
+            $table->enum('status', ['pending', 'completed', 'cancelled']);
             $table->timestamps();
         });
     }

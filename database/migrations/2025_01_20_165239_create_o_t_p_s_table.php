@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('o_t_p_s', function (Blueprint $table) {
             $table->id();
+            // email type 
             $table->string('email');
             $table->string('otp');
             $table->timestamp('expires_at')->nullable();

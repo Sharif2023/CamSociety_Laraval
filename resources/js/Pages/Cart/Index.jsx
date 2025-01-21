@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import PhotographerLayout from "../Photographer/Layout/PhotographerLayout";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 
-export default function Cart({ auth, cartItems }) {
+export default function Cart({ auth, cartItems, cartId }) {
     const Layout =
         auth.role === "photographer" ? PhotographerLayout : AuthenticatedLayout;
 
@@ -94,6 +94,7 @@ export default function Cart({ auth, cartItems }) {
 
     return (
         <Layout>
+        {/* <pre>{JSON.stringify(cartId, null, 2)}</pre> */}
             <Head title="Shopping Cart" />
             <div className="font-sans max-w-5xl max-md:max-w-xl mx-auto bg-white py-4 px-4 md:px-8">
                 <h1 className="text-3xl font-bold text-gray-800 text-center">
