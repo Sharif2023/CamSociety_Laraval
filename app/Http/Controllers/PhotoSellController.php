@@ -7,6 +7,8 @@ use App\Http\Requests\UpdatePhotoSellRequest;
 use App\Models\PhotoSell;
 use Inertia\Inertia;
 use App\Http\Resources\PhotoSellResource;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class PhotoSellController extends Controller
 {
@@ -29,7 +31,7 @@ class PhotoSellController extends Controller
 
         return Inertia::render('PhotoMarket/Index', [
             'photoSells' => PhotoSellResource::collection($photoSells),
-            'queryParams' => request()->query()?: null,
+            'queryParams' => request()->query() ?: null,
         ]);
     }
 
@@ -44,9 +46,34 @@ class PhotoSellController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePhotoSellRequest $request)
+    public function store(Request $request)
     {
-        //
+       
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string|max:1000',
+            'price' => 'required|numeric|min:1',
+            'category' => 'required|string',
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        // Handle file upload
+        $photoPath = $request->file('photo')->store('PhotoSells', 'photo_sells');
+
+        // Create a new photo sell record in the database
+        $photoSell = PhotoSell::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'price' => $request->price,
+            'category' => $request->category,
+            'image_url' => $photoPath, // Save the file path
+            'created_by' => Auth::id()
+        ]);
+
+        return response()->json([
+            'message' => 'Photo uploaded successfully!',
+            'data' => $photoSell,
+        ]);
     }
 
     /**

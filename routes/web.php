@@ -35,6 +35,7 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/photomarket', [PhotoSellController::class, 'index'])->name('photomarket');
+    Route::post('/photomarket', [PhotoSellController::class, 'store']);
     Route::get('/hirephotographer', [HomeController::class, 'hirephotographer'])->name('hirephotographer');
     Route::get('/eventbook', [HomeController::class, 'eventbook'])->name('eventbook');
     Route::get('/blogsntips', [HomeController::class, 'blogsntips'])->name('blogsntips');

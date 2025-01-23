@@ -117,7 +117,7 @@ export default function Cart({ auth, cartItems, cartId }) {
                                     <div className="col-span-2 flex items-start gap-4">
                                         <div className="w-28 h-28 max-sm:w-24 max-sm:h-24 shrink-0 bg-gray-100 p-2 rounded-md">
                                             <img
-                                                src={item.photo_sell?.image_url} // Accessing photo_sell here
+                                                src={item.photo_sell?.image_url.startsWith("http") ? item.photo_sell?.image_url : `/PhotoSells/${item.photo_sell?.image_url}`}  // Accessing photo_sell here
                                                 alt={item.photo_sell?.title} // Accessing photo_sell here
                                                 className="w-full h-full object-contain"
                                             />

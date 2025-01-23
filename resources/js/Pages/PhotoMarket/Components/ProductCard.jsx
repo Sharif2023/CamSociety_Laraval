@@ -9,6 +9,15 @@ export default function ProductCard({ product }) {
         price: product.price,
     });
 
+    // const photoPath = `/PhotoSells/${product.photo}`; // Path to the photo
+    
+    // if image link starts with http, use it as is, otherwise use the asset function
+    const photoPath = product.photo.startsWith("http")
+        ? product.photo // Use the image link as is
+        : `/PhotoSells/${product.photo}`; // Use the asset function to generate the correct path
+
+    
+
     // Function to handle adding to cart
     const handleAddToCart = () => {
         // Post the form data to the cart store route
@@ -27,7 +36,7 @@ export default function ProductCard({ product }) {
         <div className="group bg-white shadow-lg rounded-lg overflow-hidden relative hover:shadow-xl transition-shadow duration-300">
             {/* Image Section */}
             <img
-                src={product.photo || "https://via.placeholder.com/300x200"}
+                src={photoPath || "https://via.placeholder.com/300"}
                 alt={product.title}
                 className="w-full h-48 object-cover transition-all duration-300 group-hover:opacity-80"
             />
