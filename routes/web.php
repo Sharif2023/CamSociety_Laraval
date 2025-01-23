@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PhotographerController;
 use App\Http\Controllers\PhotoSellController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -16,9 +17,10 @@ Route::get('/login', [HomeController::class, 'login'])->name('login');
 Route::get('/signup', [HomeController::class, 'signup'])->name('signup');
 
 // User routes
-Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:user',])->group(function () {
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
 });
+
 
 // Photographer routes
 Route::prefix('photographer')->middleware(['auth', 'verified', 'role:photographer'])->group(function () {
@@ -56,6 +58,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/checkout', [PaymentController::class, 'index'])->name('checkout');
     Route::post('send-otp', [PaymentController::class, 'sendOTP']);
     Route::post('verify-otp', [PaymentController::class, 'verifyOTP']);
+});
+
+// Transaction routes
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions');
+    Route::get('/transaction-success', [TransactionController::class, 'successPage'])->name('transaction.success');
+
 });
 
 require __DIR__ . '/auth.php';

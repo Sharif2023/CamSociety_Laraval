@@ -56,6 +56,8 @@ export default function Cart({ auth, cartItems, cartId }) {
         name: "",
         email: "",
         phone: "",
+        photo_sell_id: cartItems.map((item) => item.id),
+        total: total,
     });
 
     const handleInputChange = (e) => {

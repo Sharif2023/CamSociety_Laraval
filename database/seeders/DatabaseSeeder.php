@@ -39,6 +39,11 @@ class DatabaseSeeder extends Seeder
             'role' => 1,
         ]);
 
+
+        User::factory()
+            ->count(50)
+            ->create();
+
         PhotoSell::factory()
             ->count(30)
             ->create();

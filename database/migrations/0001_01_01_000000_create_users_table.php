@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('bio')->nullable();
             $table->text('specializations')->nullable();
             $table->decimal('rating', 3, 2)->default(0);
+            $table->tinyInteger('is_active')->default(1);
             $table->rememberToken();
             $table->timestamps();
         });

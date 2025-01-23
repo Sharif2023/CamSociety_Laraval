@@ -41,6 +41,12 @@ class CartController extends Controller
         ]);
 
         $user = Auth::user();
+
+        // check if user is_active or not
+        if (!$user->is_active) {
+            return redirect()->route('login')->with('error', 'Your account is not active. Please contact support.');
+        }
+
         if (!$user) {
             return redirect()->route('login')->with('error', 'Please log in to add items to your cart.');
         }

@@ -11,16 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('transections', function (Blueprint $table) {
+        Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->string('email');
-            $table->decimal('amount', 10, 2);
+            $table->decimal('total_amount', 10, 2);
             $table->string('transaction_id')->unique();
             $table->timestamp('transaction_date')->format('Y-m-d H:i:s');
             $table->foreignId('made_by')->constrained('users')->onDelete('cascade');
-            $table->foreignId('cart_id')->constrained('carts')->onDelete('cascade');
+            $table->string('status')->default('pending');
+            $table->json('photo_ids'); // Add a JSON column to store photo IDs
             $table->timestamps();
         });
+        
     }
 
     /**
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('transections');
+        Schema::dropIfExists('transactions');
     }
 };

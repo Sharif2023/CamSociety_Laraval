@@ -2,9 +2,9 @@ import { useState } from "react";
 import OTPInput from "react-otp-input";
 import { router } from "@inertiajs/react";
 
-const OTPVerification = ({ email }) => {
-    const [otp, setOtp] = useState("");  // The state for OTP input
-    const [error, setError] = useState("");  // For handling errors
+const OTPVerification = ({ email, photoIds, total }) => {
+    const [otp, setOtp] = useState(""); // The state for OTP input
+    const [error, setError] = useState(""); // For handling errors
 
     // Handle OTP input change
     const handleOtpChange = (otpValue) => {
@@ -16,18 +16,22 @@ const OTPVerification = ({ email }) => {
         if (otp.length === 6) {
             router.post(
                 "/verify-otp",
-                { email, otp },
+                { email, otp, photoIds, total},
                 {
                     onSuccess: (page) => {
-                        alert(page.props.flash.success || "OTP Verified Successfully!");
+                        alert(
+                            page.props.flash.success ||
+                                "OTP Verified Successfully!"
+                        );
                     },
                     onError: (errors) => {
-                        setError(errors.message || "Invalid OTP. Please try again.");
+                        setError(
+                            errors.message || "Invalid OTP. Please try again."
+                        );
                     },
                 }
             );
             // console.log(otp);
-            
         } else {
             setError("OTP must be 6 digits.");
         }
@@ -51,18 +55,44 @@ const OTPVerification = ({ email }) => {
                         numInputs={6}
                         isInputNum={true}
                         shouldAutoFocus={true}
-                        renderSeparator={<span className="mx-1 text-gray-500">-</span>}
+                        renderSeparator={
+                            <span className="mx-1 text-black">-</span>
+                        }
+                        inputStyle={{
+                            width: "2.5rem",
+                            height: "2.5rem",
+                            margin: "0 0.5rem",
+                            fontSize: "1.5rem",
+                            borderRadius: "0.5rem",
+                            border: "1px solid #ccc",
+                            textAlign: "center",
+                            backgroundColor: "#fff",
+                            color: "#000",
+                        }}
                         renderInput={(props) => (
                             <input
                                 {...props}
-                                className="w-12 h-12 text-center text-lg text-black bg-white border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                style={{
+                                    width: "2.5rem",
+                                    height: "2.5rem",
+                                    fontSize: "1.5rem",
+                                    borderRadius: "0.5rem",
+                                    border: "1px solid #ccc",
+                                    textAlign: "center",
+                                    backgroundColor: "#fff",
+                                    color: "#000",
+                                }}
                             />
                         )}
                     />
                 </div>
 
                 {/* Error message */}
-                {error && <p className="text-red-500 text-sm mb-4 text-center">{error}</p>}
+                {error && (
+                    <p className="text-red-500 text-sm mb-4 text-center">
+                        {error}
+                    </p>
+                )}
 
                 {/* Verify OTP Button */}
                 <button

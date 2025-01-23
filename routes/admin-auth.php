@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\Auth\RegisteredUserController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::prefix('admin')->middleware('guest:admin')->group(function () {
+Route::prefix('admin')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])
         ->name('admin.register');
 
@@ -16,8 +18,9 @@ Route::prefix('admin')->middleware('guest:admin')->group(function () {
 
     Route::post('login', [LoginController::class, 'store']);
 
-    // Route::redirect('/', '/admin/login', 301);
+    Route::redirect('/', '/admin/login', 301);
 });
+
 
 Route::prefix('admin')->middleware('auth:admin')->group(function () {
     
@@ -29,4 +32,22 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
 
     Route::post('logout', [LoginController::class, 'destroy'])
         ->name('admin.logout');
+
+
+  Route::get('users', [UserController::class, 'index'])
+        ->name('admin.users');
+
+    Route::delete('users/{user}', [UserController::class, 'delete'])
+        ->name('admin.users.delete');
+    
+    Route::put('users/{user}/deactivate', [UserController::class, 'deactivate'])
+        ->name('admin.users.deactivate');
+
+    Route::put('users/{user}/activate', [UserController::class, 'activate'])
+        ->name('admin.users.activate');
+    
+
+
+  Route::get('admins', [AdminController::class, 'index'])
+        ->name('admin.admins');
 });

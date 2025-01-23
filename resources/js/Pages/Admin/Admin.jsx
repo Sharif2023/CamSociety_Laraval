@@ -5,16 +5,15 @@ import Pagination from "@/Components/Pagination";
 import TextInput from "@/Components/TextInput";
 import SelectInput from "@/Components/SelectInput";
 
-export default function Users({ auth, user, queryParams = null }) {
+export default function Users({ auth, admins, queryParams = null }) {
     // Initialize the full user object, not just user.data
-    const [users, setUsers] = useState(user);
+    const [users, setUsers] = useState(admins);
 
     queryParams = queryParams || {};
 
-    const roles = {
-        0: "Client",
-        1: "Photographer",
-    };
+
+    // console.log(users);
+    
 
     // Search Field Change
     const searchFieldChange = (name, value) => {
@@ -24,7 +23,7 @@ export default function Users({ auth, user, queryParams = null }) {
             delete queryParams[name];
         }
 
-        router.get(route("admin.users", queryParams));
+        router.get(route("admin.admins", queryParams));
     };
 
     // On Key Press
@@ -61,21 +60,6 @@ export default function Users({ auth, user, queryParams = null }) {
                         }
                         onKeyPress={(e) => onKeyPress("name", e)}
                     />
-
-                    <SelectInput
-                        className="bg-gray-100 border border-gray-300 text-gray-800 text-sm rounded-full focus:ring-2 focus:ring-blue-500"
-                        defaultValue={queryParams.role}
-                        onChange={(e) =>
-                            searchFieldChange("role", e.target.value)
-                        }
-                    >
-                        <option value="">All</option>
-                        {Object.entries(roles).map(([key, value]) => (
-                            <option key={key} value={key}>
-                                {value}
-                            </option>
-                        ))}
-                    </SelectInput>
                 </div>
 
                         {/* <pre>{JSON.stringify(users, undefined, 2)}</pre> */}
@@ -92,9 +76,6 @@ export default function Users({ auth, user, queryParams = null }) {
                                     </th>
                                     <th className="border border-gray-200 px-6 py-3 text-left font-semibold">
                                         Email
-                                    </th>
-                                    <th className="border border-gray-200 px-6 py-3 text-center font-semibold">
-                                        Role
                                     </th>
                                     <th className="border border-gray-200 px-6 py-3 text-center font-semibold">
                                         Actions
@@ -116,37 +97,8 @@ export default function Users({ auth, user, queryParams = null }) {
                                         <td className="border border-gray-200 px-6 py-4 text-gray-800">
                                             {user.email}
                                         </td>
-                                        <td className="border border-gray-200 px-6 py-4 text-center text-gray-800">
-                                            <span
-                                                className={`py-1 px-3 rounded-full text-sm ${
-                                                    user.role === 1
-                                                        ? "bg-blue-100 text-blue-800"
-                                                        : "bg-green-100 text-green-800"
-                                                }`}
-                                            >
-                                                {user.role === 0 ? "Client" : "Photographer"}
-
-                                            </span>
-                                        </td>
+                                        
                                         <td className="border border-gray-200 px-6 py-4 text-center">
-                                            {user.is_active ? (
-                                                <Link 
-                                                    href={route("admin.users.deactivate", user.id)} 
-                                                    method="put" 
-                                                    as="button"
-                                                    className="bg-red-500 text-white px-4 py-2 rounded-lg shadow hover:bg-red-600 transition">
-                                                    Deactivate
-                                                </Link>
-                                            ) : (
-                                                <Link 
-                                                    href={route("admin.users.activate", user.id)} 
-                                                    method="put" 
-                                                    as="button"
-                                                    className="bg-green-500 text-white px-4 py-2 rounded-lg shadow hover:bg-green-600 transition">
-                                                    Activate
-                                                </Link>
-                                            )}
-                                            
                                             <Link 
                                                 href={route("admin.users.delete", user.id)} 
                                                 method="delete" 
