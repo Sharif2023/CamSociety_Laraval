@@ -9,6 +9,10 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+
+//Sharif - those two line
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\BlogNTipController;
 use Inertia\Inertia;
 
 // Public routes
@@ -38,6 +42,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/photomarket', [PhotoSellController::class, 'store']);
     Route::get('/hirephotographer', [HomeController::class, 'hirephotographer'])->name('hirephotographer');
     Route::get('/eventbook', [HomeController::class, 'eventbook'])->name('eventbook');
+    Route::get('/eventupload', [HomeController::class, 'eventupload'])->name('eventupload');
     Route::get('/blogsntips', [HomeController::class, 'blogsntips'])->name('blogsntips');
 });
 
@@ -67,6 +72,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/transaction-success', [TransactionController::class, 'successPage'])->name('transaction.success');
 
 });
+
+//event upload
+Route::post('/event-upload', [EventController::class, 'store']);
+Route::get('/event-upload', [HomeController::class, 'eventupload'])->name('eventupload');
+
+//photographer blogntip
+Route::get('/photographer-blog-tips', function () {
+    return Inertia::render('PhotographerView/PhotographerBlogNTips');
+});
+
+//send post blogNtips data to database
+Route::post('/blogntips', [BlogNTipController::class, 'store'])->name('blogntips.store');
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin-auth.php';

@@ -64,6 +64,9 @@ export default function index({ auth }) {
             }
         >
             <Head title="Dashboard" />
+            <section className="underline text-[#FF3300] text-end pr-5">
+                <a href="/event-upload">Create a Event</a>
+            </section>
 
             <div className="min-h-screen bg-gray-100 py-8">
                 <EventSearch onSearch={handleSearch} />

@@ -50,4 +50,9 @@ class HomeController extends Controller
     {
         return Inertia::render('BlogTip/Index');
     }
+
+    public function eventupload()
+    {
+        return Inertia::render('BookEvent/EventUpload');
+    }
 }
