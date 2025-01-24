@@ -15,7 +15,7 @@ class CartController extends Controller
         $user = Auth::user();
         
         if (!$user) {
-            return redirect()->route('login')->with('error', 'Please log in to access your cart.');
+            return redirect()->route('login')->with(['error' => 'Please log in to access your cart.']);
         }
 
         // Eager load the photoSell relationship
@@ -44,11 +44,11 @@ class CartController extends Controller
 
         // check if user is_active or not
         if (!$user->is_active) {
-            return redirect()->route('login')->with('error', 'Your account is not active. Please contact support.');
+            return redirect()->route('login')->with(['error' => 'Your account is not active. Please contact support.']);
         }
 
         if (!$user) {
-            return redirect()->route('login')->with('error', 'Please log in to add items to your cart.');
+            return redirect()->route('login')->with(['error' => 'Please log in to add items to your cart.']);
         }
 
         // Check if the item is already in the cart
@@ -67,7 +67,7 @@ class CartController extends Controller
                 ]);
 
                 // stay in same page
-            return redirect()->back()->with('success', 'Item added to cart!');
+            return redirect()->back()->with(['success' => 'Item added to cart!']);
         }
         
         // Add or update the cart item
@@ -80,7 +80,7 @@ class CartController extends Controller
             'price' => $request->price,
         ]);
 
-        return redirect()->back()->with('success', 'Item added to cart!');
+        return redirect()->back()->with(['success' => 'Item added to cart!']);
     }
 
 
@@ -90,7 +90,7 @@ class CartController extends Controller
     {
         $user = Auth::user();
         if (!$user) {
-            return redirect()->route('login')->with('error', 'Please log in to remove items from your cart.');
+            return redirect()->route('login')->with(['error' => 'Please log in to remove items from your cart.']);
         }
 
         $cartItem = Cart::where('user_id', $user->id)->findOrFail($id);
@@ -108,7 +108,7 @@ class CartController extends Controller
 
         $user = Auth::user();
         if (!$user) {
-            return redirect()->route('login')->with('error', 'Please log in to update items in your cart.');
+            return redirect()->route('login')->with(['error' => 'Please log in to update items in your cart.']);
         }
 
         $cartItem = Cart::where('user_id', $user->id)->findOrFail($id);
@@ -116,6 +116,6 @@ class CartController extends Controller
             'quantity' => $request->quantity,
         ]);
 
-        return redirect()->back()->with('success', 'Cart updated!');
+        return redirect()->back()->with(['success' => 'Cart updated!']);
     }
 }

@@ -1,9 +1,21 @@
 import { Head, router } from "@inertiajs/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PhotographerLayout from "../Photographer/Layout/PhotographerLayout";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { ToastContainer, toast } from 'react-toastify';
 
-export default function Cart({ auth, cartItems, cartId }) {
+export default function Cart({ auth, cartItems, cartId, flash }) {
+
+
+    useEffect(() => {
+            if (flash.message.success) {
+                toast.success(flash.message.success);
+            }
+            if (flash.message.error) {
+                toast.error(flash.message.error);
+            }
+        }, [flash]);
+
     const Layout =
         auth.role === "photographer" ? PhotographerLayout : AuthenticatedLayout;
 
@@ -98,6 +110,7 @@ export default function Cart({ auth, cartItems, cartId }) {
         <Layout>
         {/* <pre>{JSON.stringify(cartId, null, 2)}</pre> */}
             <Head title="Shopping Cart" />
+            <ToastContainer />
             <div className="font-sans max-w-5xl max-md:max-w-xl mx-auto bg-white py-4 px-4 md:px-8">
                 <h1 className="text-3xl font-bold text-gray-800 text-center">
                     Shopping Cart

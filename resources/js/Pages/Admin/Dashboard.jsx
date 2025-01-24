@@ -1,8 +1,14 @@
-import { Head } from "@inertiajs/react";
+import { Head, router } from "@inertiajs/react";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import Sidebar from "./Components/Sidebar";
 
-export default function Dashboard() {
+export default function Dashboard({ auth }) {
+
+    // if not active route to notActive page
+    if (!auth.is_active) {
+        router.get(route("admin.notactive"));
+        
+    }
     return (
         <>
             <Head title="Admin Dashboard" />

@@ -33,6 +33,9 @@ Route::prefix('admin')->middleware('auth:admin')->group(function () {
     Route::post('logout', [LoginController::class, 'destroy'])
         ->name('admin.logout');
 
+  Route::get('/notactive', function () {
+    return Inertia::render('Admin/NotActive');
+    })->name('admin.notactive');
 
   Route::get('users', [UserController::class, 'index'])
         ->name('admin.users');

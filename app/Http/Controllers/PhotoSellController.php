@@ -70,10 +70,7 @@ class PhotoSellController extends Controller
             'created_by' => Auth::id()
         ]);
 
-        return response()->json([
-            'message' => 'Photo uploaded successfully!',
-            'data' => $photoSell,
-        ]);
+        return redirect()->route('photomarket')->with(['success' => 'Photo uploaded successfully']);
     }
 
     /**

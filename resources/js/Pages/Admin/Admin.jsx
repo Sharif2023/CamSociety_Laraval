@@ -103,6 +103,7 @@ export default function Users({ auth, admins, queryParams = null }) {
                                                 href={route("admin.users.delete", user.id)} 
                                                 method="delete" 
                                                 as="button"
+                                                hidden={user.id === auth.user.id}
                                             className="bg-red-500 text-white px-4 py-2 rounded-lg shadow hover:bg-red-600 transition ml-3">
                                                 Delete
                                             </Link>
