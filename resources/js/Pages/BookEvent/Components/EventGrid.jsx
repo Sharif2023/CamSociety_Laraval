@@ -8,11 +8,11 @@ const EventGrid = ({ events }) => {
         <EventCard
           key={event.id}
           id={event.id}
-          image={event.image}
-          title={event.title}
+          photo_url={event.photo_url} // Update to match backend field
+          event_name={event.event_name} // Update to match backend field
           location={event.location}
           rate={event.rate}
-          date={event.date}
+          start_date={event.start_date} // Correct field for date
         />
       ))}
     </div>

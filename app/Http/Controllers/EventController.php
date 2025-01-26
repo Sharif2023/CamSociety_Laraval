@@ -44,4 +44,17 @@ class EventController extends Controller
 
         return response()->json(['message' => 'Event uploaded successfully!', 'event' => $event], 200);
     }
+
+    //fetch event from db
+    public function index()
+    {
+        $events = Event::all(['id', 'event_name', 'location', 'rate', 'start_date', 'photo_url']); // Include necessary fields
+        return response()->json($events);
+    }
+
+    public function getEventDetails($id)
+    {
+        $event = Event::findOrFail($id);
+        return response()->json($event);
+    }
 }
