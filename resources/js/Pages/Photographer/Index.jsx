@@ -3,38 +3,24 @@ import PhotographerLayout from "./Layout/PhotographerLayout";
 import PhotographerProfile from "./Components/PhotographerProfile";
 import StatsCards from "./Components/StatsCards";
 import RecentProjects from "./Components/RecentProjects";
+import { use } from "react";
 
-export default function Dashboard() {
+export default function Dashboard({auth, photos}) {
+
+
+    const user = auth.user;
+
     const photographer = {
         name: "John Doe",
         bio: "Capturing moments that last forever.",
         specializations: "Weddings, Events, Portraits",
         profilePicture: "https://picsum.photos/200/300",
         stats: {
-            projects: 25,
-            earnings: 8340,
-            rating: 4.9,
+            listed_photos: photos.length,
+            // earnings: 8340,
+            rating: user.rating,
         },
-        projects: [
-            {
-                id: 1,
-                title: "Wedding Photography",
-                image: "https://picsum.photos/200/300/?wedding",
-                date: "Delivered on Jan 10",
-            },
-            {
-                id: 2,
-                title: "Corporate Event",
-                image: "https://picsum.photos/200/300/?corporate",
-                date: "Delivered on Dec 20",
-            },
-            {
-                id: 3,
-                title: "Travel Photoshoot",
-                image: "https://picsum.photos/200/300/?travel",
-                date: "Delivered on Dec 15",
-            },
-        ],
+        
     };
 
     return (
@@ -49,13 +35,13 @@ export default function Dashboard() {
 
             <div className="container mx-auto p-6">
                 <PhotographerProfile
-                    name={photographer.name}
-                    bio={photographer.bio}
-                    specializations={photographer.specializations}
+                    name={user.name}
+                    bio={user.bio? user.bio : 'No bio provided'} 
+                    specializations={user.specializations? user.specializations : 'No specializations provided'}
                     profilePicture={photographer.profilePicture}
                 />
                 <StatsCards stats={photographer.stats} />
-                <RecentProjects projects={photographer.projects} />
+                <RecentProjects projects={photos} />
             </div>
         </PhotographerLayout>
     );

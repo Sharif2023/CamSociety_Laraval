@@ -8,18 +8,26 @@ const RecentProjects = ({ projects }) => {
                 {projects.map((project) => (
                     <div
                         key={project.id}
-                        className="bg-white p-4 rounded-lg shadow-md h-2/5"
+                        className="bg-white p-4 rounded-lg shadow-md h-full"
                     >
                         <img
-                            src={project.image}
+                            src={project.image_url}
                             alt={project.title}
-                            className="w-full h-2/3 rounded-md"
-
+                            className="w-full h-48 object-cover rounded-md"
                         />
                         <h3 className="mt-4 font-semibold text-gray-800">
                             {project.title}
                         </h3>
-                        <p className="text-gray-600">{project.date}</p>
+                        <p className="text-gray-600">{project.description}</p>
+                        <p className="text-gray-500 text-sm mt-2">
+                            Category: {project.category}
+                        </p>
+                        <p className="text-gray-500 text-sm">
+                            Price: BDT{project.price}
+                        </p>
+                        <p className="text-gray-400 text-xs mt-1">
+                            Created at: {new Date(project.created_at).toLocaleDateString()}
+                        </p>
                     </div>
                 ))}
             </div>

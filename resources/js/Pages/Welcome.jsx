@@ -5,6 +5,7 @@ import CallToAction from "../Components/CallToAction";
 import TestimonialCarousel from "@/Components/TestimonialCarousel";
 import Footer from "@/Components/Footer";
 import FAQ from "@/Components/FAQ";
+import ApplicationLogo from "@/Components/ApplicationLogo";
 
 export default function Welcome({ auth, laravelVersion, phpVersion }) {
     const handleImageError = () => {
@@ -26,11 +27,9 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                     <header class="bg-[#F8E9E7]">
                         <div class="container mx-auto flex justify-between items-center py-4">
                             <div class="flex items-center gap-3">
-                                <img
-                                    src="https://placehold.co/40x40"
-                                    alt="CamSocity Logo"
-                                    class="h-10 w-10"
-                                />
+                                <Link href="/">
+                                    <ApplicationLogo className="h-24 w-24 fill-current text-gray-500" />
+                                </Link>
                                 <span class="text-lg">
                                     <p class="font-semibold">CamSocity</p>Your
                                     Photography Hub
