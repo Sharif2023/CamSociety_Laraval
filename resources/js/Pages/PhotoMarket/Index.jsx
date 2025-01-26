@@ -64,7 +64,7 @@ export default function Index({ auth, photoSells, queryParams = null , flash}) {
     return (
         <Layout
             header={
-                <h2 className="text-3xl font-bold text-center text-gray-900 mt-4 mb-6">
+                <h2 className="text-xl font-semibold text-center leading-tight text-gray-800">
                     Photo Market
                 </h2>
             }

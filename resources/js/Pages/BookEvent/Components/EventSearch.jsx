@@ -5,7 +5,7 @@ const EventSearch = ({ onSearch }) => {
     e.preventDefault();
     const searchQuery = e.target.search.value;
     if (onSearch) {
-      onSearch(searchQuery);
+      onSearch("address", searchQuery);
     }
   };
 

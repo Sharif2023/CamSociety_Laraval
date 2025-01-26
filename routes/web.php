@@ -1,12 +1,14 @@
 <?php
 
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PhotographerController;
 use App\Http\Controllers\PhotoSellController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\TransactionController;
+use Illuminate\Console\Scheduling\Event;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -37,7 +39,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/photomarket', [PhotoSellController::class, 'index'])->name('photomarket');
     Route::post('/photomarket', [PhotoSellController::class, 'store']);
     Route::get('/hirephotographer', [HomeController::class, 'hirephotographer'])->name('hirephotographer');
-    Route::get('/eventbook', [HomeController::class, 'eventbook'])->name('eventbook');
+    Route::get('/eventbook', [EventController::class, 'index'])->name('eventbook');
+    Route::post('eventbook', [EventController::class, 'store'])->name('eventbook.store');
+    Route::get('/eventbook/{id}', [EventController::class, 'show'])->name('eventbook.show');
+    Route::post('/apply/{eventId}', [EventController::class, 'apply']);
     Route::get('/blogsntips', [HomeController::class, 'blogsntips'])->name('blogsntips');
 });
 

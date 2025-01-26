@@ -5,7 +5,7 @@ import Sidebar from "./Components/Sidebar";
 export default function Dashboard({ auth }) {
 
     // if not active route to notActive page
-    if (!auth.is_active) {
+    if (auth.is_active === 0) {
         router.get(route("admin.notactive"));
         
     }

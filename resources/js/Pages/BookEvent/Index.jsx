@@ -1,59 +1,56 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
-import { useState } from "react";
+import { Head, router } from "@inertiajs/react";
+import { useEffect, useState } from "react";
 import EventGrid from "./Components/EventGrid";
-import EventSearch from "./Components/EventSearch";
 import PhotographerLayout from "../Photographer/Layout/PhotographerLayout";
+import Pagination from "@/Components/Pagination";
+import TextInput from "@/Components/TextInput";
+import AddEventModal from "./Components/AddEventModal";
+import { ToastContainer, toast } from 'react-toastify';
+
+export default function index({ auth, bookevents, queryParams = null, flash }) {
+    const [events, setEvents] = useState(bookevents.data);
 
 
-export default function index({ auth }) {
-    const [events] = useState([
-        {
-          id: 1,
-          image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-          title: "Charity Gala",
-          location: "Pan Pacific Sonargaon, Dhaka",
-          rate: "BDT 8500/hr",
-          date: "19 March, 2025",
-        },
-        {
-          id: 2,
-          image: "https://images.pexels.com/photos/461593/pexels-photo-461593.jpeg?cs=srgb&dl=pexels-pixabay-461593.jpg&fm=jpg",
-          title: "Cultural Evening",
-          location: "Shilpakala Academy, Dhaka",
-          rate: "BDT 4000/hr",
-          date: "12 February, 2025",
-        },
-        {
-          id: 3,
-          image: "https://images.pexels.com/photos/3184327/pexels-photo-3184327.jpeg?cs=srgb&dl=pexels-fauxels-3184327.jpg&fm=jpg",
-          title: "Startup Pitch Competition",
-          location: "Grameenphone HQ, Dhaka",
-          rate: "BDT 9500/hr",
-          date: "1 February, 2025",
-        },
-        {
-          id: 4,
-          image: "https://images.pexels.com/photos/1763075/pexels-photo-1763075.jpeg?cs=srgb&dl=pexels-wendy-wei-1763075.jpg&fm=jpg",
-          title: "Open Air Cinema",
-          location: "Ahsan Manzil, Dhaka",
-          rate: "BDT 3500/hr",
-          date: "8 February, 2025",
-        },
-       
-      ]);
-      
-      
-      
+    useEffect(() => {
+            if (flash.message.success) {
+                toast.success(flash.message.success);
+            }
+            if (flash.message.error) {
+                toast.error(flash.message.error);
+            }
+        }, [flash]);
 
-    const handleSearch = (query) => {
-        console.log("Search Query:", query);
-        // Add search functionality here
+
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const handleModalOpen = () => setIsModalOpen(true);
+    const handleModalClose = () => setIsModalOpen(false);
+
+    queryParams = queryParams || {};
+
+    // Search Field Change
+    const searchFieldChange = (name, value) => {
+        if (value) {
+            queryParams[name] = value;
+        } else {
+            delete queryParams[name];
+        }
+
+        router.get(route("eventbook", queryParams));
     };
 
+    // On Key Press
+    const onKeyPress = (name, e) => {
+        if (e.key !== "Enter") {
+            return;
+        }
 
-    const Layout = auth.role === "photographer" ? PhotographerLayout : AuthenticatedLayout;
-    
+        searchFieldChange(name, e.target.value);
+    };
+
+    const Layout =
+        auth.role === "photographer" ? PhotographerLayout : AuthenticatedLayout;
 
     return (
         <Layout
@@ -63,12 +60,40 @@ export default function index({ auth }) {
                 </h2>
             }
         >
-            <Head title="Dashboard" />
+            <Head title="Events" />
+            <ToastContainer />
+
+            {/* <pre>{JSON.stringify(bookevents, null, 2)}</pre> */}
 
             <div className="min-h-screen bg-gray-100 py-8">
-                <EventSearch onSearch={handleSearch} />
+                <div className="flex items-center mb-6 justify-center">
+                    <TextInput
+                        className="bg-white text-gray-800 border border-gray-300 rounded-full py-2 px-4 w-1/4 focus:ring-2 focus:ring-blue-500"
+                        placeholder="Search by location"
+                        defaultValue={queryParams.title}
+                        onBlur={(e) =>
+                            searchFieldChange("address", e.target.value)
+                        }
+                        onKeyPress={(e) => onKeyPress("address", e)}
+                    />
+                    <button
+                        onClick={handleModalOpen}
+                        className="mx-4 py-2 px-6 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition duration-300"
+                    >
+                        ADD EVENT
+                    </button>
+                </div>
                 <EventGrid events={events} />
+
+                <Pagination links={bookevents.links} />
             </div>
+            {isModalOpen && (
+                <AddEventModal
+                    isModalOpen={isModalOpen}
+                    handleModalClose={handleModalClose}
+                    queryParams={queryParams}
+                />
+            )}
         </Layout>
     );
 }
