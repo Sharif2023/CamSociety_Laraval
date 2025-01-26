@@ -1,77 +1,61 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import EventGrid from "./Components/EventGrid";
 import EventSearch from "./Components/EventSearch";
 import PhotographerLayout from "../Photographer/Layout/PhotographerLayout";
 
 
 export default function index({ auth }) {
-    const [events] = useState([
-        {
-          id: 1,
-          image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-          title: "Charity Gala",
-          location: "Pan Pacific Sonargaon, Dhaka",
-          rate: "BDT 8500/hr",
-          date: "19 March, 2025",
-        },
-        {
-          id: 2,
-          image: "https://images.pexels.com/photos/461593/pexels-photo-461593.jpeg?cs=srgb&dl=pexels-pixabay-461593.jpg&fm=jpg",
-          title: "Cultural Evening",
-          location: "Shilpakala Academy, Dhaka",
-          rate: "BDT 4000/hr",
-          date: "12 February, 2025",
-        },
-        {
-          id: 3,
-          image: "https://images.pexels.com/photos/3184327/pexels-photo-3184327.jpeg?cs=srgb&dl=pexels-fauxels-3184327.jpg&fm=jpg",
-          title: "Startup Pitch Competition",
-          location: "Grameenphone HQ, Dhaka",
-          rate: "BDT 9500/hr",
-          date: "1 February, 2025",
-        },
-        {
-          id: 4,
-          image: "https://images.pexels.com/photos/1763075/pexels-photo-1763075.jpeg?cs=srgb&dl=pexels-wendy-wei-1763075.jpg&fm=jpg",
-          title: "Open Air Cinema",
-          location: "Ahsan Manzil, Dhaka",
-          rate: "BDT 3500/hr",
-          date: "8 February, 2025",
-        },
-       
-      ]);
-      
-      
-      
 
-    const handleSearch = (query) => {
-        console.log("Search Query:", query);
-        // Add search functionality here
-    };
+  //for event fetch from db
+  const [events, setEvents] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Fetch events from the API
+    fetch("/events")
+      .then((response) => response.json())
+      .then((data) => {
+        setEvents(data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching events:", error);
+        setIsLoading(false);
+      });
+  }, []);
+
+  const handleSearch = (query) => {
+    console.log("Search Query:", query);
+    // Add search functionality here
+  };
 
 
-    const Layout = auth.role === "photographer" ? PhotographerLayout : AuthenticatedLayout;
-    
+  const Layout = auth.role === "photographer" ? PhotographerLayout : AuthenticatedLayout;
 
-    return (
-        <Layout
-            header={
-                <h2 className="text-xl font-semibold text-center leading-tight text-gray-800">
-                    Book Event
-                </h2>
-            }
-        >
-            <Head title="Dashboard" />
-            <section className="underline text-[#FF3300] text-end pr-5">
-                <a href="/event-upload">Create a Event</a>
-            </section>
 
-            <div className="min-h-screen bg-gray-100 py-8">
-                <EventSearch onSearch={handleSearch} />
-                <EventGrid events={events} />
-            </div>
-        </Layout>
-    );
+  return (
+    <Layout
+      header={
+        <h2 className="text-xl font-semibold text-center leading-tight text-gray-800">
+          Book Event
+        </h2>
+      }
+    >
+      <Head title="Dashboard" />
+      <section className="underline text-[#FF3300] text-end pr-5">
+        <a href="/event-upload">Create a Event</a>
+      </section>
+
+      <div className="min-h-screen bg-gray-100 py-8">
+        <EventSearch onSearch={handleSearch} />
+        {isLoading ? (
+          <p className="text-center">Loading events...</p>
+        ) : (
+          <EventGrid events={events} />
+        )}
+      </div>
+    </Layout>
+  );
 }
