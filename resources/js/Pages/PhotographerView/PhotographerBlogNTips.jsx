@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Head } from '@inertiajs/react';
 import axios from "axios";
+import { useEffect } from "react";//db to front
 
 const PhotographerBlogNTips = () => {
   const [activeModal, setActiveModal] = useState(null);
@@ -38,6 +39,24 @@ const PhotographerBlogNTips = () => {
       console.error("Error creating post:", error.response ? error.response.data : error.message);
       alert(error.response?.data?.message || "Failed to create post.");
     }
+  };
+
+
+  //database to frontend
+  const [blogNTips, setBlogNTips] = useState([]);
+  const [selectedTip, setSelectedTip] = useState(null);
+
+  useEffect(() => {
+    fetch('/blogntips')
+      .then((response) => response.json())
+      .then((data) => setBlogNTips(data))
+      .catch((error) => console.error("Error fetching blog tips:", error));
+  }, []);
+
+  const handleModalClose = () => setSelectedTip(null);
+  const truncateWords = (text, wordLimit) => {
+    const words = text.split(" ");
+    return words.length > wordLimit ? `${words.slice(0, wordLimit).join(" ")}...` : text;
   };
 
   const posts = [
@@ -234,29 +253,6 @@ const PhotographerBlogNTips = () => {
         {/* Render Blog Post Cards */}
         <br /><br />
         <h2 className="text-2xl font-bold mb-4 text-[#1F1F1F]">Recent Posts</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {posts.map((post) => (
-            <div
-              key={post.id}
-              className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105"
-            >
-              <img src={post.image} alt={post.title} className="w-full h-48 object-cover" />
-              <div className="p-4">
-                <h3 className="text-xl font-semibold text-[#1F1F1F]">{post.title}</h3>
-                <p className="text-[#1F1F1F] mt-2">{post.description}</p>
-                <div className="mt-4 flex justify-between items-center">
-                  <span className="text-gray-500 text-sm">By {post.author}</span>
-                  <button
-                    onClick={() => openModal(`modal-${post.id}`)}
-                    className="text-[#FF3300] font-semibold hover:underline"
-                  >
-                    Read More
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
 
         {/* Modals for Blog Posts */}
         {posts.map((post) => (
@@ -403,6 +399,67 @@ const PhotographerBlogNTips = () => {
             </div>
           </div>
         )}
+
+        {/**database to front */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {blogNTips.map((tip) => (
+            <div key={tip.id} className="bg-white shadow-lg rounded-lg p-4 transition-transform transform hover:scale-105">
+              <img
+                src={tip.image ? `/storage/${tip.image}` : "https://via.placeholder.com/150"}
+                alt={tip.title}
+                className="w-full h-48 object-cover"
+              />
+              <h3 className="p-4 text-xl font-semibold text-[#1F1F1F]">
+                {truncateWords(tip.title, 5)}
+              </h3>
+              <p className="text-[#1F1F1F] mt-2">
+                {tip.content.substring(0, 100)}...
+              </p>
+              <div className="text-right">
+                <button
+                  className="text-[#FF3300] font-semibold hover:underline"
+                  onClick={() => setSelectedTip(tip)}
+                >
+                  Read More
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/**Modal for DB to front */}
+        {selectedTip && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+    <div className="relative bg-white rounded-lg shadow-lg w-11/12 md:w-3/4 lg:w-1/2 max-h-[80vh] overflow-y-auto">
+      <button
+        className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+        onClick={handleModalClose}
+      >
+        &times;
+      </button>
+      <img
+        src={selectedTip.image ? `/storage/${selectedTip.image}` : "https://via.placeholder.com/150"}
+        alt={selectedTip.title}
+        className="w-full h-60 object-cover rounded-t-lg"
+      />
+      <h2 className="text-2xl font-bold mt-4">{selectedTip.title}</h2>
+      <div className="text-gray-700 mt-2 space-y-2">
+        {selectedTip.content.split('\n').map((line, index) => (
+          <p key={index}>{line}</p>
+        ))}
+      </div>
+      <div className="p-5 border-t flex justify-end">
+        <button
+          onClick={handleModalClose}
+          className="bg-[#FF3300] text-white px-6 py-2 rounded-lg hover:bg-[#1F1F1F] font-semibold"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
       </main>
       <footer className="bg-[#F8E9E7] py-6">
         <div className="container mx-auto text-center">

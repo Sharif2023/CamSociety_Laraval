@@ -87,6 +87,9 @@ Route::get('/photographer-blog-tips', function () {
 
 //send post blogNtips data to database
 Route::post('/blogntips', [BlogNTipController::class, 'store'])->name('blogntips.store');
+//fetch data and show to front end
+Route::get('/blogntips', [BlogNTipController::class, 'index'])->name('blogntips.index');
+
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin-auth.php';
