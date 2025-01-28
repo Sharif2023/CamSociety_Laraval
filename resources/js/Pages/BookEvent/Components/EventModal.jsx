@@ -1,5 +1,3 @@
-import React from "react";
-
 const EventModal = ({ event, onClose }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
@@ -13,11 +11,11 @@ const EventModal = ({ event, onClose }) => {
         <h2 className="text-2xl font-bold mb-4">{event.event_name}</h2>
         <p><strong>Location:</strong> {event.location}</p>
         <p><strong>Start Date:</strong> {event.start_date}</p>
-        <p><strong>End Date:</strong> {event.end_date}</p>
-        <p><strong>Start Time:</strong> {event.start_time}</p>
-        <p><strong>End Time:</strong> {event.end_time}</p>
+        <p><strong>End Date:</strong> {event.end_date || "N/A"}</p>
+        <p><strong>Start Time:</strong> {event.start_time || "N/A"}</p>
+        <p><strong>End Time:</strong> {event.end_time || "N/A"}</p>
         <p><strong>Rate:</strong> BDT {event.rate}</p>
-        <p><strong>Description:</strong> {event.description}</p>
+        <p><strong>Description:</strong> {event.description || "No description available."}</p>
         <img
           src={event.photo_url || "https://via.placeholder.com/150"}
           alt={event.event_name}
