@@ -23,7 +23,7 @@ const EventModal = ({ event, onClose }) => {
           className="w-full h-64 object-cover mt-4"
         />
         <button
-          className="mt-6 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+          className="mt-6 bg-[#1F1F1F] text-white px-4 py-2 rounded-lg hover:bg-[#FF3300]"
         >
           Book Event
         </button>

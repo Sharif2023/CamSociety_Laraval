@@ -54,7 +54,7 @@ class PhotoSellController extends Controller
             'description' => 'required|string|max:1000',
             'price' => 'required|numeric|min:1',
             'category' => 'required|string',
-            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:10000',
         ]);
 
         // Handle file upload

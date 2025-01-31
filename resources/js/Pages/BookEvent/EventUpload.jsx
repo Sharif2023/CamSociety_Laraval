@@ -34,7 +34,7 @@ const UploadEvent = () => {
         formData.append('rate', data.rate);
         formData.append('description', data.description);
         if (data.photo) {
-            formData.append('photo_url', data.photo);
+            formData.append('photo', data.photo); //
         }
 
         post('/event-upload', formData);
@@ -237,8 +237,8 @@ const UploadEvent = () => {
                             type="time"
                             id="start_time"
                             name="start_time"
-                            min="09:00"
-                            max="18:00"
+                            min="00:00"
+                            max="23:99"
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600"
                             value={data.start_time}
                             onChange={(e) => setData("start_time", e.target.value)}
@@ -253,8 +253,8 @@ const UploadEvent = () => {
                             type="time"
                             id="end_time"
                             name="end_time"
-                            min="09:00"
-                            max="18:00"
+                            min="00:00"
+                            max="23:99"
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600"
                             value={data.end_time}
                             onChange={(e) => setData("end_time", e.target.value)}
