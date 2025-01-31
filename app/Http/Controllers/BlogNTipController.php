@@ -13,7 +13,7 @@ class BlogNTipController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'image' => 'nullable|image|max:10240',
+            'image' => 'nullable|image|max:40000',
         ]);
 
         $imagePath = $request->file('image')
