@@ -55,7 +55,10 @@ class EventController extends Controller
 
         $event->save();
 
-        return response()->json(['message' => 'Event uploaded successfully!', 'event' => $event], 200);
+        return Inertia::render('EventPage', [
+            'message' => 'Event uploaded successfully!',
+            'event' => $event
+        ]);
     }
 
     //fetch event from db
