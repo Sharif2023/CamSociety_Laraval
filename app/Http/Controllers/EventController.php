@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use App\Models\Event; // Import the Event model
 
 use Illuminate\Support\Facades\Log;
@@ -55,10 +56,8 @@ class EventController extends Controller
 
         $event->save();
 
-        return Inertia::render('EventPage', [
-            'message' => 'Event uploaded successfully!',
-            'event' => $event
-        ]);
+        // Use Inertia redirect with success message
+        return Redirect::route('eventupload')->with('success', 'Event created successfully!');
     }
 
     //fetch event from db
