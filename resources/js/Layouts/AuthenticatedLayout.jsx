@@ -15,17 +15,18 @@ export default function AuthenticatedLayout({ header, children }) {
     return (
         <>
             <div className="min-h-screen bg-gray-100">
-                <header class="bg-[#F8E9E7]">
+                <header class="bg-[#1F1F1F]">
                     <div class="container mx-auto flex justify-between items-center py-4">
+                        
                         <div class="flex items-center gap-3">
                             <img
-                                src="https://placehold.co/40x40"
+                                src="icons/camsociety_logo.ico"
                                 alt="CamSocity Logo"
                                 class="h-10 w-10"
                             />
-                            <span class="text-lg">
-                                <p class="font-semibold">CamSocity</p>Your
-                                Photography Hub
+                            <span class="text-lg text-white">
+                                <p class="font-serif font-bold text-lg animate-pulse text-yellow-400">CamSocity</p><p class="text-sm animate-typing overflow-hidden whitespace-nowrap border-r-4 border-r-white pr-5 text-white font-bold">Your
+                                Photography Hub</p>
                             </span>
                         </div>
                         <nav class="hidden md:flex items-center gap-8">
@@ -39,28 +40,28 @@ export default function AuthenticatedLayout({ header, children }) {
                             <NavLink
                                 href={route("photomarket")}
                                 active={route().current("photomarket")}
-                                class="text-gray-700 hover:text-gray-900"
+                                class="text-white hover:text-[#FF3300]"
                             >
                                 Photo Market
                             </NavLink>
                             <NavLink
                                 href={route("hirephotographer")}
                                 active={route().current("hirephotographer")}
-                                class="text-gray-700 hover:text-gray-900"
+                                class="text-white hover:text-[#FF3300]"
                             >
                                 Hire Photographer
                             </NavLink>
                             <NavLink
                                 href={route("eventbook")}
                                 active={route().current("eventbook")}
-                                class="text-gray-700 hover:text-gray-900"
+                                class="text-white hover:text-[#FF3300]"
                             >
                                 Book Event
                             </NavLink>
                             <NavLink
                                 href={route("blogsntips")}
                                 active={route().current("blogsntips")}
-                                class="text-gray-700 hover:text-gray-900"
+                                class="text-white hover:text-[#FF3300]"
                             >
                                 Blog & Tips
                             </NavLink>
@@ -72,7 +73,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                     <NavLink
                                         href={route("cart.index")}
                                         active={route().current("blogsntips")}
-                                        class="text-gray-700 hover:text-gray-900"
+                                        class="text-white hover:text-[#FF3300]"
                                     >
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
