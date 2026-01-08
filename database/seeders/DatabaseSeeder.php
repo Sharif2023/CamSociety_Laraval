@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\PhotoSell;
 use App\Models\User;
 use App\Models\Admin;
+use App\Models\BookEvent;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -22,6 +23,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'adnan@admin.com',
             'password' => bcrypt('12345678'),
+            'is_active' => 1,
             ]
     );
 
@@ -46,6 +48,10 @@ class DatabaseSeeder extends Seeder
 
         PhotoSell::factory()
             ->count(30)
+            ->create();
+
+        BookEvent::factory()
+            ->count(50)
             ->create();
     }
 }

@@ -43,13 +43,13 @@ export default function AuthenticatedLayout({ header, children }) {
                             >
                                 Photo Market
                             </NavLink>
-                            <NavLink
+                            {/* <NavLink
                                 href={route("hirephotographer")}
                                 active={route().current("hirephotographer")}
                                 class="text-white hover:text-primary"
                             >
                                 Hire Photographer
-                            </NavLink>
+                            </NavLink> */}
                             <NavLink
                                 href={route("eventbook")}
                                 active={route().current("eventbook")}

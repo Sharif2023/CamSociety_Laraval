@@ -1,4 +1,4 @@
-import { useForm } from "@inertiajs/react";
+import { router, useForm } from "@inertiajs/react";
 
 export default function ProductCard({ product }) {
     // Initialize useForm once outside the function
@@ -10,13 +10,11 @@ export default function ProductCard({ product }) {
     });
 
     // const photoPath = `/PhotoSells/${product.photo}`; // Path to the photo
-    
+
     // if image link starts with http, use it as is, otherwise use the asset function
     const photoPath = product.photo.startsWith("http")
         ? product.photo // Use the image link as is
         : `/PhotoSells/${product.photo}`; // Use the asset function to generate the correct path
-
-    
 
     // Function to handle adding to cart
     const handleAddToCart = () => {
@@ -25,6 +23,18 @@ export default function ProductCard({ product }) {
             onSuccess: () => {
                 console.log("Item added to cart");
                 reset(); // Optional: Reset form data after success
+            },
+            onError: (errors) => {
+                console.error("Failed to add item to cart:", errors);
+            },
+        });
+    };
+
+    const handleBuyNow = () => {
+        post(route("cart.store"), {
+            onSuccess: () => {
+                console.log("Item successfully added to cart");
+                router.visit(route("cart.index")); // Redirect to cart page
             },
             onError: (errors) => {
                 console.error("Failed to add item to cart:", errors);
@@ -63,7 +73,10 @@ export default function ProductCard({ product }) {
                     </svg>
                     Cart
                 </button>
-                <button className="text-white bg-[#FF3300] p-3 rounded-full hover:bg-[#1F1F1F] transition duration-300 flex items-center">
+                <button
+                    className="text-white bg-[#FF3300] p-3 rounded-full hover:bg-[#1F1F1F] transition duration-300 flex items-center"
+                    onClick={handleBuyNow}
+                >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"

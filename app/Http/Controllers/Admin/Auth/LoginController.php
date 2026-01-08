@@ -33,6 +33,7 @@ class LoginController extends Controller
 
         $request->session()->regenerate();
 
+
         return redirect()->intended(route('admin.dashboard', absolute: false));
     }
 

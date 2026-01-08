@@ -52,6 +52,13 @@ return [
             'visibility' => 'public',
         ],
 
+        'events_photos' => [
+            'driver' => 'local',
+            'root' => public_path('events_photos'),
+            'url' => env('APP_URL') . '/events_photos',
+            'visibility' => 'public',
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

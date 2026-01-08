@@ -4,6 +4,8 @@ import FeaturesSection from "../Components/FeaturesSection";
 import CallToAction from "../Components/CallToAction";
 import TestimonialCarousel from "@/Components/TestimonialCarousel";
 import Footer from "@/Components/Footer";
+import FAQ from "@/Components/FAQ";
+import ApplicationLogo from "@/Components/ApplicationLogo";
 
 export default function Welcome({ auth, laravelVersion, phpVersion }) {
     const handleImageError = () => {
@@ -95,6 +97,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                         <CallToAction />
                         <FeaturesSection />
                         <TestimonialCarousel />
+                        <FAQ />
                     </main>
 
                     {/* <footer className="py-16 text-center text-sm text-black dark:text-white/70">

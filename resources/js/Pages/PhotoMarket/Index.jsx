@@ -7,8 +7,23 @@ import SelectInput from "@/Components/SelectInput";
 import TextInput from "@/Components/TextInput";
 import PhotographerLayout from "../Photographer/Layout/PhotographerLayout";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { ToastContainer, toast } from 'react-toastify';
 
-export default function Index({ auth, photoSells, queryParams = null }) {
+export default function Index({ auth, photoSells, queryParams = null , flash}) {
+
+    let user = auth.user;
+
+    useEffect(() => {
+        if (flash.message.success) {
+            toast.success(flash.message.success);
+        }
+        if (flash.message.error) {
+            toast.error(flash.message.error);
+        }
+    }, [flash]);
+    
+
+
     // Initialize state with the dynamic photoSells data
     const [photos, setPhotoSells] = useState(photoSells.data);
     
@@ -49,12 +64,13 @@ export default function Index({ auth, photoSells, queryParams = null }) {
     return (
         <Layout
             header={
-                <h2 className="text-3xl font-bold text-center text-gray-900 mt-4 mb-6">
+                <h2 className="text-xl font-semibold text-center leading-tight text-gray-800">
                     Photo Market
                 </h2>
             }
         >
             <Head title="Photo Market" />
+            <ToastContainer />
 
             {/* Debug JSON output */}
             {/* <pre>{JSON.stringify(photoSells, undefined, 2)}</pre> */}
@@ -89,14 +105,29 @@ export default function Index({ auth, photoSells, queryParams = null }) {
                 </div>
 
                 {/* List Photos Button */}
-                <div className="flex justify-center mb-6">
+                {/* If role == photographer then it will show */}
+                    {user.role? (
+                        <div className="flex justify-center mb-6">
+                            <button
+                                onClick={handleModalOpen}
+                                className="py-2 px-6 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition duration-300"
+                            >
+                                List a Photo for Sale
+                            </button>
+                        </div>
+                    ) : null}
+
+
+
+                {/* Product Grid */}
+                {/* <div className="flex justify-center mb-6">
                     <button
                         onClick={handleModalOpen}
                         className="py-2 px-6 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition duration-300"
                     >
                         List a Photo for Sale
                     </button>
-                </div>
+                </div> */}
 
                 {/* Product Grid */}
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">

@@ -58,6 +58,10 @@ export default function PhotoSellModal({ isOpen, onClose, onSubmit }) {
         } catch (error) {
             alert("There was an error submitting the photo.");
         }
+
+        if(isOpen) {
+            onClose();
+        }
     };
 
     if (!isOpen) return null;
