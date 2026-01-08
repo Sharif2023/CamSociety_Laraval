@@ -2,75 +2,100 @@
 
 namespace App\Http\Controllers;
 
-use Inertia\Inertia;
+use App\Mail\PhotographerApplicationMail;
+use App\Models\BookEvent;
+use App\Models\Event;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
-use App\Models\Event; // Import the Event model
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-
+use Illuminate\Support\Facades\Mail;
+use Inertia\Inertia;
 
 class EventController extends Controller
 {
-    public function store(Request $request)
-    {
-        $request->validate([
-            'event_name' => 'required|string|max:255',
-            'location' => 'required|string|max:255',
-            'start_date' => 'required|date_format:Y-m-d',
-            'end_date' => 'required|date_format:Y-m-d',
-            'start_time' => 'required|date_format:H:i',
-            'end_time' => 'required|date_format:H:i',
-            'rate' => 'required|numeric',
-            'description' => 'required|string',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:40000',
-        ]);
-
-        $event = new Event();
-        $event->event_name = $request->event_name;
-        $event->location = $request->location;
-        $event->start_date = $request->start_date;
-        $event->end_date = $request->end_date;
-        $event->start_time = $request->start_time;
-        $event->end_time = $request->end_time;
-        $event->rate = $request->rate;
-        $event->description = $request->description;
-
-        if ($request->hasFile('photo')) {
-            $photo = $request->file('photo');
-            $originalFilename = $photo->getClientOriginalName(); // Get original filename
-
-            $storagePath = storage_path('app/public/images/' . $originalFilename); // Destination Path
-
-            // Check if file already exists in 'storage/images/'
-            if (!file_exists($storagePath)) {
-                // If the image is from another folder, move/copy it to 'storage/images/'
-                if ($photo->isValid()) {
-                    $photo->storeAs('images', $originalFilename, 'public'); // Copy to 'storage/images/'
-                }
-            }
-
-            // Save correct path in DB
-            $event->photo_url = 'storage/images/' . $originalFilename;
-        }
-
-        $event->save();
-
-        // Use Inertia redirect with success message
-        return Redirect::route('eventupload')->with('success', 'Event created successfully!');
-    }
-
-    //fetch event from db
     public function index()
     {
-        $events = Event::all(['id', 'event_name', 'location', 'rate', 'start_date', 'end_date', 'start_time', 'end_time', 'description', 'photo_url']);
+        $query = BookEvent::query();
 
-        foreach ($events as $event) {
-            if ($event->photo_url) {
-                $event->photo_url = asset($event->photo_url); // Convert to full URL
-            }
+        if (request('title')) {
+            $query->where('title', 'like', '%' . request('title') . '%');
+        }
+        if (request('address')) {
+            $query->where('address', 'like', '%' . request('address') . '%');
         }
 
-        return response()->json($events);
+        // hiring_status active will be shown
+        $bookevents = $query->where('hiring_status', 'open')->paginate(12)->onEachSide(1);
+
+        return Inertia::render('BookEvent/Index', [
+            'bookevents' => $bookevents,
+        ]);
+    }
+
+    public function store(Request $request)
+    {
+        // Validate the form data
+        $validatedData = $request->validate([
+            'event_name' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i|after:start_time',
+            'rate' => 'required|numeric|min:0',
+            'description' => 'nullable|string',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Optional file validation
+        ]);
+
+        // Handle file upload if photo is provided
+        $photoPath = null;
+        if ($request->hasFile('photo')) {
+            $photoPath = $request->file('photo')->store('eventsPhotos', 'events_photos');
+        }
+
+        // Create the event in the database
+        try {
+            $bookevent = BookEvent::create([
+                'event_name' => $validatedData['event_name'],
+                'address' => $validatedData['address'],
+                'start_date' => $validatedData['start_date'],
+                'end_date' => $validatedData['end_date'],
+                'start_time' => $validatedData['start_time'],
+                'end_time' => $validatedData['end_time'],
+                'rate' => $validatedData['rate'],
+                'description' => $validatedData['description'] ?? null,
+                'photo_url' => $photoPath, // Store the file path or null
+                'created_by' => Auth::id() // Ensure the user is authenticated
+            ]);
+
+            return redirect()->route('eventbook')->with(['success'=> 'Event created successfully']);
+        } catch (\Exception $e) {
+            // Handle any errors (e.g., database issues)
+            return redirect()->route('eventbook')->with(['error'=> 'An error occurred while creating the event']);
+        }
+    }
+
+
+    public function show($id)
+    {
+        $bookevent = BookEvent::findOrFail($id);
+
+        return Inertia::render('BookEvent/Show', [
+            'event' => $bookevent,
+        ]);
+    }
+
+    public function apply($eventId)
+    {
+        $event = BookEvent::findOrFail($eventId); // Find the event or fail if not found
+        $photographer = Auth::user(); // Get the authenticated user
+
+        // Increment the application count in the event
+        $event->increment('application_count');
+
+        // Send email to the event creator
+        Mail::to($event->creator->email)->send(new PhotographerApplicationMail($event, $photographer));
+
+        return redirect()->route('eventbook')->with('success', 'Application submitted successfully!');
     }
 }

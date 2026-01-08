@@ -20,9 +20,9 @@ export default function AuthenticatedLayout({ header, children }) {
                         
                         <div class="flex items-center gap-3">
                             <img
-                                src="https://placehold.co/40x40"
+                                src="/images/camSociety_logo.jpg"
                                 alt="Camsociety Logo"
-                                class="h-10 w-10"
+                                class="h-10 w-10 rounded-full object-cover"
                             />
                             <span class="text-lg text-white">
                                 <p class="font-semibold">Camsociety</p>Your
@@ -44,13 +44,13 @@ export default function AuthenticatedLayout({ header, children }) {
                             >
                                 Photo Market
                             </NavLink>
-                            <NavLink
+                            {/* <NavLink
                                 href={route("hirephotographer")}
                                 active={route().current("hirephotographer")}
                                 class="text-white hover:text-primary"
                             >
                                 Hire Photographer
-                            </NavLink>
+                            </NavLink> */}
                             <NavLink
                                 href={route("eventbook")}
                                 active={route().current("eventbook")}

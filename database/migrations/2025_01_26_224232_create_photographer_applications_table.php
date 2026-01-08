@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('admins', function (Blueprint $table) {
+        Schema::create('photographer_applications', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->tinyInteger('is_active')->default(0);
-            $table->rememberToken();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Photographer
+            $table->foreignId('event_id')->constrained('book_events')->onDelete('cascade'); // Event
             $table->timestamps();
         });
     }
@@ -28,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('admins');
+        Schema::dropIfExists('photographer_applications');
     }
 };

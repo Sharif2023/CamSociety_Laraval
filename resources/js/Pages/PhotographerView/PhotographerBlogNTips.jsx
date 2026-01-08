@@ -62,42 +62,42 @@ const PhotographerBlogNTips = () => {
   return (
     <div>
       <Head title="Photographer Blog & Tips" />
-      <header className="bg-[#F8E9E7]">
+      <header className="bg-matte-black">
         <div className="container mx-auto flex justify-between items-center py-4">
           <div className="flex items-center gap-3">
-            <img src="https://placehold.co/40x40" alt="Camsociety Logo" className="h-10 w-10" />
-            <span className="text-lg">
-              <p className="font-semibold">CamSociety</p>Your Photography Hub
+            <img src="/images/camSociety_logo.jpg" alt="Camsociety Logo" className="h-10 w-10 rounded-full object-cover" />
+            <span className="text-lg text-white">
+              <p className="font-semibold">Camsociety</p>Your Photography Hub
             </span>
           </div>
           <nav className="hidden md:flex items-center gap-8">
             <a
               href="/dashboard"
-              className="inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium leading-5 transition duration-150 ease-in-out focus:outline-none border-indigo-400 text-gray-900 focus:border-indigo-700"
+              className="text-white text-base font-medium hover:text-primary"
             >
               Home
             </a>
             <a
               href="/photomarket"
-              className="inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium leading-5 transition duration-150 ease-in-out focus:outline-none border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 focus:border-gray-300 focus:text-gray-700"
+              className="text-white text-base font-medium hover:text-primary"
             >
               Photo Market
             </a>
             <a
               href="/hirephotographer"
-              className="inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium leading-5 transition duration-150 ease-in-out focus:outline-none border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 focus:border-gray-300 focus:text-gray-700"
+              className="text-white text-base font-medium hover:text-primary"
             >
               Hire Photographer
             </a>
             <a
               href="/eventbook"
-              className="inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium leading-5 transition duration-150 ease-in-out focus:outline-none border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 focus:border-gray-300 focus:text-gray-700"
+              className="text-white text-base font-medium hover:text-primary"
             >
               Book Event
             </a>
             <a
               href="/blogsntips"
-              className="inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium leading-5 transition duration-150 ease-in-out focus:outline-none border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 focus:border-gray-300 focus:text-gray-700"
+              className="text-white text-base font-medium hover:text-primary"
             >
               Blog & Tips
             </a>
@@ -112,7 +112,7 @@ const PhotographerBlogNTips = () => {
                         <span className="inline-flex rounded-md">
                           <button
                             type="button"
-                            className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
+                            className="inline-flex items-center rounded-md border border-transparent bg-matte-black px-3 py-2 text-sm font-medium leading-4 text-white transition duration-150 ease-in-out hover:text-primary focus:outline-none"
                           >
                             Shariful Islam
                             <svg className="-me-0.5 ms-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -125,7 +125,7 @@ const PhotographerBlogNTips = () => {
                   </div>
                 </div>
                 <div className="-me-2 flex items-center sm:hidden">
-                  <button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-gray-500 focus:bg-gray-100 focus:text-gray-500 focus:outline-none">
+                  <button className="inline-flex items-center justify-center rounded-md p-2 text-white transition duration-150 ease-in-out hover:bg-primary hover:text-white focus:bg-primary focus:text-white focus:outline-none">
                     <svg className="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                       <path className="inline-flex" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
                     </svg>
@@ -367,13 +367,13 @@ const PhotographerBlogNTips = () => {
         )}
 
       </main>
-      <footer className="bg-[#F8E9E7] py-6">
+      <footer className="bg-matte-black py-6">
         <div className="container mx-auto text-center">
-          <p className="text-gray-600">© 2025 CamSociety. All rights reserved.</p>
+          <p className="text-gray-400">© 2025 Camsociety. All rights reserved.</p>
           <div className="flex justify-center gap-6 mt-4">
-            <a href="#" className="text-gray-600 hover:text-gray-900">Privacy Policy</a>
-            <a href="#" className="text-gray-600 hover:text-gray-900">Terms of Service</a>
-            <a href="#" className="text-gray-600 hover:text-gray-900">Contact Us</a>
+            <a href="#" className="text-white hover:text-primary">Privacy Policy</a>
+            <a href="#" className="text-white hover:text-primary">Terms of Service</a>
+            <a href="#" className="text-white hover:text-primary">Contact Us</a>
           </div>
         </div>
       </footer>

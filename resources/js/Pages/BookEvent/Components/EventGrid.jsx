@@ -8,12 +8,20 @@ const EventGrid = ({ events, onEventClick }) => {
         <EventCard
           key={event.id}
           id={event.id}
-          photo_url={event.photo_url}
-          event_name={event.event_name}
-          location={event.location}
+          image={event.photo_url}
+          title={event.event_name || event.title}
+          address={event.address || event.location}
           rate={event.rate}
-          start_date={event.start_date}
-          onEventClick={onEventClick} // Pass down the handler
+          startDate={event.start_date ? new Date(event.start_date).toLocaleDateString("en-GB", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+          }) : ""}
+          endDate={event.end_date ? new Date(event.end_date).toLocaleDateString("en-GB", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+          }) : ""}
         />
       ))}
     </div>

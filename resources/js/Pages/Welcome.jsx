@@ -4,6 +4,8 @@ import FeaturesSection from "../Components/FeaturesSection";
 import CallToAction from "../Components/CallToAction";
 import TestimonialCarousel from "@/Components/TestimonialCarousel";
 import Footer from "@/Components/Footer";
+import FAQ from "@/Components/FAQ";
+import ApplicationLogo from "@/Components/ApplicationLogo";
 
 export default function Welcome({ auth, laravelVersion, phpVersion }) {
     const handleImageError = () => {
@@ -22,15 +24,15 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
             <Head title="Welcome" />
             <div class="bg-white text-gray-900">
                 <div class="w-full">
-                    <header class="bg-[#1F1F1F]">
+                    <header class="bg-matte-black">
                         <div class="container mx-auto flex justify-between items-center py-4">
                             <div class="flex items-center gap-3">
                                 <img
-                                    src="https://placehold.co/40x40"
+                                    src="/images/camSociety_logo.jpg"
                                     alt="Camsociety Logo"
-                                    class="h-10 w-10"
+                                    class="h-10 w-10 rounded-full object-cover"
                                 />
-                                <span class="text-lg">
+                                <span class="text-lg text-white">
                                     <p class="font-semibold">Camsociety</p>Your
                                     Photography Hub
                                 </span>
@@ -38,25 +40,25 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                             <nav class="hidden md:flex items-center gap-8">
                                 <a
                                     href="#"
-                                    class="text-white hover:text-[#FF3300]"
+                                    class="text-white text-base font-medium hover:text-primary"
                                 >
                                     Home
                                 </a>
                                 <a
                                     href="#"
-                                    class="text-white hover:text-[#FF3300]"
+                                    class="text-white text-base font-medium hover:text-primary"
                                 >
                                     About
                                 </a>
                                 <a
                                     href="#"
-                                    class="text-white hover:text-[#FF3300]"
+                                    class="text-white text-base font-medium hover:text-primary"
                                 >
                                     Services
                                 </a>
                                 <a
                                     href="#"
-                                    class="text-white hover:text-[#FF3300]"
+                                    class="text-white text-base font-medium hover:text-primary"
                                 >
                                     Contact
                                 </a>
@@ -66,7 +68,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                 {auth.user ? (
                                     <Link
                                         href={route("dashboard")}
-                                        className="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:text-[#FF3300] focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                                        className="rounded-md px-3 py-2 text-white text-base font-medium ring-1 ring-transparent transition hover:text-primary focus:outline-none"
                                     >
                                         Dashboard
                                     </Link>
@@ -74,13 +76,13 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                     <>
                                         <Link
                                             href={route("login")}
-                                            className="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:text-[#FF3300] focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                                            className="rounded-md px-3 py-2 text-white text-base font-medium ring-1 ring-transparent transition hover:text-primary focus:outline-none"
                                         >
                                             Log in
                                         </Link>
                                         <Link
                                             href={route("register")}
-                                            className="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:text-[#FF3300] focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                                            className="rounded-md px-4 py-2 bg-primary text-white text-base font-medium transition hover:bg-dark focus:outline-none"
                                         >
                                             Register
                                         </Link>
@@ -95,6 +97,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                         <CallToAction />
                         <FeaturesSection />
                         <TestimonialCarousel />
+                        <FAQ />
                     </main>
 
                     {/* <footer className="py-16 text-center text-sm text-black dark:text-white/70">

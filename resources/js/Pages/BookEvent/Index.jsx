@@ -1,48 +1,53 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
-import { useState, useEffect } from "react";
+import { Head, router } from "@inertiajs/react";
+import { useEffect, useState } from "react";
 import EventGrid from "./Components/EventGrid";
-import EventSearch from "./Components/EventSearch";
-import EventModal from "./Components/EventModal";
 import PhotographerLayout from "../Photographer/Layout/PhotographerLayout";
+import Pagination from "@/Components/Pagination";
+import TextInput from "@/Components/TextInput";
+import AddEventModal from "./Components/AddEventModal";
+import { ToastContainer, toast } from 'react-toastify';
 
-
-export default function index({ auth }) {
-
-  //for event fetch from db
-  const [events, setEvents] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  const [selectedEvent, setSelectedEvent] = useState(null); // State for selected event modal
+export default function index({ auth, bookevents, queryParams = null, flash }) {
+  const [events, setEvents] = useState(bookevents?.data || []);
 
   useEffect(() => {
-    // Fetch events from the API
-    fetch("/events")
-      .then((response) => response.json())
-      .then((data) => {
-        setEvents(data);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching events:", error);
-        setIsLoading(false);
-      });
-  }, []);
+    if (flash?.message?.success) {
+      toast.success(flash.message.success);
+    }
+    if (flash?.message?.error) {
+      toast.error(flash.message.error);
+    }
+  }, [flash]);
 
-  const handleSearch = (query) => {
-    console.log("Search Query:", query);
-    // Add search functionality here
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleModalOpen = () => setIsModalOpen(true);
+  const handleModalClose = () => setIsModalOpen(false);
+
+  queryParams = queryParams || {};
+
+  // Search Field Change
+  const searchFieldChange = (name, value) => {
+    if (value) {
+      queryParams[name] = value;
+    } else {
+      delete queryParams[name];
+    }
+
+    router.get(route("eventbook", queryParams));
   };
 
-  const handleEventClick = (id) => {
-    const event = events.find((event) => event.id === id);
-    setSelectedEvent(event); // Set the selected event
+  // On Key Press
+  const onKeyPress = (name, e) => {
+    if (e.key !== "Enter") {
+      return;
+    }
+
+    searchFieldChange(name, e.target.value);
   };
 
-  const handleCloseModal = () => {
-    setSelectedEvent(null); // Close the modal
-  };
-  const Layout = auth.role === "photographer" ? PhotographerLayout : AuthenticatedLayout;
+  const Layout =
+    auth.role === "photographer" ? PhotographerLayout : AuthenticatedLayout;
 
   return (
     <Layout
@@ -52,22 +57,37 @@ export default function index({ auth }) {
         </h2>
       }
     >
-      <Head title="Dashboard" />
-      <section className="underline text-[#FF3300] text-end pr-5">
-        <a href="/event-upload">Create a Event</a>
-      </section>
+      <Head title="Events" />
+      <ToastContainer />
 
       <div className="min-h-screen bg-gray-100 py-8">
-        <EventSearch onSearch={handleSearch} />
-        {isLoading ? (
-          <p className="text-center">Loading events...</p>
-        ) : (
-          <EventGrid events={events} onEventClick={handleEventClick} />
-        )}
-      </div>
+        <div className="flex items-center mb-6 justify-center flex-wrap gap-4 px-4">
+          <TextInput
+            className="bg-white text-gray-800 border border-gray-300 rounded-full py-2 px-4 w-full sm:w-1/3 lg:w-1/4 focus:ring-2 focus:ring-primary"
+            placeholder="Search by location"
+            defaultValue={queryParams.address}
+            onBlur={(e) =>
+              searchFieldChange("address", e.target.value)
+            }
+            onKeyPress={(e) => onKeyPress("address", e)}
+          />
+          <button
+            onClick={handleModalOpen}
+            className="py-2 px-6 bg-primary text-white rounded-full hover:bg-dark transition duration-300"
+          >
+            ADD EVENT
+          </button>
+        </div>
+        <EventGrid events={events} />
 
-      {selectedEvent && (
-        <EventModal event={selectedEvent} onClose={handleCloseModal} />
+        {bookevents?.links && <Pagination links={bookevents.links} />}
+      </div>
+      {isModalOpen && (
+        <AddEventModal
+          isModalOpen={isModalOpen}
+          handleModalClose={handleModalClose}
+          queryParams={queryParams}
+        />
       )}
     </Layout>
   );
