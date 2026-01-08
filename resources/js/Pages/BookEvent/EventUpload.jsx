@@ -48,7 +48,7 @@ const UploadEvent = () => {
             <header className="bg-[#F8E9E7]">
                 <div className="container mx-auto flex justify-between items-center py-4">
                     <div className="flex items-center gap-3">
-                        <img src="https://placehold.co/40x40" alt="Camsociety Logo" className="h-10 w-10" />
+                        <img src="/images/camSociety_logo.jpg" alt="Camsociety Logo" className="h-10 w-10 rounded-full object-cover" />
                         <span className="text-lg">
                             <p className="font-semibold">CamSociety</p>Your Photography Hub
                         </span>

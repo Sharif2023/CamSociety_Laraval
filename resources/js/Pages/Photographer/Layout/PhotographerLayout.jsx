@@ -19,9 +19,9 @@ export default function PhotographerLayout({ header, children }) {
                     <div class="container mx-auto flex justify-between items-center py-4">
                         <div class="flex items-center gap-3">
                             <img
-                                src="https://placehold.co/40x40"
+                                src="/images/camSociety_logo.jpg"
                                 alt="Camsociety Logo"
-                                class="h-10 w-10"
+                                class="h-10 w-10 rounded-full object-cover"
                             />
                             <span class="text-lg text-white">
                                 <p class="font-semibold">Camsociety</p>Your
