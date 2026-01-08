@@ -27,11 +27,11 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                             <div class="flex items-center gap-3">
                                 <img
                                     src="https://placehold.co/40x40"
-                                    alt="CamSocity Logo"
+                                    alt="Camsociety Logo"
                                     class="h-10 w-10"
                                 />
                                 <span class="text-lg">
-                                    <p class="font-semibold">CamSocity</p>Your
+                                    <p class="font-semibold">Camsociety</p>Your
                                     Photography Hub
                                 </span>
                             </div>
