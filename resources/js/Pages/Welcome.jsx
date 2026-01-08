@@ -26,13 +26,13 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                         <div class="container mx-auto flex justify-between items-center py-4">
                             <div class="flex items-center gap-3">
                                 <img
-                                    src="icons/camsociety_logo.ico"
-                                    alt="CamSocity Logo"
+                                    src="https://placehold.co/40x40"
+                                    alt="Camsociety Logo"
                                     class="h-10 w-10"
                                 />
                                 <span class="text-lg">
-                                    <p class="font-semibold text-white">CamSocity</p><span class="text-white animate-typing overflow-auto whitespace-nowrap">Your
-                                    Photography Hub</span>
+                                    <p class="font-semibold">Camsociety</p>Your
+                                    Photography Hub
                                 </span>
                             </div>
                             <nav class="hidden md:flex items-center gap-8">

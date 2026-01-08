@@ -15,16 +15,16 @@ export default function PhotographerLayout({ header, children }) {
     return (
         <>
             <div className="min-h-screen bg-gray-100">
-                <header class="bg-[#F8E9E7]">
+                <header class="bg-matte-black">
                     <div class="container mx-auto flex justify-between items-center py-4">
                         <div class="flex items-center gap-3">
                             <img
                                 src="https://placehold.co/40x40"
-                                alt="CamSocity Logo"
+                                alt="Camsociety Logo"
                                 class="h-10 w-10"
                             />
-                            <span class="text-lg">
-                                <p class="font-semibold">CamSocity</p>Your
+                            <span class="text-lg text-white">
+                                <p class="font-semibold">Camsociety</p>Your
                                 Photography Hub
                             </span>
                         </div>
@@ -39,28 +39,28 @@ export default function PhotographerLayout({ header, children }) {
                             <NavLink
                                 href={route("photomarket")}
                                 active={route().current("photomarket")}
-                                class="text-gray-700 hover:text-gray-900"
+                                class="text-white hover:text-primary"
                             >
                                 Photo Market
                             </NavLink>
                             <NavLink
                                 href={route("hirephotographer")}
                                 active={route().current("hirephotographer")}
-                                class="text-gray-700 hover:text-gray-900"
+                                class="text-white hover:text-primary"
                             >
                                 Hire Photographer
                             </NavLink>
                             <NavLink
                                 href={route("eventbook")}
                                 active={route().current("eventbook")}
-                                class="text-gray-700 hover:text-gray-900"
+                                class="text-white hover:text-primary"
                             >
                                 Book Event
                             </NavLink>
                             <NavLink
                                 href={route("blogsntips")}
                                 active={route().current("blogsntips")}
-                                class="text-gray-700 hover:text-gray-900"
+                                class="text-white hover:text-primary"
                             >
                                 Blog & Tips
                             </NavLink>
@@ -72,7 +72,7 @@ export default function PhotographerLayout({ header, children }) {
                                     <NavLink
                                         href={route("cart.index")}
                                         active={route().current("cart.index")}
-                                        class="text-gray-700 hover:text-gray-900"
+                                        class="text-white hover:text-primary"
                                     >
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
@@ -96,7 +96,7 @@ export default function PhotographerLayout({ header, children }) {
                                                     <span className="inline-flex rounded-md">
                                                         <button
                                                             type="button"
-                                                            className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
+                                                            className="inline-flex items-center rounded-md border border-transparent bg-matte-black px-3 py-2 text-sm font-medium leading-4 text-white transition duration-150 ease-in-out hover:text-primary focus:outline-none"
                                                         >
                                                             {user.name}
 
@@ -144,7 +144,7 @@ export default function PhotographerLayout({ header, children }) {
                                                         !previousState
                                                 )
                                             }
-                                            className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-gray-500 focus:bg-gray-100 focus:text-gray-500 focus:outline-none"
+                                            className="inline-flex items-center justify-center rounded-md p-2 text-white transition duration-150 ease-in-out hover:bg-primary hover:text-white focus:bg-primary focus:text-white focus:outline-none"
                                         >
                                             <svg
                                                 className="h-6 w-6"
