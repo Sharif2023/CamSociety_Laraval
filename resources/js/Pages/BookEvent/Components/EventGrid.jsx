@@ -1,7 +1,7 @@
 import React from "react";
 import EventCard from "./EventCard";
 
-const EventGrid = ({ events }) => {
+const EventGrid = ({ events, onEventClick }) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-10 mt-6">
       {events.map((event) => (

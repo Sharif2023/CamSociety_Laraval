@@ -77,7 +77,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 //event upload
 Route::post('/event-upload', [EventController::class, 'store']);
 Route::get('/event-upload', [HomeController::class, 'eventupload'])->name('eventupload');
-//fetch event from db
+//fetch event from db shown to events and evendetails
 Route::get('/events', [EventController::class, 'index']);
 
 
@@ -88,6 +88,9 @@ Route::get('/photographer-blog-tips', function () {
 
 //send post blogNtips data to database
 Route::post('/blogntips', [BlogNTipController::class, 'store'])->name('blogntips.store');
+//fetch data and show to front end
+Route::get('/blogntips', [BlogNTipController::class, 'index'])->name('blogntips.index');
+
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin-auth.php';
