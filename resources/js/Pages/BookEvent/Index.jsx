@@ -3,6 +3,7 @@ import { Head } from "@inertiajs/react";
 import { useState, useEffect } from "react";
 import EventGrid from "./Components/EventGrid";
 import EventSearch from "./Components/EventSearch";
+import EventModal from "./Components/EventModal";
 import PhotographerLayout from "../Photographer/Layout/PhotographerLayout";
 
 
@@ -11,6 +12,8 @@ export default function index({ auth }) {
   //for event fetch from db
   const [events, setEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const [selectedEvent, setSelectedEvent] = useState(null); // State for selected event modal
 
   useEffect(() => {
     // Fetch events from the API
@@ -31,9 +34,15 @@ export default function index({ auth }) {
     // Add search functionality here
   };
 
+  const handleEventClick = (id) => {
+    const event = events.find((event) => event.id === id);
+    setSelectedEvent(event); // Set the selected event
+  };
 
+  const handleCloseModal = () => {
+    setSelectedEvent(null); // Close the modal
+  };
   const Layout = auth.role === "photographer" ? PhotographerLayout : AuthenticatedLayout;
-
 
   return (
     <Layout
@@ -53,9 +62,13 @@ export default function index({ auth }) {
         {isLoading ? (
           <p className="text-center">Loading events...</p>
         ) : (
-          <EventGrid events={events} />
+          <EventGrid events={events} onEventClick={handleEventClick} />
         )}
       </div>
+
+      {selectedEvent && (
+        <EventModal event={selectedEvent} onClose={handleCloseModal} />
+      )}
     </Layout>
   );
 }

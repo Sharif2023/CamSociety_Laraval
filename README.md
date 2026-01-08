@@ -59,6 +59,13 @@ Open your browser and navigate to:
 http://localhost:8000
 ```
 
+#### **Step 10: react datepicker & toast install**
+Run the following command to install react datepicker & toastify:
+```bash
+npm install react-datepicker
+npm install react-toastify
+```
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">

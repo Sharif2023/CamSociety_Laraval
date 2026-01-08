@@ -13,11 +13,11 @@ class BlogNTipController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'image' => 'nullable|image|max:2048',
+            'image' => 'nullable|image|max:40000',
         ]);
 
-        $imagePath = $request->file('image') 
-            ? $request->file('image')->store('blog_images', 'public') 
+        $imagePath = $request->file('image')
+            ? $request->file('image')->store('blog_images', 'public')
             : null;
 
         BlogNTip::create([
@@ -28,5 +28,12 @@ class BlogNTipController extends Controller
         ]);
 
         return response()->json(['message' => 'Post created successfully'], 201);
+    }
+
+    //fetch all data from db
+    public function index()
+    {
+        $blogNTips = BlogNTip::with('user')->get();
+        return response()->json($blogNTips);
     }
 }

@@ -17,6 +17,7 @@ export default function AuthenticatedLayout({ header, children }) {
             <div className="min-h-screen bg-gray-100">
                 <header class="bg-matte-black">
                     <div class="container mx-auto flex justify-between items-center py-4">
+                        
                         <div class="flex items-center gap-3">
                             <img
                                 src="https://placehold.co/40x40"

@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
 
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+
 class ProfileController extends Controller
 {
     /**
@@ -31,6 +34,20 @@ class ProfileController extends Controller
     {
         $request->user()->fill($request->validated());
 
+        if ($request->hasFile('profile_picture')) {
+            $profilePic = $request->file('profile_picture');
+            $profilePicPath = $profilePic->store('profile_pictures', 'public');
+            
+            // Delete old profile picture if exists
+            if ($user->profile_picture) {
+                Storage::disk('public')->delete($user->profile_picture);
+            }
+    
+            $data['profile_picture'] = $profilePicPath;
+        }
+
+        $user->update($data);
+        
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }

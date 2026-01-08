@@ -22,7 +22,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
             <Head title="Welcome" />
             <div class="bg-white text-gray-900">
                 <div class="w-full">
-                    <header class="bg-[#F8E9E7]">
+                    <header class="bg-[#1F1F1F]">
                         <div class="container mx-auto flex justify-between items-center py-4">
                             <div class="flex items-center gap-3">
                                 <img
@@ -38,25 +38,25 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                             <nav class="hidden md:flex items-center gap-8">
                                 <a
                                     href="#"
-                                    class="text-gray-700 hover:text-gray-900"
+                                    class="text-white hover:text-[#FF3300]"
                                 >
                                     Home
                                 </a>
                                 <a
                                     href="#"
-                                    class="text-gray-700 hover:text-gray-900"
+                                    class="text-white hover:text-[#FF3300]"
                                 >
                                     About
                                 </a>
                                 <a
                                     href="#"
-                                    class="text-gray-700 hover:text-gray-900"
+                                    class="text-white hover:text-[#FF3300]"
                                 >
                                     Services
                                 </a>
                                 <a
                                     href="#"
-                                    class="text-gray-700 hover:text-gray-900"
+                                    class="text-white hover:text-[#FF3300]"
                                 >
                                     Contact
                                 </a>
@@ -66,7 +66,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                 {auth.user ? (
                                     <Link
                                         href={route("dashboard")}
-                                        className="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                                        className="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:text-[#FF3300] focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
                                     >
                                         Dashboard
                                     </Link>
@@ -74,13 +74,13 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                     <>
                                         <Link
                                             href={route("login")}
-                                            className="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                                            className="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:text-[#FF3300] focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
                                         >
                                             Log in
                                         </Link>
                                         <Link
                                             href={route("register")}
-                                            className="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                                            className="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:text-[#FF3300] focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
                                         >
                                             Register
                                         </Link>

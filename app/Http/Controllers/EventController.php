@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use App\Models\Event; // Import the Event model
 
 use Illuminate\Support\Facades\Log;
@@ -22,7 +23,7 @@ class EventController extends Controller
             'end_time' => 'required|date_format:H:i',
             'rate' => 'required|numeric',
             'description' => 'required|string',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:40000',
         ]);
 
         $event = new Event();
@@ -36,25 +37,40 @@ class EventController extends Controller
         $event->description = $request->description;
 
         if ($request->hasFile('photo')) {
-            $photoPath = $request->file('photo')->store('photos', 'public');
-            $event->photo_url = $photoPath;
+            $photo = $request->file('photo');
+            $originalFilename = $photo->getClientOriginalName(); // Get original filename
+
+            $storagePath = storage_path('app/public/images/' . $originalFilename); // Destination Path
+
+            // Check if file already exists in 'storage/images/'
+            if (!file_exists($storagePath)) {
+                // If the image is from another folder, move/copy it to 'storage/images/'
+                if ($photo->isValid()) {
+                    $photo->storeAs('images', $originalFilename, 'public'); // Copy to 'storage/images/'
+                }
+            }
+
+            // Save correct path in DB
+            $event->photo_url = 'storage/images/' . $originalFilename;
         }
 
         $event->save();
 
-        return response()->json(['message' => 'Event uploaded successfully!', 'event' => $event], 200);
+        // Use Inertia redirect with success message
+        return Redirect::route('eventupload')->with('success', 'Event created successfully!');
     }
 
     //fetch event from db
     public function index()
     {
-        $events = Event::all(['id', 'event_name', 'location', 'rate', 'start_date', 'photo_url']); // Include necessary fields
-        return response()->json($events);
-    }
+        $events = Event::all(['id', 'event_name', 'location', 'rate', 'start_date', 'end_date', 'start_time', 'end_time', 'description', 'photo_url']);
 
-    public function getEventDetails($id)
-    {
-        $event = Event::findOrFail($id);
-        return response()->json($event);
+        foreach ($events as $event) {
+            if ($event->photo_url) {
+                $event->photo_url = asset($event->photo_url); // Convert to full URL
+            }
+        }
+
+        return response()->json($events);
     }
 }
