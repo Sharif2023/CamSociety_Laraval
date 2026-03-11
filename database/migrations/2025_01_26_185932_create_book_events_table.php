@@ -20,7 +20,7 @@ return new class extends Migration
             $table->date('end_date');
             $table->time('start_time');
             $table->time('end_time');
-            $table->decimal('rate', 8, 2);
+            $table->integer('rate');
             $table->text('description');
             $table->string('photo_url')->nullable();
             $table->enum('hiring_status', ['open', 'closed'])->default('open');

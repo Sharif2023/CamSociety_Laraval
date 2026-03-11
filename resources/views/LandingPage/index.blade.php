@@ -22,9 +22,10 @@
             <div class="container mx-auto flex justify-between items-center py-4">
                 <div class="flex items-center gap-3">
                     <img src="https://placehold.co/40x40" alt="CamSocity Logo" class="h-10 w-10" />
-                    <span class="text-lg">
-                        <p class="font-semibold">CamSocity</p>Your Photography Hub
-                    </span>
+                    <div class="flex flex-col">
+                        <span class="text-lg font-semibold leading-tight">CamSocity</span>
+                        <span class="text-sm text-gray-600 leading-tight">Your Photography Hub</span>
+                    </div>
                 </div>
                 <nav class="hidden md:flex items-center gap-8">
                     <a href="#" class="text-gray-700 hover:text-gray-900">Home</a>
