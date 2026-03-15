@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from '@inertiajs/react';
 
 const HeroSection = () => (
-  <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
+  <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-32">
     {/* Cinematic Background */}
     <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-black/60 z-10"></div>

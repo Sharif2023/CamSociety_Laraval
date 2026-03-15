@@ -47,7 +47,7 @@ export default function GuestLayout({ children, title }) {
                                     className="text-sm font-semibold transition-colors relative group py-2 text-gray-400 hover:text-white"
                                 >
                                     {item.name}
-                                    <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-[#FF3300] transition-all duration-300 group-hover:w-full group-hover:left-0 shadow-[0_0_10px_#FF3300]"></span>
+                                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#FF3300] transition-all duration-300 group-hover:w-full shadow-[0_0_10px_#FF3300]"></span>
                                 </a>
                             ) : (
                                 <Link 
@@ -56,7 +56,7 @@ export default function GuestLayout({ children, title }) {
                                     className={`text-sm font-semibold transition-colors relative group py-2 ${window.location.pathname === item.href ? 'text-white' : 'text-gray-400 hover:text-white'}`}
                                 >
                                     {item.name}
-                                    <span className={`absolute bottom-0 left-1/2 h-0.5 bg-[#FF3300] transition-all duration-300 group-hover:w-full group-hover:left-0 shadow-[0_0_10px_#FF3300] ${window.location.pathname === item.href ? 'w-full left-0' : 'w-0'}`}></span>
+                                    <span className={`absolute bottom-0 left-0 h-0.5 bg-[#FF3300] transition-all duration-300 group-hover:w-full shadow-[0_0_10px_#FF3300] ${window.location.pathname === item.href ? 'w-full' : 'w-0'}`}></span>
                                 </Link>
                             )
                         ))}

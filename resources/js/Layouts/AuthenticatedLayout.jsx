@@ -60,9 +60,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                     className={`relative px-1 py-2 text-sm font-medium transition-colors duration-300 ${item.active ? "text-[#FF3300]" : "text-gray-400 hover:text-white"}`}
                                 >
                                     {item.name}
-                                    {item.active && (
-                                        <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#FF3300] rounded-full shadow-[0_0_10px_#FF3300]"></span>
-                                    )}
+                                    <span className={`absolute bottom-0 left-0 h-0.5 bg-[#FF3300] rounded-full shadow-[0_0_10px_#FF3300] transition-all duration-300 ${item.active ? "w-full" : "w-0 group-hover:w-full"}`}></span>
                                 </Link>
                             ))}
                         </div>
@@ -86,7 +84,11 @@ export default function AuthenticatedLayout({ header, children }) {
                                                     {user.name.charAt(0)}
                                                 </div>
                                             </div>
-                                            <span className="text-sm font-medium">{user.name}</span>
+                                            <div className="text-left hidden lg:block">
+                                                <div className="text-sm font-black text-white leading-tight">{user.name}</div>
+                                                <div className="text-[9px] font-black uppercase tracking-widest text-[#FF3300]">{user.role === 1 ? "Certified Photographer" : "Elite Member"}</div>
+                                            </div>
+                                            <span className="text-sm font-medium lg:hidden">{user.name}</span>
                                             <svg className="h-4 w-4 opacity-50" fill="currentColor" viewBox="0 0 20 20">
                                                 <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
                                             </svg>
@@ -135,7 +137,8 @@ export default function AuthenticatedLayout({ header, children }) {
                             </div>
                             <div>
                                 <div className="text-base font-bold text-white">{user.name}</div>
-                                <div className="text-sm font-medium text-gray-500">{user.email}</div>
+                                <div className="text-[10px] font-black uppercase tracking-widest text-[#FF3300]">{user.role === 1 ? "Certified Photographer" : "Elite Member"}</div>
+                                <div className="text-[10px] font-medium text-gray-500 uppercase tracking-tighter mt-1">{user.email}</div>
                             </div>
                         </div>
                         <div className="grid grid-cols-2 gap-4">

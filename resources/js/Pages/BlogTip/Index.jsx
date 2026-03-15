@@ -207,15 +207,24 @@ export default function BlogAndTips({ auth }) {
                             />
                         </div>
 
-                        <div className="relative">
-                            <div className="absolute top-0 right-0 py-4 px-6 rounded-full bg-white/5 border border-white/5 flex items-center gap-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className="w-4 h-4 text-[#FF3300]" viewBox="0 0 20 20">
-                                    <path d="M9.653 16.915l-.005-.003-.019-.01a20.759 20.759 0 01-1.162-.682 22.045 22.045 0 01-2.582-1.9c-2.003-1.703-3.885-3.693-3.885-6.07C2 5.588 4.34 3 7.5 3c1.76 0 3.04.832 3.5 1.54.46-.708 1.74-1.54 3.5-1.54 3.16 0 5.5 2.588 5.5 5.25 0 2.378-1.882 4.367-3.885 6.07a22.048 22.048 0 01-3.744 2.582l-.019.01-.005.003h-.002a.739.739 0 01-.69.001l-.002-.001z" />
-                                </svg>
-                                <span className="text-white font-black text-xs uppercase tracking-widest">{post.modalContent.likes} Appreciations</span>
+                        <div className="space-y-8">
+                            <div className="flex flex-wrap items-center justify-between gap-6 py-6 border-y border-white/5">
+                                <div className="flex items-center gap-3 py-3 px-6 rounded-full bg-white/5 border border-white/5">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className="w-4 h-4 text-[#FF3300]" viewBox="0 0 20 20">
+                                        <path d="M9.653 16.915l-.005-.003-.019-.01a20.759 20.759 0 01-1.162-.682 22.045 22.045 0 01-2.582-1.9c-2.003-1.703-3.885-3.693-3.885-6.07C2 5.588 4.34 3 7.5 3c1.76 0 3.04.832 3.5 1.54.46-.708 1.74-1.54 3.5-1.54 3.16 0 5.5 2.588 5.5 5.25 0 2.378-1.882 4.367-3.885 6.07a22.048 22.048 0 01-3.744 2.582l-.019.01-.005.003h-.002a.739.739 0 01-.69.001l-.002-.001z" />
+                                    </svg>
+                                    <span className="text-white font-black text-[10px] uppercase tracking-widest">{post.modalContent.likes} Appreciations</span>
+                                </div>
+                                
+                                <div className="flex items-center gap-4">
+                                    <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Share Mastery</span>
+                                    <div className="flex gap-2">
+                                        {[1,2].map(i => <div key={i} className="w-8 h-8 rounded-full bg-white/5 border border-white/10"></div>)}
+                                    </div>
+                                </div>
                             </div>
                             
-                            <div className="max-w-2xl font-medium prose prose-invert">
+                            <div className="max-w-3xl font-medium prose prose-invert mx-auto">
                                 {post.modalContent.content}
                             </div>
                         </div>

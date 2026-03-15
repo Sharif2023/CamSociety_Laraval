@@ -59,12 +59,12 @@ export default function PhotographerLayout({ header, children }) {
 
                         <div className="flex items-center gap-6">
                             {/* Vault Icon (Cart) */}
-                            <Link href={route("cart.index")} className="relative p-2 text-gray-400 hover:text-[#FF3300] transition-colors">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-6 h-6">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
-                                </svg>
-                                <span className="absolute -top-1 -right-1 h-4 w-4 bg-[#FF3300] text-[8px] font-black flex items-center justify-center rounded-full border border-black shadow-[0_0_10px_rgba(255,51,0,0.5)]">0</span>
-                            </Link>
+                             <Link href={route("cart.index")} className="relative p-2 text-gray-400 hover:text-[#FF3300] transition-colors group">
+                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
+                                     <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                                 </svg>
+                                 <span className="absolute -top-1 -right-1 h-4 w-4 bg-[#FF3300] text-[10px] font-bold flex items-center justify-center rounded-full border-2 border-black shadow-[0_0_10px_rgba(255,51,0,0.5)]">0</span>
+                             </Link>
 
                             {/* Session Dropdown */}
                             <div className="hidden sm:flex items-center">
@@ -76,7 +76,11 @@ export default function PhotographerLayout({ header, children }) {
                                                     <img src={user.profile_picture || `https://i.pravatar.cc/100?u=${user.id}`} className="w-full h-full object-cover opacity-80" />
                                                 </div>
                                             </div>
-                                            <span className="text-xs font-black uppercase tracking-widest">{user.name}</span>
+                                            <div className="text-left hidden lg:block">
+                                                <div className="text-xs font-black text-white leading-tight">{user.name}</div>
+                                                <div className="text-[9px] font-black uppercase tracking-widest text-[#FF3300]">Certified Visionary</div>
+                                            </div>
+                                            <span className="text-xs font-black uppercase tracking-widest lg:hidden">{user.name}</span>
                                             <svg className="h-3 w-3 opacity-50" fill="currentColor" viewBox="0 0 20 20">
                                                 <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
                                             </svg>
@@ -122,10 +126,23 @@ export default function PhotographerLayout({ header, children }) {
                                 {item.name}
                             </Link>
                         ))}
-                        
-                        <div className="pt-10 border-t border-white/10 flex flex-col gap-4">
-                            <Link href={route("profile.edit")} className="w-full py-4 text-center rounded-2xl bg-white/5 border border-white/10 text-xs font-bold uppercase tracking-widest">Settings</Link>
-                            <Link href={route("logout")} method="post" as="button" className="w-full py-4 text-center rounded-2xl bg-[#FF3300] text-white text-xs font-black uppercase tracking-widest">Sign Out</Link>
+                        <div className="pt-10 border-t border-white/10">
+                            <div className="flex items-center gap-4 px-3 mb-8">
+                                <div className="h-14 w-14 rounded-full bg-gradient-to-br from-[#FF3300] to-indigo-600 p-[2px]">
+                                    <div className="h-full w-full rounded-full bg-black flex items-center justify-center overflow-hidden">
+                                        <img src={user.profile_picture || `https://i.pravatar.cc/100?u=${user.id}`} className="w-full h-full object-cover opacity-80" />
+                                    </div>
+                                </div>
+                                <div>
+                                    <div className="text-lg font-black text-white">{user.name}</div>
+                                    <div className="text-[10px] font-black uppercase tracking-[0.2em] text-[#FF3300]">Certified Visionary</div>
+                                    <div className="text-[10px] font-medium text-gray-500 uppercase tracking-tighter mt-1">{user.email}</div>
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                                <Link href={route("profile.edit")} className="flex items-center justify-center py-4 px-4 rounded-2xl bg-white/5 border border-white/10 text-xs font-bold uppercase tracking-widest hover:bg-white/10 transition-colors">Settings</Link>
+                                <Link href={route("logout")} method="post" as="button" className="flex items-center justify-center py-4 px-4 rounded-2xl bg-[#FF3300]/10 border border-[#FF3300]/20 text-[#FF3300] text-xs font-black uppercase tracking-widest hover:bg-[#FF3300]/20 transition-colors">Sign Out</Link>
+                            </div>
                         </div>
                     </div>
                 </div>

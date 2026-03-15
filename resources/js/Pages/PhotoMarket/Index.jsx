@@ -99,22 +99,6 @@ export default function Index({ auth, photoSells, queryParams = null , flash}) {
 
             <div className="min-h-screen bg-[#050505] py-12">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    {/* Market Stats/Banner - Minimalist Premium */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-                        {[
-                            { label: 'Total Assets', value: photoSells.meta.total, icon: '🖼️' },
-                            { label: 'Active Sellers', value: '1,240', icon: '💎' },
-                            { label: 'Market Volume', value: 'Elite', icon: '📈' }
-                        ].map((stat, i) => (
-                            <div key={i} className="p-6 rounded-[2rem] bg-white/[0.02] border border-white/5 backdrop-blur-xl flex items-center gap-6">
-                                <div className="text-3xl">{stat.icon}</div>
-                                <div>
-                                    <p className="text-2xl font-black text-white">{stat.value}</p>
-                                    <p className="text-[10px] uppercase tracking-widest font-bold text-gray-500">{stat.label}</p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
 
                     {/* Product Grid */}
                     <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
