@@ -4,7 +4,7 @@ services:
     env: docker
     plan: free
     dockerfilePath: Dockerfile
-    healthCheckPath: /
+    healthCheckPath: /health-check
     envVars:
       - key: APP_ENV
         value: production

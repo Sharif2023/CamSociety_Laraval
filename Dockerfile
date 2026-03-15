@@ -52,8 +52,8 @@ RUN ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 # Permissions for storage and cache
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
-# Expose port 80
-EXPOSE 80
+# Expose port 10000
+EXPOSE 10000
 
 # Start PHP-FPM in background and Nginx in foreground
 CMD php-fpm -D && nginx -g "daemon off;"

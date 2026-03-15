@@ -13,6 +13,11 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+// Health check route for Render
+Route::get('/health-check', function () {
+    return response('UP', 200);
+});
+
 // Public routes
 Route::get('/', [HomeController::class, 'index'])->name('landing'); // Landing page
 Route::get('/login', [HomeController::class, 'login'])->name('login');

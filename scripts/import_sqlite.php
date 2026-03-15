@@ -38,36 +38,34 @@ $sql = File::get($sqlPath);
 
 echo "Cleaning SQL for SQLite compatibility...\n";
 
-// Remove MySQL specific table options
+// Remove MySQL specific table options and comments
 $sql = preg_replace('/ENGINE=InnoDB\s*/i', '', $sql);
 $sql = preg_replace('/DEFAULT\s+CHARSET=[^\s;]*/i', '', $sql);
 $sql = preg_replace('/COLLATE=[^\s;]*/i', '', $sql);
-$sql = preg_replace('/AUTO_INCREMENT=\d+\s*/i', '', $sql);
 $sql = preg_replace('/CHARACTER\s+SET\s+[^\s;]*/i', '', $sql);
 $sql = preg_replace('/on\s+update\s+current_timestamp\(\)/i', '', $sql);
 $sql = preg_replace('/CHECK\s+ \(json_valid\([^)]+\)\)/i', '', $sql);
-$sql = preg_replace('/USING\s+BTREE/i', '', $sql);
-$sql = preg_replace('/KEY\s+`[^`]+`\s+\(`[^`]+`\)/i', '', $sql); // Simple keys often fail in CREATE
+
+// Step-by-step cleaning for complex definitions
+$sql = preg_replace('/\bbigint\(\d+\)\s+UNSIGNED\s+AUTO_INCREMENT\b/i', 'INTEGER PRIMARY KEY AUTOINCREMENT', $sql);
+$sql = preg_replace('/\bint\(\d+\)\s+UNSIGNED\s+AUTO_INCREMENT\b/i', 'INTEGER PRIMARY KEY AUTOINCREMENT', $sql);
+$sql = preg_replace('/\bbigint\(\d+\)\s+UNSIGNED\b/i', 'INTEGER', $sql);
+$sql = preg_replace('/\bint\(\d+\)\s+UNSIGNED\b/i', 'INTEGER', $sql);
+$sql = preg_replace('/\btinyint\(\d+\)\s+UNSIGNED\b/i', 'INTEGER', $sql);
+$sql = preg_replace('/\bbigint\(\d+\)\b/i', 'INTEGER', $sql);
+$sql = preg_replace('/\bint\(\d+\)\b/i', 'INTEGER', $sql);
+$sql = preg_replace('/\btinyint\(\d+\)\b/i', 'INTEGER', $sql);
+$sql = preg_replace('/\bUNSIGNED\b/i', '', $sql);
+
+// Remove problematic keys and constraints that SQLite doesn't support in CREATE TABLE
+$sql = preg_replace('/,\s*(UNIQUE\s+)?KEY\s+`[^`]+`\s+\([^)]+\)/i', '', $sql);
+$sql = preg_replace('/,\s*CONSTRAINT\s+`[^`]+`\s+FOREIGN\s+KEY\s+[^)]+\)\s+REFERENCES\s+[^)]+\)/i', '', $sql);
 
 // Remove specific MySQL settings
 $sql = preg_replace('/SET\s+SQL_MODE\s*=\s*[^;]+;/i', '', $sql);
 $sql = preg_replace('/SET\s+time_zone\s*=\s*[^;]+;/i', '', $sql);
 $sql = preg_replace('/START\s+TRANSACTION;/i', '', $sql);
 $sql = preg_replace('/COMMIT;/i', '', $sql);
-
-// Add robust type cleaning (important for SQLite)
-$sql = preg_replace('/bigint\(\d+\)\s+UNSIGNED/i', 'INTEGER', $sql);
-$sql = preg_replace('/int\(\d+\)\s+UNSIGNED/i', 'INTEGER', $sql);
-$sql = preg_replace('/tinyint\(\d+\)\s+UNSIGNED/i', 'INTEGER', $sql);
-$sql = preg_replace('/bigint\(\d+\)/i', 'INTEGER', $sql);
-$sql = preg_replace('/int\(\d+\)/i', 'INTEGER', $sql);
-$sql = preg_replace('/tinyint\(\d+\)/i', 'INTEGER', $sql);
-$sql = preg_replace('/\bUNSIGNED\b/i', '', $sql);
-$sql = preg_replace('/\bAUTO_INCREMENT\b/i', 'PRIMARY KEY AUTOINCREMENT', $sql);
-
-// Remove specific index syntax that fails in SQLite
-$sql = preg_replace('/,\s*KEY\s+`[^`]+`\s+\(`[^`]+`\)/i', '', $sql);
-$sql = preg_replace('/,\s*UNIQUE\s+KEY\s+`[^`]+`\s+\(`[^`]+`\)/i', '', $sql);
 
 echo "Starting import into SQLite ($dbPath)...\n";
 
