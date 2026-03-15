@@ -22,8 +22,8 @@ class PhotoSellResource extends JsonResource
             'category' => $this->category,
             'image_url' => $this->image_url,
             'created_by' => $this->created_by,
-            'created_at' => $this->created_at->format('M d, Y'),
-            'creator' => new UserResource($this->creator),
+            'created_at' => $this->created_at ? $this->created_at->format('M d, Y') : null,
+            'creator' => $this->creator ? new UserResource($this->creator) : null,
         ];
     }
 }

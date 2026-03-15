@@ -27,7 +27,7 @@ class BookEventResource extends JsonResource
             'photo_url' => $this->photo_url,
             'hiring_status' => $this->hiring_status,
             'application_count' => $this->application_count,
-            'creator' => new UserResource($this->creator),
+            'creator' => $this->creator ? new UserResource($this->creator) : null,
         ];
     }
 }
