@@ -81,12 +81,12 @@ export default function AuthenticatedLayout({ header, children }) {
                                         <button className="flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300">
                                             <div className="h-8 w-8 rounded-full bg-gradient-to-br from-[#FF3300] to-[#992200] p-[2px]">
                                                 <div className="h-full w-full rounded-full bg-black flex items-center justify-center text-xs font-bold">
-                                                    {user.name.charAt(0)}
+                                                    {user?.name?.charAt(0) || 'U'}
                                                 </div>
                                             </div>
                                             <div className="text-left hidden lg:block">
-                                                <div className="text-sm font-black text-white leading-tight">{user.name}</div>
-                                                <div className="text-[9px] font-black uppercase tracking-widest text-[#FF3300]">{user.role === 1 ? "Certified Photographer" : "Elite Member"}</div>
+                                                <div className="text-sm font-black text-white leading-tight">{user?.name || 'Member'}</div>
+                                                <div className="text-[9px] font-black uppercase tracking-widest text-[#FF3300]">{user?.role === 1 ? "Certified Photographer" : (user?.role_name || "Elite Member")}</div>
                                             </div>
                                             <span className="text-sm font-medium lg:hidden">{user.name}</span>
                                             <svg className="h-4 w-4 opacity-50" fill="currentColor" viewBox="0 0 20 20">

@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Admin;
 use App\Models\BookEvent;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -21,7 +22,7 @@ class DatabaseSeeder extends Seeder
             ['email' => 'adnan@admin.com'],
             [
                 'name' => 'Admin',
-                'password' => '12345678',
+                'password' => '12345678', // Let the 'hashed' cast in Admin model handle it
                 'is_active' => 1,
             ]
         );
@@ -31,7 +32,7 @@ class DatabaseSeeder extends Seeder
             ['email' => 'adnan@user.com'],
             [
                 'name' => 'User',
-                'password' => '12345678',
+                'password' => Hash::make('12345678'),
                 'role' => 0,
                 'is_active' => 1,
             ]
@@ -42,7 +43,7 @@ class DatabaseSeeder extends Seeder
             ['email' => 'adnan@photo.com'],
             [
                 'name' => 'Photographer',
-                'password' => '12345678',
+                'password' => Hash::make('12345678'),
                 'role' => 1,
                 'is_active' => 1,
             ]

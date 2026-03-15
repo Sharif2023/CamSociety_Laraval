@@ -9,7 +9,7 @@ import AddEventModal from "./Components/AddEventModal";
 import { ToastContainer, toast } from 'react-toastify';
 
 export default function index({ auth, bookevents, queryParams = null, flash }) {
-  const [events, setEvents] = useState(bookevents?.data || []);
+  const events = bookevents?.data || [];
 
   useEffect(() => {
     if (flash?.message?.success) {
@@ -82,7 +82,7 @@ export default function index({ auth, bookevents, queryParams = null, flash }) {
             {/* Event Stats - Minimalist Premium */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-16">
                 {[
-                    { label: 'Open Gigs', value: bookevents.meta.total, icon: '📸' },
+                    { label: 'Open Gigs', value: bookevents?.meta?.total || 0, icon: '📸' },
                     { label: 'Top Region', value: 'Dhaka', icon: '📍' },
                     { label: 'Avg. Rate', value: '৳ 25k', icon: '💰' },
                     { label: 'Elite Gigs', value: '100+', icon: '💎' }
@@ -98,7 +98,14 @@ export default function index({ auth, bookevents, queryParams = null, flash }) {
             </div>
 
             <div className="animate-in fade-in slide-in-from-bottom-8 duration-1000">
-                <EventGrid events={events} />
+                {events.length > 0 ? (
+                    <EventGrid events={events} />
+                ) : (
+                    <div className="flex flex-col items-center justify-center py-20 bg-white/[0.01] border border-white/5 rounded-[3rem] backdrop-blur-md">
+                        <div className="text-5xl mb-6 opacity-20">📽️</div>
+                        <p className="text-gray-500 font-bold uppercase tracking-[0.3em] text-xs">No assignments discovered in this sector</p>
+                    </div>
+                )}
             </div>
 
             <div className="mt-20 flex justify-center">

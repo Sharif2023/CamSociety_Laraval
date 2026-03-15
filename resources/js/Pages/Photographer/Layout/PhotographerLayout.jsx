@@ -41,7 +41,7 @@ export default function PhotographerLayout({ header, children }) {
                             {[
                                 { name: "Studio", href: route("photographer.dashboard"), active: route().current("photographer.dashboard") },
                                 { name: "Market", href: route("photomarket"), active: route().current("photomarket") },
-                                { name: "Gigs", href: route("eventbook"), active: route().current("eventbook") },
+                                { name: "Events", href: route("eventbook"), active: route().current("eventbook") },
                                 { name: "Journal", href: route("blogsntips"), active: route().current("blogsntips") },
                             ].map((item) => (
                                 <Link
@@ -73,14 +73,14 @@ export default function PhotographerLayout({ header, children }) {
                                         <button className="flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 hover:border-[#FF3300]/50 transition-all duration-500">
                                             <div className="h-8 w-8 rounded-full bg-gradient-to-br from-[#FF3300] to-indigo-600 p-[1.5px]">
                                                 <div className="h-full w-full rounded-full bg-black flex items-center justify-center overflow-hidden">
-                                                    <img src={user.profile_picture || `https://i.pravatar.cc/100?u=${user.id}`} className="w-full h-full object-cover opacity-80" />
+                                                    <img src={user?.profile_picture || `https://i.pravatar.cc/100?u=${user?.id || 'anon'}`} className="w-full h-full object-cover opacity-80" />
                                                 </div>
                                             </div>
                                             <div className="text-left hidden lg:block">
-                                                <div className="text-xs font-black text-white leading-tight">{user.name}</div>
+                                                <div className="text-xs font-black text-white leading-tight">{user?.name || 'Photographer'}</div>
                                                 <div className="text-[9px] font-black uppercase tracking-widest text-[#FF3300]">Certified Visionary</div>
                                             </div>
-                                            <span className="text-xs font-black uppercase tracking-widest lg:hidden">{user.name}</span>
+                                            <span className="text-xs font-black uppercase tracking-widest lg:hidden">{user?.name || 'Photographer'}</span>
                                             <svg className="h-3 w-3 opacity-50" fill="currentColor" viewBox="0 0 20 20">
                                                 <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
                                             </svg>

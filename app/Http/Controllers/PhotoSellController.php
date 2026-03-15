@@ -8,6 +8,8 @@ use App\Models\PhotoSell;
 use Inertia\Inertia;
 use App\Http\Resources\PhotoSellResource;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 
 class PhotoSellController extends Controller
@@ -27,7 +29,7 @@ class PhotoSellController extends Controller
         }
 
 
-        $photoSells = $query->paginate(12)->onEachSide(1);
+        $photoSells = $query->with('creator')->paginate(12)->onEachSide(1);
 
         return Inertia::render('PhotoMarket/Index', [
             'photoSells' => PhotoSellResource::collection($photoSells),
@@ -61,16 +63,23 @@ class PhotoSellController extends Controller
         $photoPath = $request->file('photo')->store('PhotoSells', 'photo_sells');
 
         // Create a new photo sell record in the database
-        $photoSell = PhotoSell::create([
-            'title' => $request->title,
-            'description' => $request->description,
-            'price' => $request->price,
-            'category' => $request->category,
-            'image_url' => $photoPath, // Save the file path
-            'created_by' => Auth::id()
-        ]);
-
-        return redirect()->route('photomarket')->with(['success' => 'Photo uploaded successfully']);
+        try {
+            DB::beginTransaction();
+            $photoSell = PhotoSell::create([
+                'title' => $request->title,
+                'description' => $request->description,
+                'price' => $request->price,
+                'category' => $request->category,
+                'image_url' => $photoPath, // Save the file path
+                'created_by' => Auth::id()
+            ]);
+            DB::commit();
+            return redirect()->route('photomarket')->with(['success' => 'Masterpiece uploaded to the market.']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error("Photo upload failure: " . $e->getMessage());
+            return redirect()->route('photomarket')->with(['error' => 'Asset synchronization failed.']);
+        }
     }
 
     /**

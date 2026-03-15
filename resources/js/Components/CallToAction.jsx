@@ -22,7 +22,7 @@ const CallToAction = () => (
                         href={route('register')}
                         className="px-12 py-5 bg-white text-black font-black rounded-full hover:bg-gray-200 shadow-[0_0_30px_rgba(255,255,255,0.2)] transition-all transform hover:-translate-y-1 active:scale-95"
                     >
-                        Apply for Membership
+                        Create Account
                     </Link>
                     <button className="px-12 py-5 bg-transparent border-2 border-white/10 text-white font-bold rounded-full hover:bg-white/5 transition-all">
                         Learn More

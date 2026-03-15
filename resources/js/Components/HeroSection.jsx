@@ -35,7 +35,7 @@ const HeroSection = () => (
                 href="/login" 
                 className="group relative px-10 py-5 bg-[#FF3300] text-white font-bold rounded-full overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-[0_10px_30px_rgba(255,51,0,0.3)]"
             >
-                <span className="relative z-10">Start Your Journey</span>
+                <span className="relative z-10">Join the Network</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-[#FF6600] to-[#FF3300] opacity-0 group-hover:opacity-100 transition-opacity"></div>
             </Link>
             

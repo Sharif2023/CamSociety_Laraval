@@ -4,7 +4,6 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Carbon\Carbon;
 
 class PhotoSellResource extends JsonResource
 {
@@ -20,10 +19,11 @@ class PhotoSellResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'price' => $this->price,
-            'photo' => $this->image_url,
             'category' => $this->category,
-            'created_by' => new UserResource($this->createdBy),
-            'created_at' => (new Carbon($this->created_at))->format('d-m-Y'),
+            'image_url' => $this->image_url,
+            'created_by' => $this->created_by,
+            'created_at' => $this->created_at->format('M d, Y'),
+            'creator' => new UserResource($this->creator),
         ];
     }
 }
