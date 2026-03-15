@@ -45,7 +45,7 @@ return new class extends Migration
             $table->string('title');
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
             $table->text('description')->nullable();
-            $table->decimal('price', 10, 2);
+            $table->integer('price');
             $table->enum('category', $categories);
             $table->string('image_url')->nullable();
             $table->timestamps(); // Created_at and updated_at columns

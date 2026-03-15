@@ -68,7 +68,7 @@ class BookEventFactory extends Factory
             $keyword = 'concert,music';
         }
 
-        $photoUrl = 'https://loremflickr.com/600/400/' . $keyword . '?random=' . $this->faker->numberBetween(1, 10000);
+        $photoUrl = 'https://loremflickr.com/600/400/' . $keyword . ',bangladesh?lock=' . $this->faker->unique()->numberBetween(1, 10000);
 
         return [
             'created_by' => User::inRandomOrder()->first()->id,

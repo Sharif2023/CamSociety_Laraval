@@ -17,49 +17,59 @@
 
 <body class="bg-white text-gray-900">
     <div class="w-full">
-        <!-- Navbar -->
-        <header class="bg-[#F8E9E7]">
-            <div class="container mx-auto flex justify-between items-center py-4">
-                <div class="flex items-center gap-3">
-                    <img src="https://placehold.co/40x40" alt="CamSocity Logo" class="h-10 w-10" />
+        <!-- Premium Sticky Header -->
+        <header class="fixed w-full top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 shadow-sm transition-all duration-300">
+            <div class="container mx-auto flex justify-between items-center py-4 px-6 lg:px-12">
+                <!-- Logo & Brand -->
+                <div class="flex items-center gap-3 group cursor-pointer">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-gray-900 to-gray-600 flex items-center justify-center text-white font-bold text-xl shadow-md group-hover:scale-105 transition-transform duration-300">
+                        C
+                    </div>
                     <div class="flex flex-col">
-                        <span class="text-lg font-semibold leading-tight">CamSocity</span>
-                        <span class="text-sm text-gray-600 leading-tight">Your Photography Hub</span>
+                        <span class="text-xl font-bold tracking-tight text-gray-900 group-hover:text-black transition-colors">CamSocity</span>
+                        <span class="text-xs font-medium text-gray-500 uppercase tracking-widest mt-0.5">Your Photography Hub</span>
                     </div>
                 </div>
+
+                <!-- Navigation Links -->
                 <nav class="hidden md:flex items-center gap-8">
-                    <a href="#" class="text-gray-700 hover:text-gray-900">Home</a>
-                    <a href="#" class="text-gray-700 hover:text-gray-900">About</a>
-                    <a href="#" class="text-gray-700 hover:text-gray-900">Services</a>
-                    <a href="#" class="text-gray-700 hover:text-gray-900">Contact</a>
+                    <a href="#" class="relative text-sm font-semibold text-gray-600 hover:text-gray-900 transition-colors py-2 after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-gray-900 after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left">Home</a>
+                    <a href="#" class="relative text-sm font-semibold text-gray-600 hover:text-gray-900 transition-colors py-2 after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-gray-900 after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left">Explore</a>
+                    <a href="#" class="relative text-sm font-semibold text-gray-600 hover:text-gray-900 transition-colors py-2 after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-gray-900 after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left">Photographers</a>
+                    <a href="#" class="relative text-sm font-semibold text-gray-600 hover:text-gray-900 transition-colors py-2 after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-gray-900 after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left">Jobs</a>
                 </nav>
-                <div class="flex items-center gap-4">
-                    <a href="#" class="text-gray-600 hover:text-gray-900">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                        </svg>
 
-                    </a>
-                    <a href="/login" class="text-gray-600 hover:text-gray-900">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                <!-- Actions / Auth -->
+                <div class="flex items-center gap-5">
+                    <!-- Search Icon -->
+                    <button class="text-gray-500 hover:text-gray-900 transition-colors p-2 rounded-full hover:bg-gray-50">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                        </svg>
+                    </button>
+                    <!-- User Profile / Login -->
+                    <a href="/login" class="flex items-center gap-2 text-gray-700 hover:text-gray-900 font-medium text-sm transition-colors p-2 rounded-full hover:bg-gray-50">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                         </svg>
                     </a>
-                    <a href="#" class="text-gray-600 hover:text-gray-900">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
-                        </svg>
-
+                    <!-- Call to Action Button -->
+                    <a href="#" class="hidden md:flex items-center justify-center px-6 py-2.5 bg-gray-900 text-white text-sm font-semibold rounded-full hover:bg-gray-800 hover:shadow-lg transition-all transform hover:-translate-y-0.5">
+                        Post a Job
                     </a>
+                    
+                    <!-- Mobile Menu Toggle -->
+                    <button class="md:hidden text-gray-500 hover:text-gray-900 transition-colors p-2 rounded-full hover:bg-gray-50">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                        </svg>
+                    </button>
                 </div>
             </div>
         </header>
+        
+        <!-- Spacer to prevent content from hiding behind the absolute/fixed header -->
+        <div class="h-20"></div>
 
         <!-- Hero Section -->
         <section class="relative">
