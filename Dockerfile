@@ -69,5 +69,8 @@ RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 # Expose port 10000
 EXPOSE 10000
 
-# Start PHP-FPM in background and Nginx in foreground
-CMD php-fpm -D && nginx -g "daemon off;"
+# Make start.sh executable
+RUN chmod +x /var/www/start.sh
+
+# Start the application using start.sh
+CMD ["/var/www/start.sh"]

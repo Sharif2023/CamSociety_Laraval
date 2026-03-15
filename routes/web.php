@@ -18,6 +18,27 @@ Route::get('/health-check', function () {
     return response('UP', 200);
 });
 
+// Debug DB route (Remove before production)
+Route::get('/debug-db', function () {
+    try {
+        $status = \Illuminate\Support\Facades\Artisan::call('migrate:status');
+        $output = \Illuminate\Support\Facades\Artisan::output();
+        
+        $usersCount = \App\Models\User::count();
+        $schema = \Illuminate\Support\Facades\DB::select("SELECT sql FROM sqlite_master WHERE type='table' AND name='users'");
+        
+        return response()->json([
+            'migrate_status' => $output,
+            'users_count' => $usersCount,
+            'users_schema' => $schema,
+            'db_path' => config('database.connections.sqlite.database'),
+            'env' => app()->environment(),
+        ]);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+});
+
 // Public routes
 Route::get('/', [HomeController::class, 'index'])->name('landing'); // Landing page
 Route::get('/login', [HomeController::class, 'login'])->name('login');
