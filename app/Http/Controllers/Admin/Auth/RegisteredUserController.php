@@ -36,16 +36,24 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $admin = Admin::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        try {
+            $admin = Admin::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ]);
 
-        event(new Registered($admin));
+            event(new Registered($admin));
 
-        Auth::guard('admin')->login($admin);
+            Auth::guard('admin')->login($admin);
 
-        return redirect(route('admin.dashboard', absolute: false));
+            return redirect(route('admin.dashboard', absolute: false));
+        } catch (\Exception $e) {
+            \Log::error('Admin Registration Error: ' . $e->getMessage(), [
+                'email' => $request->email,
+                'trace' => $e->getTraceAsString()
+            ]);
+            throw $e;
+        }
     }
 }

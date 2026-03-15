@@ -37,17 +37,26 @@ class RegisteredUserController extends Controller
             'role' => ['required', 'integer', 'in:0,1'],
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => $request->role,
-        ]);
+        try {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'role' => $request->role,
+                'is_active' => 1, // Explicitly set default
+            ]);
 
-        event(new Registered($user));
+            event(new Registered($user));
 
-        Auth::login($user);
+            Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false))->with(['success' => 'Account created. Welcome!']);
+            return redirect(route('dashboard', absolute: false))->with(['success' => 'Account created. Welcome!']);
+        } catch (\Exception $e) {
+            \Log::error('Registration Error: ' . $e->getMessage(), [
+                'email' => $request->email,
+                'trace' => $e->getTraceAsString()
+            ]);
+            throw $e; // Re-throw to show the 500 error but with details in logs
+        }
     }
 }
