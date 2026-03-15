@@ -46,6 +46,8 @@ $sql = preg_replace('/AUTO_INCREMENT=\d+\s*/i', '', $sql);
 $sql = preg_replace('/CHARACTER\s+SET\s+[^\s;]*/i', '', $sql);
 $sql = preg_replace('/on\s+update\s+current_timestamp\(\)/i', '', $sql);
 $sql = preg_replace('/CHECK\s+ \(json_valid\([^)]+\)\)/i', '', $sql);
+$sql = preg_replace('/USING\s+BTREE/i', '', $sql);
+$sql = preg_replace('/KEY\s+`[^`]+`\s+\(`[^`]+`\)/i', '', $sql); // Simple keys often fail in CREATE
 
 // Remove specific MySQL settings
 $sql = preg_replace('/SET\s+SQL_MODE\s*=\s*[^;]+;/i', '', $sql);
@@ -67,11 +69,26 @@ try {
     foreach ($statements as $statement) {
         if (empty($statement)) continue;
         
+        // Skip migration table to let Laravel handle it
+        if (stripos($statement, 'CREATE TABLE `migrations`') !== false || 
+            stripos($statement, 'INSERT INTO `migrations`') !== false) {
+            echo "Skipping migrations table statement...\n";
+            continue;
+        }
+
+        // Skip ALTER TABLE statements which often fail in SQLite for primary keys/auto-increment
+        if (stripos($statement, 'ALTER TABLE') !== false) {
+            continue;
+        }
+        
         try {
             DB::statement($statement);
         } catch (\Exception $e) {
-            echo "Skipped/Failed statement: " . substr($statement, 0, 50) . "...\n";
-            echo "Error: " . $e->getMessage() . "\n";
+            // Silently skip common errors during cleaning
+            if (stripos($e->getMessage(), 'already exists') === false) {
+                echo "Skipped statement: " . substr($statement, 0, 50) . "...\n";
+                // echo "Error: " . $e->getMessage() . "\n";
+            }
         }
     }
     
