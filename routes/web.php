@@ -13,10 +13,41 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+// Health check route for Render
+Route::get('/health-check', function () {
+    return response('UP', 200);
+});
+
+// Debug DB route (Remove before production)
+Route::get('/debug-db', function () {
+    try {
+        $status = \Illuminate\Support\Facades\Artisan::call('migrate:status');
+        $output = \Illuminate\Support\Facades\Artisan::output();
+        
+        $usersCount = \App\Models\User::count();
+        $photosCount = \App\Models\PhotoSell::count();
+        $eventsCount = \App\Models\BookEvent::count();
+        
+        return response()->json([
+            'migrate_status' => $output,
+            'users_count' => $usersCount,
+            'photos_count' => $photosCount,
+            'events_count' => $eventsCount,
+            'db_path' => config('database.connections.sqlite.database'),
+            'env' => app()->environment(),
+        ]);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+});
+
 // Public routes
 Route::get('/', [HomeController::class, 'index'])->name('landing'); // Landing page
 Route::get('/login', [HomeController::class, 'login'])->name('login');
 Route::get('/signup', [HomeController::class, 'signup'])->name('signup');
+Route::get('/about', [HomeController::class, 'about'])->name('about');
+Route::get('/services', [HomeController::class, 'services'])->name('services');
+Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 
 // User routes
 Route::middleware(['auth', 'verified', 'role:user',])->group(function () {

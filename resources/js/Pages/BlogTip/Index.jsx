@@ -1,5 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 import PhotographerLayout from "../Photographer/Layout/PhotographerLayout";
 import { useState } from "react";
 
@@ -20,16 +20,24 @@ export default function BlogAndTips({ auth }) {
         title: "Top Tips for Wedding Photography",
         image: "photos/blogandtipspost1.png",
         content: (
-          <>
-            <p>Wedding photography is all about capturing timeless moments. Here are some practical tips to help you get the best shots:</p>
-            <ul className="list-disc pl-6 space-y-2 text-gray-600 mt-4">
-              <li>Understand the event schedule to be ready for key moments.</li>
-              <li>Use natural light whenever possible to create soft and flattering images.</li>
-              <li>Focus on capturing candid moments, not just posed ones.</li>
-              <li>Experiment with different angles for creative shots.</li>
-              <li>Always keep a backup camera and batteries to avoid technical issues.</li>
-            </ul>
-          </>
+          <div className="space-y-6 text-gray-400">
+            <p className="text-lg leading-relaxed first-letter:text-5xl first-letter:font-black first-letter:text-[#FF3300] first-letter:mr-3 first-letter:float-left">
+                Wedding photography is all about capturing timeless moments. It requires a blend of technical skill and emotional intuition to freeze those fleeting glances and grand celebrations into eternal masterpieces.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+              {[
+                  "Master the Event Schedule",
+                  "Leverage Pure Natural Light",
+                  "Hunt for Candid Narratives",
+                  "Architectural Angle Mastery"
+              ].map((tip, idx) => (
+                  <div key={idx} className="p-4 rounded-2xl bg-white/5 border border-white/5">
+                      <span className="text-[#FF3300] font-black text-xs uppercase tracking-widest block mb-1">0{idx+1}</span>
+                      <p className="text-white font-bold">{tip}</p>
+                  </div>
+              ))}
+            </div>
+          </div>
         ),
         likes: 10,
       },
@@ -44,16 +52,24 @@ export default function BlogAndTips({ auth }) {
         title: "5 Tricks for Outdoor Portraits",
         image: "photos/blogandtipspost2.png",
         content: (
-          <>
-            <p>Here are some tricks to take stunning outdoor portraits:</p>
-            <ul className="list-disc pl-6 space-y-2 text-gray-600 mt-4">
-              <li>Use the golden hour for soft and warm light.</li>
-              <li>Experiment with bokeh by using a wide aperture.</li>
-              <li>Consider your background to enhance the subject.</li>
-              <li>Capture candid moments to convey emotions.</li>
-              <li>Make use of natural surroundings for a more dynamic composition.</li>
+          <div className="space-y-6 text-gray-400">
+            <p className="text-lg leading-relaxed">
+                The great outdoors offers the most dynamic canvas for portraiture. Mastering the light and environment is key to lifting your subject out of the ordinary.
+            </p>
+            <ul className="space-y-4">
+              {[
+                  "The Golden Hour Synchronization",
+                  "Wide-Aperture Depth Manipulation",
+                  "Environmental Framing Architecture",
+                  "Natural Surroundings Integration"
+              ].map((trick, idx) => (
+                  <li key={idx} className="flex items-center gap-4">
+                      <div className="w-2 h-2 rounded-full bg-[#FF3300] shadow-[0_0_10px_#FF3300]"></div>
+                      <span className="text-white font-medium">{trick}</span>
+                  </li>
+              ))}
             </ul>
-          </>
+          </div>
         ),
         likes: 8,
       },
@@ -62,142 +78,158 @@ export default function BlogAndTips({ auth }) {
       id: 3,
       title: "How to Choose the Right Lens",
       description: "Choosing the right lens is crucial for portrait photography. Here's a guide...",
-      image: "https://picsum.photos/400/200",
+      image: "https://picsum.photos/800/600?nature",
       author: "Emily White",
       modalContent: {
-        title: "How to Choose the Right Lens for Portraits",
-        image: "https://picsum.photos/400/200",
+        title: "Optic Excellence: Choosing the Right Lens",
+        image: "https://picsum.photos/800/600?nature",
         content: (
-          <>
-            <p>Choosing the right lens is crucial for portrait photography. Here's a guide to selecting the perfect lens:</p>
-            <ul className="list-disc pl-6 space-y-2 text-gray-600 mt-4">
-              <li>50mm lenses are great for beginners and offer natural perspective.</li>
-              <li>85mm lenses provide beautiful bokeh and are ideal for portraits.</li>
-              <li>35mm lenses are perfect for environmental portraits.</li>
-              <li>Consider aperture - f/1.4 or f/1.8 for better low-light performance.</li>
-            </ul>
-          </>
+          <div className="space-y-6 text-gray-400">
+            <p className="leading-relaxed">
+                Your lens is your eye. Choosing the correct focal length defines the relationship between your subject and their world.
+            </p>
+            <div className="space-y-4 pt-4">
+                <div className="border-l-4 border-[#FF3300] pl-6 py-2">
+                    <h4 className="text-white font-black uppercase text-xs tracking-widest mb-1">The 85mm Prime</h4>
+                    <p className="text-sm">The undisputed king of portraiture, offering compression and bokeh that feels like a dream.</p>
+                </div>
+                <div className="border-l-4 border-indigo-600 pl-6 py-2">
+                    <h4 className="text-white font-black uppercase text-xs tracking-widest mb-1">The 35mm Narrative</h4>
+                    <p className="text-sm">Perfect for environmental portraits that tell a larger story of the subject in their element.</p>
+                </div>
+            </div>
+          </div>
         ),
         likes: 15,
       },
     },
   ];
 
-  const Layout = auth?.role === "photographer" ? PhotographerLayout : AuthenticatedLayout;
+  const Layout = auth?.role === 1 ? PhotographerLayout : AuthenticatedLayout;
 
   return (
-    <Layout>
-      <Head title="Blog & Tips" />
-
-      {/* Page Header */}
-      <section className="bg-dark text-white py-8 text-center">
-        <h1 className="text-3xl sm:text-4xl font-bold">Blog & Tips</h1>
-        <p className="mt-2 text-gray-300">
-          Explore thoughts, tips, and advice from professional photographers.
-        </p>
-      </section>
-
-      <section className="text-primary text-end pr-5 py-3">
-        <a href="/photographer-blog-tips" className="hover:underline font-medium">
-          Add Blog or Post as Photographer →
-        </a>
-      </section>
-
-      {/* Main Content */}
-      <main className="max-w-6xl mx-auto p-6">
-        <h2 className="text-2xl font-bold mb-6 text-dark">Recent Posts</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {posts.map((post) => (
-            <div
-              key={post.id}
-              className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105 cursor-pointer"
-              onClick={() => openModal(post.id)}
-            >
-              <img
-                src={post.image}
-                alt={post.title}
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-4">
-                <h3 className="text-lg font-semibold text-dark">
-                  {post.title}
-                </h3>
-                <p className="text-gray-600 mt-2 text-sm line-clamp-2">{post.description}</p>
-                <div className="mt-4 flex justify-between items-center">
-                  <span className="text-gray-500 text-sm">By {post.author}</span>
-                  <span className="text-primary font-semibold text-sm">
-                    Read More
-                  </span>
+    <Layout
+        header={
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div>
+                    <h2 className="text-3xl font-black font-['Playfair_Display'] text-white uppercase">
+                        The <span className="italic text-[#FF3300]">Journal</span>
+                    </h2>
+                    <p className="text-gray-500 text-xs font-bold uppercase tracking-widest mt-1">Wisdom from the Elite Masters</p>
                 </div>
-              </div>
+                <Link
+                    href="/photographer-blog-tips"
+                    className="px-8 py-3 bg-[#FF3300] text-white text-[10px] font-black uppercase tracking-widest rounded-full hover:bg-white hover:text-black transition-all shadow-[0_0_30px_rgba(255,51,0,0.3)]"
+                >
+                    Contribute Mastery
+                </Link>
             </div>
-          ))}
-        </div>
-      </main>
+        }
+    >
+      <Head title="Performance Journal" />
 
-      {/* Modal */}
+      <div className="min-h-screen bg-[#050505] py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            {/* Featured Article Indicator */}
+            <div className="mb-20 grid grid-cols-1 lg:grid-cols-3 gap-10">
+                {posts.map((post) => (
+                    <div
+                        key={post.id}
+                        className="group relative cursor-pointer"
+                        onClick={() => openModal(post.id)}
+                    >
+                        <div className="relative aspect-[4/5] overflow-hidden rounded-[3rem] border border-white/10 mb-8 transition-all duration-700 group-hover:border-[#FF3300]/50 group-hover:shadow-[0_20px_50px_rgba(255,51,0,0.1)]">
+                            <img
+                                src={post.image}
+                                alt={post.title}
+                                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 grayscale hover:grayscale-0"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 transition-opacity group-hover:opacity-40"></div>
+                            
+                            <div className="absolute bottom-10 left-10 right-10">
+                                <span className="text-[#FF3300] text-[10px] font-black uppercase tracking-[0.3em] mb-4 block translate-y-4 group-hover:translate-y-0 transition-transform">
+                                    {post.author} • Master Class
+                                </span>
+                                <h3 className="text-3xl font-black text-white font-['Playfair_Display'] leading-[0.9] group-hover:text-[#FF3300] transition-colors translate-y-2 group-hover:translate-y-0 duration-500">
+                                    {post.title}
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            {/* More Insights Marker */}
+            <div className="flex items-center gap-10 opacity-30">
+                <div className="h-px flex-grow bg-white"></div>
+                <span className="text-[10px] font-black uppercase tracking-[0.5em] text-white">Archives of Excellence</span>
+                <div className="h-px flex-grow bg-white"></div>
+            </div>
+        </div>
+      </div>
+
+      {/* Modal - Ultra Premium Dark */}
       {posts.map(
         (post) =>
           activeModal === post.id && (
             <div
-              key={post.id}
-              className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 p-4"
-              onClick={closeModal}
+                key={post.id}
+                className="fixed inset-0 bg-black/95 backdrop-blur-2xl flex justify-center items-center z-[100] p-4 sm:p-8 animate-in fade-in duration-500"
+                onClick={closeModal}
             >
-              <div
-                className="relative bg-white rounded-lg shadow-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <div className="flex items-center justify-between p-5 border-b sticky top-0 bg-white">
-                  <h3 className="text-xl font-semibold text-gray-900">
-                    {post.modalContent.title}
-                  </h3>
-                  <button
-                    type="button"
-                    className="text-gray-400 hover:text-gray-600 text-2xl"
-                    onClick={closeModal}
-                  >
-                    ✕
-                  </button>
-                </div>
-                <div className="p-6 space-y-4">
-                  <img
-                    src={post.modalContent.image}
-                    alt={post.modalContent.title}
-                    className="w-full h-60 object-cover rounded-lg"
-                  />
-                  <div className="text-gray-700">
-                    {post.modalContent.content}
-                  </div>
-                </div>
-                <div className="flex items-center justify-between p-5 border-t">
-                  {/* Like Button */}
-                  <div className="cursor-pointer flex items-center space-x-2 rounded-full text-gray-400 hover:text-primary border border-gray-300 hover:border-primary py-1 px-3 transition-colors">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
+                <div
+                    className="relative bg-[#0A0A0A] border border-white/10 rounded-[4rem] w-full max-w-4xl max-h-[90vh] overflow-y-auto no-scrollbar shadow-2xl"
+                    onClick={(e) => e.stopPropagation()}
+                >
+                    <button
+                        className="absolute top-10 right-10 w-12 h-12 flex items-center justify-center rounded-full bg-white/5 border border-white/10 text-white hover:bg-[#FF3300] transition-all z-20 group"
+                        onClick={closeModal}
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                      />
-                    </svg>
-                    <span className="font-medium text-sm">{post.modalContent.likes}</span>
-                  </div>
-                  {/* Close Button */}
-                  <button
-                    onClick={closeModal}
-                    className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-dark font-semibold transition-colors"
-                  >
-                    Close
-                  </button>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor" className="w-5 h-5 group-hover:rotate-90 transition-transform">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+
+                    <div className="p-10 sm:p-20 space-y-12">
+                        <div className="space-y-4">
+                            <span className="text-[#FF3300] text-[10px] font-black uppercase tracking-[0.4em]">Published by {post.author}</span>
+                            <h2 className="text-5xl sm:text-7xl font-black text-white font-['Playfair_Display'] leading-none">
+                                {post.modalContent.title}
+                            </h2>
+                        </div>
+
+                        <div className="aspect-video w-full rounded-[3rem] overflow-hidden border border-white/5">
+                            <img
+                                src={post.modalContent.image}
+                                alt={post.modalContent.title}
+                                className="w-full h-full object-cover"
+                            />
+                        </div>
+
+                        <div className="space-y-8">
+                            <div className="flex flex-wrap items-center justify-between gap-6 py-6 border-y border-white/5">
+                                <div className="flex items-center gap-3 py-3 px-6 rounded-full bg-white/5 border border-white/5">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className="w-4 h-4 text-[#FF3300]" viewBox="0 0 20 20">
+                                        <path d="M9.653 16.915l-.005-.003-.019-.01a20.759 20.759 0 01-1.162-.682 22.045 22.045 0 01-2.582-1.9c-2.003-1.703-3.885-3.693-3.885-6.07C2 5.588 4.34 3 7.5 3c1.76 0 3.04.832 3.5 1.54.46-.708 1.74-1.54 3.5-1.54 3.16 0 5.5 2.588 5.5 5.25 0 2.378-1.882 4.367-3.885 6.07a22.048 22.048 0 01-3.744 2.582l-.019.01-.005.003h-.002a.739.739 0 01-.69.001l-.002-.001z" />
+                                    </svg>
+                                    <span className="text-white font-black text-[10px] uppercase tracking-widest">{post.modalContent.likes} Appreciations</span>
+                                </div>
+                                
+                                <div className="flex items-center gap-4">
+                                    <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Share Mastery</span>
+                                    <div className="flex gap-2">
+                                        {[1,2].map(i => <div key={i} className="w-8 h-8 rounded-full bg-white/5 border border-white/10"></div>)}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div className="max-w-3xl font-medium prose prose-invert mx-auto">
+                                {post.modalContent.content}
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
           )
       )}

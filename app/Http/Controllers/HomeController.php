@@ -38,7 +38,11 @@ class HomeController extends Controller
 
     public function hirephotographer()
     {
-        return Inertia::render('HirePhotographer/Index');
+        $photographers = \App\Models\User::where('role', 1)->paginate(12);
+
+        return Inertia::render('HirePhotographer/Index', [
+            'photographers' => \App\Http\Resources\UserResource::collection($photographers)
+        ]);
     }
 
     public function eventbook()
@@ -54,5 +58,20 @@ class HomeController extends Controller
     public function eventupload()
     {
         return Inertia::render('BookEvent/EventUpload');
+    }
+
+    public function about()
+    {
+        return Inertia::render('Landing/About');
+    }
+
+    public function services()
+    {
+        return Inertia::render('Landing/Services');
+    }
+
+    public function contact()
+    {
+        return Inertia::render('Landing/Contact');
     }
 }

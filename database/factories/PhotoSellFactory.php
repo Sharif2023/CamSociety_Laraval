@@ -64,9 +64,9 @@ class PhotoSellFactory extends Factory
             'created_by' => User::inRandomOrder()->first()->id, // Random user from Users table
             'title' => $title,
             'description' => $this->faker->randomElement($descriptions),
-            'price' => $this->faker->numberBetween(5, 100) * 100, // Multiples of 100, e.g., 500 to 10000 BDT
+            'price' => $this->faker->numberBetween(50, 1000) * 100, // Multiples of 100, e.g., 5000 to 100000 BDT
             'category' => $category,
-            'image_url' => $photoUrl,
+            'image_url' => 'https://placehold.co/600x400/000000/FFFFFF/png?text=' . urlencode($title),
         ];
     }
 }

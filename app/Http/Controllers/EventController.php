@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BookEventResource;
 use App\Mail\PhotographerApplicationMail;
 use App\Models\BookEvent;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
@@ -18,17 +20,17 @@ class EventController extends Controller
         $query = BookEvent::query();
 
         if (request('title')) {
-            $query->where('title', 'like', '%' . request('title') . '%');
+            $query->where('event_name', 'like', '%' . request('title') . '%');
         }
         if (request('address')) {
             $query->where('address', 'like', '%' . request('address') . '%');
         }
 
         // hiring_status active will be shown
-        $bookevents = $query->where('hiring_status', 'open')->paginate(12)->onEachSide(1);
+        $bookevents = $query->with('creator')->where('hiring_status', 'open')->paginate(12)->onEachSide(1);
 
         return Inertia::render('BookEvent/Index', [
-            'bookevents' => $bookevents,
+            'bookevents' => BookEventResource::collection($bookevents),
         ]);
     }
 
@@ -55,6 +57,7 @@ class EventController extends Controller
 
         // Create the event in the database
         try {
+            DB::beginTransaction();
             $bookevent = BookEvent::create([
                 'event_name' => $validatedData['event_name'],
                 'address' => $validatedData['address'],
@@ -67,11 +70,13 @@ class EventController extends Controller
                 'photo_url' => $photoPath, // Store the file path or null
                 'created_by' => Auth::id() // Ensure the user is authenticated
             ]);
+            DB::commit();
 
-            return redirect()->route('eventbook')->with(['success'=> 'Event created successfully']);
+            return redirect()->route('eventbook')->with(['success'=> 'Assignment posted to the network.']);
         } catch (\Exception $e) {
-            // Handle any errors (e.g., database issues)
-            return redirect()->route('eventbook')->with(['error'=> 'An error occurred while creating the event']);
+            DB::rollBack();
+            Log::error("Event creation failure: " . $e->getMessage());
+            return redirect()->route('eventbook')->with(['error'=> 'Deployment of assignment failed. Please try again.']);
         }
     }
 

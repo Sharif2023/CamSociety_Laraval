@@ -1,52 +1,57 @@
+import React from 'react';
+
 export default function FAQ() {
+    const faqData = [
+        {
+            q: "What defines CamSociety?",
+            a: "CamSociety is a curated ecosystem for elite photographers and discerning clients. We provide the infrastructure for professional growth, high-stakes assignments, and artistic commerce."
+        },
+        {
+            q: "How does the membership work?",
+            a: "Membership is currently by application. We review portfolios to ensure every member contributes to the society's standard of excellence."
+        },
+        {
+            q: "Is the private marketplace secure?",
+            a: "Absolute security is our baseline. All transactions and high-resolution deliveries are handled via our proprietary encrypted gateway."
+        },
+        {
+            q: "Are there exclusive society events?",
+            a: "Yes. From private gallery showings to high-level networking summits, we facilitate the connections that move the industry forward."
+        }
+    ];
+
     return (
-        <>
-            {/* <!-- FAQ --> */}
-            <section className="py-12">
-                <div className="container mx-auto px-6">
-                    <h2 className="text-3xl font-bold text-center">
-                        Frequently Asked Questions
-                    </h2>
-                    <div className="mt-8 space-y-4">
-                        <details className="border rounded-lg p-4">
-                            <summary className="font-semibold cursor-pointer">
-                                What is CamSociety?
-                            </summary>
-                            <p className="mt-2 text-gray-600">
-                                CamSociety provides a platform for photographers to showcase
-                                their work, connect with others, and grow their careers.
-                            </p>
-                        </details>
-                        <details className="border rounded-lg p-4">
-                            <summary className="font-semibold cursor-pointer">
-                                How do I join the community?
-                            </summary>
-                            <p className="mt-2 text-gray-600">
-                                Click the 'Join Now' button on our homepage and fill out the
-                                registration form to get started.
-                            </p>
-                        </details>
-                        <details className="border rounded-lg p-4">
-                            <summary className="font-semibold cursor-pointer">
-                                Can I sell my photos?
-                            </summary>
-                            <p className="mt-2 text-gray-600">
-                                Yes, our marketplace allows photographers to sell their work and
-                                earn commissions.
-                            </p>
-                        </details>
-                        <details className="border rounded-lg p-4">
-                            <summary className="font-semibold cursor-pointer">
-                                Are there any workshops?
-                            </summary>
-                            <p className="mt-2 text-gray-600">
-                                We regularly host workshops and networking events for
-                                photographers of all skill levels.
-                            </p>
-                        </details>
+        <section className="py-32 bg-white/[0.01] border-y border-white/5">
+            <div className="container mx-auto px-6">
+                <div className="max-w-4xl mx-auto">
+                    <div className="text-center mb-16">
+                        <h2 className="text-5xl md:text-7xl font-black font-['Playfair_Display'] mb-6">Society <span className="italic text-gray-500">Intelligence.</span></h2>
+                        <p className="text-gray-400 font-medium tracking-wide">Essential information for prospective members.</p>
+                    </div>
+
+                    <div className="space-y-6">
+                        {faqData.map((item, i) => (
+                            <details key={i} className="group border border-white/10 rounded-[2rem] bg-white/[0.02] overflow-hidden transition-all duration-300 hover:border-white/20">
+                                <summary className="flex items-center justify-between p-8 cursor-pointer list-none">
+                                    <span className="text-xl font-bold font-['Outfit'] text-white group-open:text-[#FF3300] transition-colors">
+                                        {item.q}
+                                    </span>
+                                    <span className="transition-transform duration-300 group-open:rotate-180">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor" className="w-6 h-6">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                        </svg>
+                                    </span>
+                                </summary>
+                                <div className="px-8 pb-8">
+                                    <p className="text-gray-400 text-lg leading-relaxed font-medium border-t border-white/5 pt-6">
+                                        {item.a}
+                                    </p>
+                                </div>
+                            </details>
+                        ))}
                     </div>
                 </div>
-            </section>
-        </>
+            </div>
+        </section>
     );
 }

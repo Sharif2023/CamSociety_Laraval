@@ -9,6 +9,7 @@ use App\Mail\SendOTP;
 use App\Models\Cart;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class PaymentController extends Controller
@@ -54,35 +55,38 @@ class PaymentController extends Controller
         $request->validate([
             'email' => 'required|email',
             'otp' => 'required|numeric',
-            'photoIds' => 'required|array', // Validate that photoIds is an array
-            'total' => 'required|numeric', // Ensure total amount is provided
+            'photoIds' => 'required|array', 
+            'total' => 'required|numeric', 
         ]);
 
-        $otp = OTP::where('email', $request->email)
-            ->where('otp', $request->otp)
-            ->where('expires_at', '>=', now())
-            ->first();
+        return DB::transaction(function () use ($request) {
+            $otp = OTP::where('email', $request->email)
+                ->where('otp', $request->otp)
+                ->where('expires_at', '>=', now())
+                ->first();
 
-        if (!$otp) {
-            return response()->json(['message' => 'Invalid or expired OTP'], 400);
-        }
+            if (!$otp) {
+                return response()->json(['message' => 'Invalid or expired OTP'], 400);
+            }
 
-        $otp->delete();
+            $otp->delete();
 
-        // delete cart item from database
-        $cart = Cart::where('user_id', Auth::id())->delete();
+            // create transaction first, then delete cart
+            $transaction = Transaction::create([
+                'email' => $request->email,
+                'total_amount' => $request->total,
+                'transaction_id' => uniqid('txn_'),
+                'transaction_date' => now(),
+                'made_by' => Auth::id(),
+                'status' => 'success',
+                'photo_ids' => $request->photoIds,
+            ]);
 
-        $transaction = Transaction::create([
-            'email' => $request->email,
-            'total_amount' => $request->total,
-            'transaction_id' => uniqid('txn_'),
-            'transaction_date' => now(),
-            'made_by' => Auth::id(),
-            'status' => 'success',
-            'photo_ids' => $request->photoIds,
-        ]);
+            // delete cart items for the authenticated user
+            Cart::where('user_id', Auth::id())->delete();
 
-        return redirect()->route('transaction.success')->with('transaction', $transaction);
+            return redirect()->route('transaction.success')->with('transaction', $transaction);
+        });
     }
 
 
