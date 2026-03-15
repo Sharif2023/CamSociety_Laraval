@@ -23,19 +23,19 @@ export default function Index({ auth, photographers }) {
             <Head title="Hire Photographer" />
 
             <div className="py-4">
-                <form class="flex items-center max-w-lg mx-auto py-5 ">
+                <form className="flex items-center max-w-lg mx-auto py-5 ">
                     <label for="voice-search" class="sr-only">
                         Search
                     </label>
-                    <div class="relative w-full">
-                        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                    <div className="relative w-full">
+                        <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 stroke-width="1.5"
                                 stroke="currentColor"
-                                class="size-5"
+                                className="size-5"
                             >
                                 <path
                                     stroke-linecap="round"
@@ -47,16 +47,16 @@ export default function Index({ auth, photographers }) {
                         <input
                             type="text"
                             id="voice-search"
-                            class="bg-[#e5e7eb] border border-[#FF3300] text-black text-sm rounded-lg focus:ring-[#FF3300] focus:border-[#FF3300] block w-full ps-10 p-2.5"
+                            className="bg-[#e5e7eb] border border-[#FF3300] text-black text-sm rounded-lg focus:ring-[#FF3300] focus:border-[#FF3300] block w-full ps-10 p-2.5"
                             placeholder="Search photographers"
                             required
                         />
                         <button
                             type="button"
-                            class="absolute inset-y-0 end-0 flex items-center pe-3"
+                            className="absolute inset-y-0 end-0 flex items-center pe-3"
                         >
                             <svg
-                                class="w-4 h-4 text-[#FF3300] dark:text-[#FF3300] hover:text-white dark:hover:text-white"
+                                className="w-4 h-4 text-[#FF3300] dark:text-[#FF3300] hover:text-white dark:hover:text-white"
                                 aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
@@ -74,10 +74,10 @@ export default function Index({ auth, photographers }) {
                     </div>
                     <button
                         type="submit"
-                        class="inline-flex items-center py-2.5 px-3 ms-2 text-sm font-medium text-white bg-[#FF3300] rounded-lg border border-[#FF3300] hover:bg-[#1F1F1F] focus:ring-4 focus:outline-none focus:ring-[#FF3300] dark:bg-[#FF3300] dark:hover:bg-[#1F1F1F] dark:focus:ring-[#FF3300]"
+                        className="inline-flex items-center py-2.5 px-3 ms-2 text-sm font-medium text-white bg-[#FF3300] rounded-lg border border-[#FF3300] hover:bg-[#1F1F1F] focus:ring-4 focus:outline-none focus:ring-[#FF3300] dark:bg-[#FF3300] dark:hover:bg-[#1F1F1F] dark:focus:ring-[#FF3300]"
                     >
                         <svg
-                            class="w-4 h-4 me-2"
+                            className="w-4 h-4 me-2"
                             aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"

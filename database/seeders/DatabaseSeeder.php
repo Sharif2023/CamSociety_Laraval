@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        echo "Seeding Admin...\n";
         $admin = Admin::updateOrCreate(
             ['email' => 'adnan@admin.com'],
             [
@@ -25,6 +26,7 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
+        echo "Seeding User...\n";
         $userAccount = User::updateOrCreate(
             ['email' => 'adnan@user.com'],
             [
@@ -35,6 +37,7 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
+        echo "Seeding Photographer...\n";
         $photographerAccount = User::updateOrCreate(
             ['email' => 'adnan@photo.com'],
             [
@@ -47,10 +50,12 @@ class DatabaseSeeder extends Seeder
 
         // Only seed extra dummy data if DB is empty
         if (User::count() <= 3) {
+            echo "Seeding 20 extra users...\n";
             User::factory()->count(20)->create();
         }
 
         if (PhotoSell::count() == 0) {
+            echo "Seeding photos...\n";
             // Seed photos for our specific photographer
             PhotoSell::factory()->count(10)->create([
                 'created_by' => $photographerAccount->id
@@ -61,6 +66,7 @@ class DatabaseSeeder extends Seeder
         }
 
         if (BookEvent::count() == 0) {
+            echo "Seeding events...\n";
             // Seed events for our specific user
             BookEvent::factory()->count(10)->create([
                 'created_by' => $userAccount->id,
@@ -70,5 +76,6 @@ class DatabaseSeeder extends Seeder
             // Seed a few more random events
             BookEvent::factory()->count(20)->create();
         }
+        echo "Seeding completed successfully!\n";
     }
 }
