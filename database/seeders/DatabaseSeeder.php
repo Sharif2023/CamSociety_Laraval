@@ -18,27 +18,41 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        Admin::factory()->create(
+        $admin = Admin::updateOrCreate(
+            ['email' => 'adnan@admin.com'],
             [
-            'name' => 'Admin',
-            'email' => 'adnan@admin.com',
-            'password' => '12345678',
-            'is_active' => 1,
+                'name' => 'Admin',
+                'password' => '12345678',
+                'is_active' => 1,
             ]
-    );
+        );
 
-        User::factory()->create([
-            'name' => 'User',
-            'email' => 'adnan@user.com',
-            'password' => '12345678',
-            'role' => 0,
+        $userAccount = User::updateOrCreate(
+            ['email' => 'adnan@user.com'],
+            [
+                'name' => 'User',
+                'password' => '12345678',
+                'role' => 0,
+            ]
+        );
+
+        $photographerAccount = User::updateOrCreate(
+            ['email' => 'adnan@photo.com'],
+            [
+                'name' => 'Photographer',
+                'password' => '12345678',
+                'role' => 1,
+            ]
+        );
+
+        // Explicitly create some data for our specific photographer
+        PhotoSell::factory()->count(5)->create([
+            'created_by' => $photographerAccount->id
         ]);
 
-        User::factory()->create([
-            'name' => 'Photographer',
-            'email' => 'adnan@photo.com',
-            'password' => '12345678',
-            'role' => 1,
+        BookEvent::factory()->count(5)->create([
+            'created_by' => $userAccount->id,
+            'hiring_status' => 'open'
         ]);
 
 
