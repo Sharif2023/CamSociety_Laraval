@@ -50,7 +50,9 @@ class RegisteredUserController extends Controller
 
             Auth::login($user);
 
-            return redirect(route('dashboard', absolute: false))->with(['success' => 'Account created. Welcome!']);
+            $url = $user->role === 1 ? route('photographer.dashboard') : route('dashboard');
+
+            return redirect($url)->with(['success' => 'Account created. Welcome!']);
         } catch (\Exception $e) {
             \Log::error('Registration Error: ' . $e->getMessage(), [
                 'email' => $request->email,

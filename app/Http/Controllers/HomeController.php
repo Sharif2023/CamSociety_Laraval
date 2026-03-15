@@ -59,4 +59,19 @@ class HomeController extends Controller
     {
         return Inertia::render('BookEvent/EventUpload');
     }
+
+    public function about()
+    {
+        return Inertia::render('Landing/About');
+    }
+
+    public function services()
+    {
+        return Inertia::render('Landing/Services');
+    }
+
+    public function contact()
+    {
+        return Inertia::render('Landing/Contact');
+    }
 }

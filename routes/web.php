@@ -45,6 +45,9 @@ Route::get('/debug-db', function () {
 Route::get('/', [HomeController::class, 'index'])->name('landing'); // Landing page
 Route::get('/login', [HomeController::class, 'login'])->name('login');
 Route::get('/signup', [HomeController::class, 'signup'])->name('signup');
+Route::get('/about', [HomeController::class, 'about'])->name('about');
+Route::get('/services', [HomeController::class, 'services'])->name('services');
+Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 
 // User routes
 Route::middleware(['auth', 'verified', 'role:user',])->group(function () {

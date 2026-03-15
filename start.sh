@@ -1,10 +1,17 @@
 echo "Starting bootstrap process..."
 
-# Run migrations
+# Optimize Laravel for Production
+echo "Optimizing configuration..."
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+
+# Run migrations (Forced for production)
 echo "Running migrations..."
 php artisan migrate --force
 
-# Seed database (Render Free Tier resets SQLite on boot)
+# Seed database (Render Free Tier resets SQLite on boot, so we seed periodically)
+# Note: In a persistent DB environment, seeding should be handled carefully.
 echo "Seeding database..."
 php artisan db:seed --force || true
 

@@ -33,7 +33,9 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false))->with(['success' => 'Welcome back!']);
+        $url = $request->user()->role === 1 ? route('photographer.dashboard') : route('dashboard');
+
+        return redirect()->intended($url)->with(['success' => 'Welcome back!']);
     }
 
     /**

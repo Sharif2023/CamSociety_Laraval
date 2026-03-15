@@ -47,4 +47,19 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function photoSells()
+    {
+        return $this->hasMany(PhotoSell::class, 'created_by');
+    }
+
+    public function bookEvents()
+    {
+        return $this->hasMany(BookEvent::class, 'created_by');
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class, 'made_by');
+    }
 }

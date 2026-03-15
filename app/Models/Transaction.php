@@ -23,4 +23,9 @@ class Transaction extends Model
     protected $casts = [
         'photo_ids' => 'array', // Automatically handles the JSON array
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'made_by');
+    }
 }

@@ -18,7 +18,7 @@ class EventController extends Controller
         $query = BookEvent::query();
 
         if (request('title')) {
-            $query->where('title', 'like', '%' . request('title') . '%');
+            $query->where('event_name', 'like', '%' . request('title') . '%');
         }
         if (request('address')) {
             $query->where('address', 'like', '%' . request('address') . '%');
@@ -28,7 +28,7 @@ class EventController extends Controller
         $bookevents = $query->where('hiring_status', 'open')->paginate(12)->onEachSide(1);
 
         return Inertia::render('BookEvent/Index', [
-            'bookevents' => $bookevents,
+            'bookevents' => \App\Http\Resources\BookEventResource::collection($bookevents),
         ]);
     }
 
