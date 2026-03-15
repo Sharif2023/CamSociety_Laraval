@@ -81,7 +81,7 @@ class BookEventFactory extends Factory
             'rate' => $this->faker->numberBetween(30, 200) * 100, // 100x multiplied format (3,000 to 20,000)
             'description' => $this->faker->randomElement($descriptions) . " " . $this->faker->sentence(),
             'photo_url' => $photoUrl,
-            'hiring_status' => $this->faker->randomElement(['open', 'closed']),
+            'hiring_status' => 'open',
             'application_count' => $this->faker->numberBetween(0, 50),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
