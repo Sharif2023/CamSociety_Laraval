@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LogIn-CamSocity</title>
+    <title>LogIn-CamSociety</title>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -17,7 +17,7 @@
 <body>
     <div class="min-h-screen flex items-center justify-center bg-gray-100 bg-cover bg-center h-screen " style="background-image: url('./assets/login_signup/login_bg.jpg');">
         <div class="bg-white shadow-lg rounded-lg w-full max-w-md p-8">
-          <h2 class="text-2xl font-semibold text-center mb-4">Login to CamSocity</h2>
+          <h2 class="text-2xl font-semibold text-center mb-4">Login to CamSociety</h2>
           <form>
             <!-- Email -->
             <div class="mb-4">

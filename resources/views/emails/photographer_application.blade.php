@@ -24,6 +24,6 @@
 
     <p>To view more details, log in to your account on the platform.</p>
     
-    <p>Thank you, <br>CamSocity Team</p>
+    <p>Thank you, <br>CamSociety Team</p>
 </body>
 </html>
