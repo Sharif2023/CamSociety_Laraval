@@ -18,7 +18,8 @@ RUN apt-get update && apt-get install -y \
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+# Install PHP extensions
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd pdo_sqlite
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -26,17 +27,23 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /var/www
 
+# Copy only composer files first for better caching
+COPY composer.json composer.lock /var/www/
+
+# Install composer dependencies
+RUN composer install --no-interaction --no-scripts --no-autoloader --no-dev
+
 # Copy existing application directory contents
 COPY . /var/www
 
-# Create SQLite database file and set permissions
+# Run composer autoloader and scripts
+RUN composer dump-autoload --optimize --no-dev
+
+# Create SQLite database file and set permissions (if not copied from host)
 RUN mkdir -p /var/www/database && \
     touch /var/www/database/database.sqlite && \
     chown -R www-data:www-data /var/www/database && \
     chmod -R 775 /var/www/database
-
-# Install composer dependencies
-RUN composer install --no-interaction --optimize-autoloader --no-dev
 
 # Setup Nginx
 COPY ./docker-nginx.conf /etc/nginx/sites-available/default
