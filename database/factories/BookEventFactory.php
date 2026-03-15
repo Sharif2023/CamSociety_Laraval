@@ -78,9 +78,9 @@ class BookEventFactory extends Factory
             'end_date' => $this->faker->dateTimeBetween('+2 months', '+3 months')->format('Y-m-d'),
             'start_time' => $this->faker->time('H:i'),
             'end_time' => $this->faker->time('H:i'),
-            'rate' => $this->faker->numberBetween(30, 200) * 100, // 100x multiplied format (3,000 to 20,000)
+            'rate' => $this->faker->numberBetween(30, 200) * 100 * 100, // 100x multiplied format (3,000 to 20,000) -> 300000 to 2000000
             'description' => $this->faker->randomElement($descriptions) . " " . $this->faker->sentence(),
-            'photo_url' => $photoUrl,
+            'photo_url' => 'https://loremflickr.com/600/400/' . $keyword . ',event?lock=' . $this->faker->unique()->numberBetween(1, 10000),
             'hiring_status' => 'open',
             'application_count' => $this->faker->numberBetween(0, 50),
             'created_at' => Carbon::now(),

@@ -2,66 +2,9 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import PhotographerLayout from "../Photographer/Layout/PhotographerLayout";
 
-export default function Index({ auth }) {
+export default function Index({ auth, photographers }) {
 
-    const photographers = [
-        {
-            name: "Rafiqul Islam",
-            profession: "Wedding Photographer",
-            location: "Dhaka, BD",
-            rating: "4.9/5 (112 reviews)",
-            image: "https://loremflickr.com/200/200/face,portrait,bangladesh?lock=101",
-        },
-        {
-            name: "Sadia Rahman",
-            profession: "Event Photographer",
-            location: "Chattogram, BD",
-            rating: "4.8/5 (84 reviews)",
-            image: "https://loremflickr.com/200/200/face,portrait,bangladesh?lock=102",
-        },
-        {
-            name: "Tanvir Ahmed",
-            profession: "Portrait & Fashion Photographer",
-            location: "Sylhet, BD",
-            rating: "4.7/5 (45 reviews)",
-            image: "https://loremflickr.com/200/200/face,portrait,bangladesh?lock=103",
-        },
-        {
-            name: "Nusrat Jahan",
-            profession: "Maternity & Newborn Photographer",
-            location: "Dhaka, BD",
-            rating: "4.9/5 (156 reviews)",
-            image: "https://loremflickr.com/200/200/face,portrait,bangladesh?lock=104",
-        },
-        {
-            name: "Kamrul Hasan",
-            profession: "Corporate Event Photographer",
-            location: "Rajshahi, BD",
-            rating: "4.6/5 (34 reviews)",
-            image: "https://loremflickr.com/200/200/face,portrait,bangladesh?lock=105",
-        },
-        {
-            name: "Farhana Akter",
-            profession: "Wildlife & Nature Photographer",
-            location: "Khulna, BD",
-            rating: "4.8/5 (92 reviews)",
-            image: "https://loremflickr.com/200/200/face,portrait,bangladesh?lock=106",
-        },
-        {
-            name: "Mehedi Hasan",
-            profession: "Product Photographer",
-            location: "Dhaka, BD",
-            rating: "4.7/5 (68 reviews)",
-            image: "https://loremflickr.com/200/200/face,portrait,bangladesh?lock=107",
-        },
-        {
-            name: "Ayesha Siddiqua",
-            profession: "Real Estate Photographer",
-            location: "Chattogram, BD",
-            rating: "4.5/5 (27 reviews)",
-            image: "https://loremflickr.com/200/200/face,portrait,bangladesh?lock=108",
-        },
-    ];
+    const photographersData = photographers.data;
     
     
     const Layout = auth.role === "photographer" ? PhotographerLayout : AuthenticatedLayout;
@@ -153,34 +96,37 @@ export default function Index({ auth }) {
 
 
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                    {photographers.map((photographer, index) => (
+                    {photographersData.map((photographer) => (
                         <div
-                            key={index}
+                            key={photographer.id}
                             className="overflow-hidden bg-white rounded-lg p-5 text-center shadow-sm sm:rounded-lg"
                         >
                             <img
-                                src={photographer.image}
+                                src={photographer.profile_picture}
                                 alt={photographer.name}
-                                class="w-32 h-32 rounded-full mx-auto mb-4"
+                                className="w-32 h-32 rounded-full mx-auto mb-4 object-cover"
                             />
                             <div className="p-6 text-gray-900">
                                 <h3 className="text-lg font-bold leading-tight text-gray-800">
                                     {photographer.name}
                                 </h3>
-                                <p className="text-sm text-gray-600">
-                                    {photographer.profession}
-                                </p>
-                                <p className="text-sm text-gray-600">
-                                    {photographer.location}
+                                <p className="text-sm text-gray-600 italic">
+                                    {photographer.bio}
                                 </p>
                                 <p className="text-sm text-yellow-500 font-bold">
-                                    {photographer.rating}
+                                    Rating: {photographer.rating}
                                 </p>
-                                <button class="bg-[#1F1F1F] text-white mt-4 px-4 py-2 rounded hover:bg-[#FF3300]">Hire Me</button>
+                                <button className="bg-[#1F1F1F] text-white mt-4 px-4 py-2 rounded hover:bg-[#FF3300]">Hire Me</button>
                             </div>
                         </div>
                     ))}
                 </div>
+                
+                {photographers.meta && (
+                    <div className="mt-8">
+                        <Pagination links={photographers.meta.links} />
+                    </div>
+                )}
             </div>
         </Layout>
     );
