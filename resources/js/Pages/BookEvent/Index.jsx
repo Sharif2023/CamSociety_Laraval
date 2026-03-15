@@ -9,7 +9,7 @@ import AddEventModal from "./Components/AddEventModal";
 import { ToastContainer, toast } from 'react-toastify';
 
 export default function index({ auth, bookevents, queryParams = null, flash }) {
-  const events = bookevents?.data || [];
+  const events = bookevents?.data || bookevents || [];
 
   useEffect(() => {
     if (flash?.message?.success) {
@@ -98,7 +98,7 @@ export default function index({ auth, bookevents, queryParams = null, flash }) {
             </div>
 
             <div className="animate-in fade-in slide-in-from-bottom-8 duration-1000">
-                {events.length > 0 ? (
+                {events && events.length > 0 ? (
                     <EventGrid events={events} />
                 ) : (
                     <div className="flex flex-col items-center justify-center py-20 bg-white/[0.01] border border-white/5 rounded-[3rem] backdrop-blur-md">

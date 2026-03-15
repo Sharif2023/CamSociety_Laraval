@@ -59,12 +59,25 @@
                 placeholder="Confirm your password"
               />
             </div>
+            <!-- Role Selection -->
+            <div class="mb-4">
+              <label for="role" class="block text-sm font-medium text-gray-700">Join as</label>
+              <select
+                id="role"
+                name="role"
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 bg-white"
+              >
+                <option value="0">Client / General User</option>
+                <option value="1">Professional Photographer</option>
+              </select>
+            </div>
+
             <!-- Sign Up Button -->
             <button
               type="submit"
-              class="w-full bg-green-500 text-white py-2 rounded-md font-medium hover:bg-green-600"
+              class="w-full bg-[#FF3300] text-white py-3 rounded-md font-bold hover:bg-[#CC2900] transition-colors shadow-lg"
             >
-              Sign Up
+              Initialize Membership
             </button>
           </form>
           <!-- Already have an account -->

@@ -21,7 +21,7 @@ export default function Index({ auth, photoSells, queryParams = null , flash}) {
         }
     }, [flash]);
 
-    const [photos, setPhotoSells] = useState(photoSells.data);
+    const photos = photoSells.data;
     
     const categories = [
         ...new Set(photoSells.data.map((photo) => photo.category)),

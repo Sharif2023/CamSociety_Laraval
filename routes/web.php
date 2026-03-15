@@ -105,13 +105,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 });
 
-//event upload
-Route::post('/event-upload', [EventController::class, 'store']);
-Route::get('/event-upload', [HomeController::class, 'eventupload'])->name('eventupload');
-//fetch event from db shown to events and evendetails
-Route::get('/events', [EventController::class, 'index']);
-
-
 //photographer blogntip
 Route::get('/photographer-blog-tips', function () {
     return Inertia::render('PhotographerView/PhotographerBlogNTips');

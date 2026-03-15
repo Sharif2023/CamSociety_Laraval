@@ -19,7 +19,7 @@ class PhotoSell extends Model
         'created_by',
     ];
 
-    function createdBy() {
+    function creator() {
         return $this->belongsTo(User::class, 'created_by');
     }
 }
