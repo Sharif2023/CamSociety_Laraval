@@ -20,7 +20,7 @@ export default function PhotographerLayout({ header, children }) {
     return (
         <div className="min-h-screen bg-[#050505] font-['Outfit'] text-white selection:bg-[#FF3300] selection:text-white">
             {/* Premium Glassmorphism Navbar */}
-            <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? "bg-black/95 backdrop-blur-3xl border-b border-white/10 py-3" : "bg-transparent py-5"}`}>
+            <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? "bg-black/80 backdrop-blur-xl border-b border-white/10 py-3" : "bg-transparent py-5"}`}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center h-16">
                         <div className="flex items-center gap-4 group cursor-pointer">
@@ -31,7 +31,7 @@ export default function PhotographerLayout({ header, children }) {
                                 </div>
                                 <div className="hidden sm:block">
                                     <span className="text-2xl font-bold tracking-tight bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent font-['Playfair_Display']">CamSociety</span>
-                                    <p className="text-[10px] uppercase tracking-[0.2em] text-[#FF3300] font-black">Photographer Suite</p>
+                                    <p className="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-medium">The Photography Elite</p>
                                 </div>
                             </Link>
                         </div>
@@ -47,12 +47,10 @@ export default function PhotographerLayout({ header, children }) {
                                 <Link
                                     key={item.name}
                                     href={item.href}
-                                    className={`relative px-1 py-2 text-sm font-black transition-all duration-300 uppercase tracking-widest ${item.active ? "text-[#FF3300]" : "text-gray-400 hover:text-white"}`}
+                                    className={`relative px-1 py-2 text-sm font-medium transition-colors duration-300 ${item.active ? "text-[#FF3300]" : "text-gray-400 hover:text-white"}`}
                                 >
                                     {item.name}
-                                    {item.active && (
-                                        <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#FF3300] rounded-full shadow-[0_0_15px_#FF3300]"></span>
-                                    )}
+                                    <span className={`absolute bottom-0 left-0 h-0.5 bg-[#FF3300] rounded-full shadow-[0_0_10px_#FF3300] transition-all duration-300 ${item.active ? "w-full" : "w-0 group-hover:w-full"}`}></span>
                                 </Link>
                             ))}
                         </div>
@@ -70,18 +68,18 @@ export default function PhotographerLayout({ header, children }) {
                             <div className="hidden sm:flex items-center">
                                 <Dropdown>
                                     <Dropdown.Trigger>
-                                        <button className="flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 hover:border-[#FF3300]/50 transition-all duration-500">
-                                            <div className="h-8 w-8 rounded-full bg-gradient-to-br from-[#FF3300] to-indigo-600 p-[1.5px]">
-                                                <div className="h-full w-full rounded-full bg-black flex items-center justify-center overflow-hidden">
-                                                    <img src={user?.profile_picture || `https://i.pravatar.cc/100?u=${user?.id || 'anon'}`} className="w-full h-full object-cover opacity-80" />
+                                        <button className="flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300">
+                                            <div className="h-8 w-8 rounded-full bg-gradient-to-br from-[#FF3300] to-[#992200] p-[2px]">
+                                                <div className="h-full w-full rounded-full bg-black flex items-center justify-center text-xs font-bold">
+                                                    {user?.name?.charAt(0) || 'U'}
                                                 </div>
                                             </div>
                                             <div className="text-left hidden lg:block">
-                                                <div className="text-xs font-black text-white leading-tight">{user?.name || 'Photographer'}</div>
+                                                <div className="text-sm font-black text-white leading-tight">{user?.name || 'Photographer'}</div>
                                                 <div className="text-[9px] font-black uppercase tracking-widest text-[#FF3300]">Certified Visionary</div>
                                             </div>
-                                            <span className="text-xs font-black uppercase tracking-widest lg:hidden">{user?.name || 'Photographer'}</span>
-                                            <svg className="h-3 w-3 opacity-50" fill="currentColor" viewBox="0 0 20 20">
+                                            <span className="text-sm font-medium lg:hidden">{user?.name || 'Photographer'}</span>
+                                            <svg className="h-4 w-4 opacity-50" fill="currentColor" viewBox="0 0 20 20">
                                                 <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
                                             </svg>
                                         </button>
