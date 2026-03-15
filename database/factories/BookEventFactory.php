@@ -80,7 +80,7 @@ class BookEventFactory extends Factory
             'end_time' => $this->faker->time('H:i'),
             'rate' => $this->faker->numberBetween(30, 200) * 100 * 100, // 100x multiplied format (3,000 to 20,000) -> 300000 to 2000000
             'description' => $this->faker->randomElement($descriptions) . " " . $this->faker->sentence(),
-            'photo_url' => 'https://loremflickr.com/600/400/' . $keyword . ',event?lock=' . $this->faker->unique()->numberBetween(1, 10000),
+            'photo_url' => 'https://placehold.co/600x400/000000/FFFFFF/png?text=' . urlencode($eventType),
             'hiring_status' => 'open',
             'application_count' => $this->faker->numberBetween(0, 50),
             'created_at' => Carbon::now(),

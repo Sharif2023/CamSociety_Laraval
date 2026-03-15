@@ -66,7 +66,7 @@ class PhotoSellFactory extends Factory
             'description' => $this->faker->randomElement($descriptions),
             'price' => $this->faker->numberBetween(50, 1000) * 100, // Multiples of 100, e.g., 5000 to 100000 BDT
             'category' => $category,
-            'image_url' => 'https://loremflickr.com/600/400/' . urlencode(strtolower($category)) . ',bangladesh?lock=' . $this->faker->unique()->numberBetween(1, 10000),
+            'image_url' => 'https://placehold.co/600x400/000000/FFFFFF/png?text=' . urlencode($title),
         ];
     }
 }

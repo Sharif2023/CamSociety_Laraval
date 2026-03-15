@@ -1,6 +1,7 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import PhotographerLayout from "../Photographer/Layout/PhotographerLayout";
+import Pagination from "@/Components/Pagination";
 
 export default function Index({ auth, photographers }) {
 
