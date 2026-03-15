@@ -12,7 +12,12 @@ RUN apt-get update && apt-get install -y \
     unzip \
     nginx \
     sqlite3 \
-    libsqlite3-dev
+    libsqlite3-dev \
+    gnupg
+
+# Install Node.js (Latest LTS)
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -33,8 +38,17 @@ COPY composer.json composer.lock /var/www/
 # Install composer dependencies
 RUN composer install --no-interaction --no-scripts --no-autoloader --no-dev
 
+# Copy only package files first for better caching
+COPY package.json package-lock.json* /var/www/
+
+# Install Node dependencies
+RUN npm install
+
 # Copy existing application directory contents
 COPY . /var/www
+
+# Run Vite build
+RUN npm run build
 
 # Run composer autoloader and scripts
 RUN composer dump-autoload --optimize --no-dev
