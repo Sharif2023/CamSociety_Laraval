@@ -38,7 +38,7 @@ export default function Login({ status, canResetPassword }) {
                             <h1 className="text-4xl font-black font-['Playfair_Display'] text-white">
                                 Welcome <span className="italic text-[#FF3300]">Back</span>
                             </h1>
-                            <p className="text-gray-500 text-[10px] uppercase tracking-[0.3em] font-bold mt-3">Re-enter the Elite Circle</p>
+                            <p className="text-gray-500 text-[10px] uppercase tracking-[0.3em] font-bold mt-3">Access Your Professional Workspace</p>
                         </div>
 
                         {status && (
@@ -50,7 +50,7 @@ export default function Login({ status, canResetPassword }) {
                         <form onSubmit={submit} className="space-y-6">
                             {/* Email Field */}
                             <div className="space-y-2">
-                                <InputLabel htmlFor="email" value="Email Protocol" className="text-gray-500 text-[10px] font-black uppercase tracking-widest ml-4" />
+                                <InputLabel htmlFor="email" value="Email Address" className="text-gray-500 text-[10px] font-black uppercase tracking-widest ml-4" />
                                 <TextInput
                                     id="email"
                                     type="email"
@@ -59,7 +59,7 @@ export default function Login({ status, canResetPassword }) {
                                     className="block w-full px-6 py-4 rounded-2xl"
                                     autoComplete="username"
                                     isFocused={true}
-                                    placeholder="your@prestige.com"
+                                    placeholder="name@example.com"
                                     onChange={(e) => setData('email', e.target.value)}
                                 />
                                 <InputError message={errors.email} className="mt-1 ml-4" />
@@ -68,13 +68,13 @@ export default function Login({ status, canResetPassword }) {
                             {/* Password Field */}
                             <div className="space-y-2">
                                 <div className="flex justify-between items-center px-4">
-                                    <InputLabel htmlFor="password" value="Access Key" className="text-gray-500 text-[10px] font-black uppercase tracking-widest" />
+                                    <InputLabel htmlFor="password" value="Password" className="text-gray-500 text-[10px] font-black uppercase tracking-widest" />
                                     {canResetPassword && (
                                         <Link
                                             href={route('password.request')}
                                             className="text-[10px] text-gray-500 hover:text-[#FF3300] font-black uppercase tracking-widest transition-colors"
                                         >
-                                            Lost Key?
+                                            Forgot Password?
                                         </Link>
                                     )}
                                 </div>
@@ -100,7 +100,7 @@ export default function Login({ status, canResetPassword }) {
                                         onChange={(e) => setData('remember', e.target.checked)}
                                         className="bg-white/5 border-white/10 text-[#FF3300] rounded focus:ring-0 focus:ring-offset-0"
                                     />
-                                    <span className="ms-2 text-[10px] font-black text-gray-500 group-hover:text-gray-300 transition-colors uppercase tracking-widest">Maintain Session</span>
+                                    <span className="ms-2 text-[10px] font-black text-gray-500 group-hover:text-gray-300 transition-colors uppercase tracking-widest">Remember Me</span>
                                 </label>
                             </div>
 
@@ -110,7 +110,7 @@ export default function Login({ status, canResetPassword }) {
                                 disabled={processing}
                                 className="w-full relative group py-4 bg-[#FF3300] text-white text-xs font-black uppercase tracking-[0.2em] rounded-2xl shadow-[0_10px_30px_rgba(255,51,0,0.2)] hover:shadow-[0_15px_40px_rgba(255,51,0,0.4)] transition-all transform hover:-translate-y-1 active:scale-[0.98] disabled:opacity-50 mt-4 overflow-hidden"
                             >
-                                <span className="relative z-10">{processing ? 'Initiating...' : 'Authorize Login'}</span>
+                                <span className="relative z-10">{processing ? 'Signing In...' : 'Sign In'}</span>
                                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                             </button>
 
