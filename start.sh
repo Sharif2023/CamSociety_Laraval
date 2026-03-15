@@ -4,7 +4,7 @@
 php artisan migrate --force
 
 # Seed database (Render Free Tier resets SQLite on boot)
-php artisan db:seed --force
+php artisan db:seed --force || true
 
 # Start PHP-FPM in background
 php-fpm -D

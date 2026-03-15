@@ -25,12 +25,14 @@ Route::get('/debug-db', function () {
         $output = \Illuminate\Support\Facades\Artisan::output();
         
         $usersCount = \App\Models\User::count();
-        $schema = \Illuminate\Support\Facades\DB::select("SELECT sql FROM sqlite_master WHERE type='table' AND name='users'");
+        $photosCount = \App\Models\PhotoSell::count();
+        $eventsCount = \App\Models\BookEvent::count();
         
         return response()->json([
             'migrate_status' => $output,
             'users_count' => $usersCount,
-            'users_schema' => $schema,
+            'photos_count' => $photosCount,
+            'events_count' => $eventsCount,
             'db_path' => config('database.connections.sqlite.database'),
             'env' => app()->environment(),
         ]);

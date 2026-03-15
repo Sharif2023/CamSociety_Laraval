@@ -16,8 +16,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
         $admin = Admin::updateOrCreate(
             ['email' => 'adnan@admin.com'],
             [
@@ -33,6 +31,7 @@ class DatabaseSeeder extends Seeder
                 'name' => 'User',
                 'password' => '12345678',
                 'role' => 0,
+                'is_active' => 1,
             ]
         );
 
@@ -42,30 +41,34 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Photographer',
                 'password' => '12345678',
                 'role' => 1,
+                'is_active' => 1,
             ]
         );
 
-        // Explicitly create some data for our specific photographer
-        PhotoSell::factory()->count(5)->create([
-            'created_by' => $photographerAccount->id
-        ]);
+        // Only seed extra dummy data if DB is empty
+        if (User::count() <= 3) {
+            User::factory()->count(20)->create();
+        }
 
-        BookEvent::factory()->count(5)->create([
-            'created_by' => $userAccount->id,
-            'hiring_status' => 'open'
-        ]);
+        if (PhotoSell::count() == 0) {
+            // Seed photos for our specific photographer
+            PhotoSell::factory()->count(10)->create([
+                'created_by' => $photographerAccount->id
+            ]);
+            
+            // Seed a few more random photos
+            PhotoSell::factory()->count(20)->create();
+        }
 
+        if (BookEvent::count() == 0) {
+            // Seed events for our specific user
+            BookEvent::factory()->count(10)->create([
+                'created_by' => $userAccount->id,
+                'hiring_status' => 'open'
+            ]);
 
-        User::factory()
-            ->count(50)
-            ->create();
-
-        PhotoSell::factory()
-            ->count(30)
-            ->create();
-
-        BookEvent::factory()
-            ->count(50)
-            ->create();
+            // Seed a few more random events
+            BookEvent::factory()->count(20)->create();
+        }
     }
 }
