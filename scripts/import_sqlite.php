@@ -55,9 +55,6 @@ $sql = preg_replace('/SET\s+time_zone\s*=\s*[^;]+;/i', '', $sql);
 $sql = preg_replace('/START\s+TRANSACTION;/i', '', $sql);
 $sql = preg_replace('/COMMIT;/i', '', $sql);
 
-// Split into individual statements (basic approximation)
-$statements = array_filter(array_map('trim', explode(';', $sql)));
-
 echo "Starting import into SQLite ($dbPath)...\n";
 
 try {
@@ -65,33 +62,47 @@ try {
     
     // Disable foreign key checks for import
     DB::statement('PRAGMA foreign_keys = OFF;');
+
+    $tempStatement = '';
+    $inString = false;
     
-    foreach ($statements as $statement) {
-        if (empty($statement)) continue;
-        
-        // Skip migration table to let Laravel handle it
-        if (stripos($statement, 'CREATE TABLE `migrations`') !== false || 
-            stripos($statement, 'INSERT INTO `migrations`') !== false) {
-            echo "Skipping migrations table statement...\n";
+    foreach (explode("\n", $sql) as $line) {
+        $trimmedLine = trim($line);
+        if (empty($trimmedLine) || str_starts_with($trimmedLine, '--') || str_starts_with($trimmedLine, '/*')) {
             continue;
         }
 
-        // Skip ALTER TABLE statements which often fail in SQLite for primary keys/auto-increment
-        if (stripos($statement, 'ALTER TABLE') !== false) {
-            continue;
-        }
+        $tempStatement .= $line . "\n";
         
-        try {
-            DB::statement($statement);
-        } catch (\Exception $e) {
-            // Silently skip common errors during cleaning
-            if (stripos($e->getMessage(), 'already exists') === false) {
-                echo "Skipped statement: " . substr($statement, 0, 50) . "...\n";
-                // echo "Error: " . $e->getMessage() . "\n";
+        // Count single quotes to handle multi-line strings (basic)
+        $inString = (substr_count($tempStatement, "'") - substr_count($tempStatement, "\\'")) % 2 !== 0;
+
+        if (!$inString && str_ends_with($trimmedLine, ';')) {
+            $statement = trim($tempStatement);
+            $tempStatement = '';
+            
+            if (empty($statement)) continue;
+
+            // Skip migration table to let Laravel handle it
+            if (stripos($statement, 'CREATE TABLE `migrations`') !== false || 
+                stripos($statement, 'INSERT INTO `migrations`') !== false) {
+                continue;
+            }
+
+            // Skip ALTER TABLE statements for primary keys/auto-increment (SQLite handles this in CREATE)
+            if (stripos($statement, 'ALTER TABLE') !== false) {
+                continue;
+            }
+
+            try {
+                DB::statement($statement);
+            } catch (\Exception $e) {
+                if (stripos($e->getMessage(), 'already exists') === false) {
+                    echo "Skipped statement (Error: " . substr($e->getMessage(), 0, 50) . "...)\n";
+                }
             }
         }
     }
-    
     DB::statement('PRAGMA foreign_keys = ON;');
     DB::commit();
     echo "Import completed successfully!\n";
