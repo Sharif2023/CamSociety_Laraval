@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CamSocity - Your Photography Hub</title>
+    <title>CamSociety - Your Photography Hub</title>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -26,7 +26,7 @@
                         C
                     </div>
                     <div class="flex flex-col">
-                        <span class="text-xl font-bold tracking-tight text-gray-900 group-hover:text-black transition-colors">CamSocity</span>
+                        <span class="text-xl font-bold tracking-tight text-gray-900 group-hover:text-black transition-colors">CamSociety</span>
                         <span class="text-xs font-medium text-gray-500 uppercase tracking-widest mt-0.5">Your Photography Hub</span>
                     </div>
                 </div>
@@ -80,7 +80,7 @@
                         Capture Stunning Moments
                     </h1>
                     <p class="mt-4 text-lg max-w-2xl">
-                        Join CamSocity, the premier platform for photographers and
+                        Join CamSociety, the premier platform for photographers and
                         enthusiasts in Bangladesh. Unleash your creativity, connect with
                         like-minded individuals, and embark on a fulfilling photography
                         journey.
@@ -120,7 +120,7 @@
                         Join the Photography Revolution Today
                     </h3>
                     <p class="mt-4 text-gray-600">
-                        At CamSocity, we empower photographers to showcase their skills,
+                        At CamSociety, we empower photographers to showcase their skills,
                         connect with like-minded allies, and grow their careers. Whether
                         you're a seasoned pro or just starting out, this is your place to
                         shine.
@@ -167,7 +167,7 @@
                             <img src="/assets/landing_page/m_image02.png" alt="Feature Image 2" class="w-auto h-1/3 rounded-lg" />
                         </div>
                         <p class="mt-4 text-gray-600 max-w-2xl text-left w-2/3">
-                            CamSocity offers a comprehensive platform designed for photographers
+                            CamSociety offers a comprehensive platform designed for photographers
                             of all levels. From a vibrant marketplace to community engagement,
                             our features empower you to connect, create, and thrive in your
                             photography journey.
@@ -216,7 +216,7 @@
                 <p class="mt-2 text-gray-700 max-w-xl mx-auto ">
                     Join a thriving community of creators who are passionate about
                     photography. From sharing tips and tricks to exhibiting your work,
-                    CamSocity is the ideal platform to connect and grow.
+                    CamSociety is the ideal platform to connect and grow.
                 </p>
             </div>
         </section>
@@ -230,10 +230,10 @@
                 <div class="mt-8 space-y-4">
                     <details class="border rounded-lg p-4">
                         <summary class="font-semibold cursor-pointer">
-                            What is CamSocity?
+                            What is CamSociety?
                         </summary>
                         <p class="mt-2 text-gray-600">
-                            CamSocity provides a platform for photographers to showcase
+                            CamSociety provides a platform for photographers to showcase
                             their work, connect with others, and grow their careers.
                         </p>
                     </details>
@@ -275,11 +275,11 @@
                     <div>
                         <h3 class="text-6xl font-bold">Contact Us Today</h3>
                         <p class="mt-4">
-                            CamSocity Headquarters, Dhaka, Bangladesh, 125 Photography Lane,
+                            CamSociety Headquarters, Dhaka, Bangladesh, 125 Photography Lane,
                             Connecting Creatives.
                         </p>
                         <p class="mt-2">Phone: +882132456789</p>
-                        <p class="mt-2">Email: support@camsocity.com</p>
+                        <p class="mt-2">Email: support@camsociety.com</p>
                     </div>
 
                 </div>

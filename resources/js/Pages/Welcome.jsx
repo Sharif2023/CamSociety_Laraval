@@ -33,7 +33,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                     <img src="/images/camSociety_logo.jpg" alt="Camsociety Logo" className="w-full h-full object-cover" />
                                 </div>
                                 <div className="flex flex-col">
-                                    <span className="text-xl font-bold tracking-tight text-gray-900 group-hover:text-black transition-colors leading-tight">CamSocity</span>
+                                    <span className="text-xl font-bold tracking-tight text-gray-900 group-hover:text-black transition-colors leading-tight">CamSociety</span>
                                     <span className="text-xs font-medium text-gray-500 uppercase tracking-widest mt-0.5 leading-tight">Your Photography Hub</span>
                                 </div>
                             </div>
