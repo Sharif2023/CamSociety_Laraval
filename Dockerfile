@@ -55,5 +55,5 @@ RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 # Expose port 80
 EXPOSE 80
 
-# Start Nginx & PHP-FPM
-CMD service nginx start && php-fpm
+# Start PHP-FPM in background and Nginx in foreground
+CMD php-fpm -D && nginx -g "daemon off;"
