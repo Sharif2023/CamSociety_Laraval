@@ -55,6 +55,20 @@ $sql = preg_replace('/SET\s+time_zone\s*=\s*[^;]+;/i', '', $sql);
 $sql = preg_replace('/START\s+TRANSACTION;/i', '', $sql);
 $sql = preg_replace('/COMMIT;/i', '', $sql);
 
+// Add robust type cleaning (important for SQLite)
+$sql = preg_replace('/bigint\(\d+\)\s+UNSIGNED/i', 'INTEGER', $sql);
+$sql = preg_replace('/int\(\d+\)\s+UNSIGNED/i', 'INTEGER', $sql);
+$sql = preg_replace('/tinyint\(\d+\)\s+UNSIGNED/i', 'INTEGER', $sql);
+$sql = preg_replace('/bigint\(\d+\)/i', 'INTEGER', $sql);
+$sql = preg_replace('/int\(\d+\)/i', 'INTEGER', $sql);
+$sql = preg_replace('/tinyint\(\d+\)/i', 'INTEGER', $sql);
+$sql = preg_replace('/\bUNSIGNED\b/i', '', $sql);
+$sql = preg_replace('/\bAUTO_INCREMENT\b/i', 'PRIMARY KEY AUTOINCREMENT', $sql);
+
+// Remove specific index syntax that fails in SQLite
+$sql = preg_replace('/,\s*KEY\s+`[^`]+`\s+\(`[^`]+`\)/i', '', $sql);
+$sql = preg_replace('/,\s*UNIQUE\s+KEY\s+`[^`]+`\s+\(`[^`]+`\)/i', '', $sql);
+
 echo "Starting import into SQLite ($dbPath)...\n";
 
 try {
