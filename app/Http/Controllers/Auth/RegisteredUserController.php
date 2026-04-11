@@ -41,9 +41,9 @@ class RegisteredUserController extends Controller
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
-                'password' => Hash::make($request->password),
+                'password' => $request->password, // 'hashed' cast on User model handles bcrypt
                 'role' => $request->role,
-                'is_active' => 1, // Explicitly set default
+                'is_active' => 1,
             ]);
 
             event(new Registered($user));
