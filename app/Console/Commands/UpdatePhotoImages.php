@@ -70,9 +70,12 @@ class UpdatePhotoImages extends Command
             $bar->advance();
         }
 
+        // Delete any extra records beyond the 21 we updated
+        PhotoSell::whereNotIn('id', $photos->pluck('id'))->delete();
+
         $bar->finish();
         $this->newLine();
-        $this->info('✅ Images updated successfully!');
+        $this->info('✅ Images updated and extra records removed successfully!');
 
         return self::SUCCESS;
     }
