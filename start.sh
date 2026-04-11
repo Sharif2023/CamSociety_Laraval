@@ -15,6 +15,10 @@ php artisan migrate --force
 echo "Seeding database..."
 php artisan db:seed --force || true
 
+# Update curated images
+echo "Updating marketplace images..."
+php artisan photos:update-images
+
 # Start PHP-FPM in background
 echo "Starting PHP-FPM..."
 php-fpm -D
