@@ -109,7 +109,7 @@ export default function index({ auth, bookevents, queryParams = null, flash }) {
             </div>
 
             <div className="mt-20 flex justify-center">
-                {bookevents?.links && <Pagination links={bookevents.links} />}
+                {bookevents?.meta?.links && <Pagination links={bookevents.meta.links} />}
             </div>
         </div>
       </div>
