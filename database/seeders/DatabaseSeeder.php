@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
             ['email' => 'adnan@user.com'],
             [
                 'name' => 'User',
-                'password' => Hash::make('12345678'),
+                'password' => '12345678', // 'hashed' cast on User model handles bcrypt
                 'role' => 0,
                 'is_active' => 1,
             ]
@@ -43,7 +43,7 @@ class DatabaseSeeder extends Seeder
             ['email' => 'adnan@photo.com'],
             [
                 'name' => 'Photographer',
-                'password' => Hash::make('12345678'),
+                'password' => '12345678', // 'hashed' cast on User model handles bcrypt
                 'role' => 1,
                 'is_active' => 1,
             ]
