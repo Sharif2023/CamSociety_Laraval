@@ -11,7 +11,7 @@ export default function ProductCard({ product }) {
     const photoPath = product.image_url && product.image_url.startsWith("http")
         ? product.image_url
         : product.image_url 
-            ? `/PhotoSells/${product.image_url}` 
+            ? (product.image_url.includes('/') ? `/${product.image_url}` : `/PhotoSells/${product.image_url}`)
             : "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?q=80&w=2070&auto=format&fit=crop";
 
     const handleAddToCart = () => {
