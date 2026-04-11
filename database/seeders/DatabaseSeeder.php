@@ -63,7 +63,7 @@ class DatabaseSeeder extends Seeder
             ]);
             
             // Seed a few more random photos
-            PhotoSell::factory()->count(20)->create();
+            PhotoSell::factory()->count(11)->create();
         }
 
         if (BookEvent::count() == 0) {
