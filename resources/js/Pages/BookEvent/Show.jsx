@@ -32,7 +32,7 @@ const Show = ({ event }) => {
         <img
           src={event.photo_url && event.photo_url.startsWith('http')
             ? event.photo_url
-            : event.photo_url && event.photo_url.includes('photos/Events')
+            : event.photo_url && (event.photo_url.includes('photos/events') || event.photo_url.includes('photos/Events'))
             ? (event.photo_url.startsWith('/') ? event.photo_url : `/${event.photo_url}`)
             : `/events_photos/${event.photo_url}`}
           alt={event.event_name}
