@@ -2,7 +2,11 @@ import { router } from "@inertiajs/react";
 import React from "react";
 
 const EventCard = ({ id, image = "", title, address, rate, startDate, endDate }) => {
-  const photoPath = image && image.startsWith("http") ? image : image ? `/events_photos/${image}` : "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1938&auto=format&fit=crop";
+  const photoPath = image && image.startsWith("http")
+    ? image
+    : image
+    ? (image.includes("photos/Events") ? (image.startsWith("/") ? image : `/${image}`) : `/events_photos/${image}`)
+    : "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1938&auto=format&fit=crop";
 
   return (
     <div className="group relative bg-white/[0.02] border border-white/10 rounded-[2.5rem] overflow-hidden hover:border-[#FF3300]/50 transition-all duration-500 shadow-2xl">

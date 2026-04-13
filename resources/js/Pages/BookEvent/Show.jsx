@@ -30,7 +30,11 @@ const Show = ({ event }) => {
       <div className="bg-white rounded-lg shadow-md">
         {/* Event Image */}
         <img
-          src={event.photo_url && event.photo_url.startsWith('http') ? event.photo_url : `/storage/events_photos/${event.photo_url}`}
+          src={event.photo_url && event.photo_url.startsWith('http')
+            ? event.photo_url
+            : event.photo_url && event.photo_url.includes('photos/Events')
+            ? (event.photo_url.startsWith('/') ? event.photo_url : `/${event.photo_url}`)
+            : `/events_photos/${event.photo_url}`}
           alt={event.event_name}
           className="w-full h-64 object-cover"
         />
