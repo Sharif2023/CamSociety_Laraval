@@ -52,7 +52,7 @@ class EventUpdateSeeder extends Seeder
                 'end_time' => '18:00',
                 'rate' => 500000, // 5000 * 100
                 'description' => 'A professional photography event for ' . $eventTypes[$i-1],
-                'photo_url' => '/photos/events/event' . $i . '.png',
+                'photo_url' => 'events/event' . $i . '.png',
                 'hiring_status' => 'open',
                 'application_count' => 0,
                 'created_by' => $user->id,
