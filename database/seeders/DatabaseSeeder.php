@@ -66,17 +66,8 @@ class DatabaseSeeder extends Seeder
             PhotoSell::factory()->count(11)->create();
         }
 
-        if (BookEvent::count() == 0) {
-            echo "Seeding events...\n";
-            // Seed events for our specific user
-            BookEvent::factory()->count(10)->create([
-                'created_by' => $userAccount->id,
-                'hiring_status' => 'open'
-            ]);
-
-            // Seed a few more random events
-            BookEvent::factory()->count(20)->create();
-        }
+        echo "Seeding events...\n";
+        $this->call(EventUpdateSeeder::class);
         echo "Seeding completed successfully!\n";
     }
 }
