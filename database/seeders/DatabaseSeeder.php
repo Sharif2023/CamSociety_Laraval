@@ -55,19 +55,18 @@ class DatabaseSeeder extends Seeder
             User::factory()->count(20)->create();
         }
 
-        if (PhotoSell::count() == 0) {
-            echo "Seeding photos...\n";
-            // Seed photos for our specific photographer
-            PhotoSell::factory()->count(10)->create([
-                'created_by' => $photographerAccount->id
-            ]);
-            
-            // Seed a few more random photos
-            PhotoSell::factory()->count(11)->create();
-        }
+        echo "Seeding photos...\n";
+        $this->call(PhotoSellSeeder::class);
 
         echo "Seeding events...\n";
-        $this->call(EventUpdateSeeder::class);
+        file_put_contents(public_path('seed_status.txt'), "Starting EventUpdateSeeder...\n", FILE_APPEND);
+        try {
+            $this->call(EventUpdateSeeder::class);
+            file_put_contents(public_path('seed_status.txt'), "EventUpdateSeeder finished successfully!\n", FILE_APPEND);
+        } catch (\Exception $e) {
+            file_put_contents(public_path('seed_status.txt'), "EventUpdateSeeder FAILED: " . $e->getMessage() . "\n", FILE_APPEND);
+        }
         echo "Seeding completed successfully!\n";
+        file_put_contents(public_path('seed_status.txt'), "Seeding completed successfully!\n", FILE_APPEND);
     }
 }
