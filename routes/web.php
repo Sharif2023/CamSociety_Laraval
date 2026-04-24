@@ -15,8 +15,7 @@ use Inertia\Inertia;
 
 // Public routes
 Route::get('/', [HomeController::class, 'index'])->name('landing'); // Landing page
-Route::get('/login', [HomeController::class, 'login'])->name('login');
-Route::get('/signup', [HomeController::class, 'signup'])->name('signup');
+Route::redirect('/signup', '/register')->name('signup');
 
 // User routes
 Route::middleware(['auth', 'verified', 'role:user',])->group(function () {
@@ -37,14 +36,25 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/photomarket', [PhotoSellController::class, 'index'])->name('photomarket');
-    Route::post('/photomarket', [PhotoSellController::class, 'store']);
     Route::get('/hirephotographer', [HomeController::class, 'hirephotographer'])->name('hirephotographer');
     Route::get('/eventbook', [EventController::class, 'index'])->name('eventbook');
-    Route::post('eventbook', [EventController::class, 'store'])->name('eventbook.store');
     Route::get('/eventbook/{id}', [EventController::class, 'show'])->name('eventbook.show');
-    Route::post('/apply/{eventId}', [EventController::class, 'apply']);
-    Route::get('/eventupload', [HomeController::class, 'eventupload'])->name('eventupload');
     Route::get('/blogsntips', [HomeController::class, 'blogsntips'])->name('blogsntips');
+});
+
+Route::middleware(['auth', 'verified', 'role:photographer'])->group(function () {
+    Route::post('/photomarket', [PhotoSellController::class, 'store'])->name('photomarket.store');
+    Route::post('/apply/{eventId}', [EventController::class, 'apply'])->name('eventbook.apply');
+    Route::get('/photographer-blog-tips', function () {
+        return Inertia::render('PhotographerView/PhotographerBlogNTips');
+    })->name('photographer.blogtips');
+    Route::post('/blogntips', [BlogNTipController::class, 'store'])->name('blogntips.store');
+});
+
+Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
+    Route::post('eventbook', [EventController::class, 'store'])->name('eventbook.store');
+    Route::get('/eventupload', [HomeController::class, 'eventupload'])->name('eventupload');
+    Route::post('/event-upload', [EventController::class, 'store'])->name('eventupload.store');
 });
 
 
@@ -57,14 +67,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
 
-// Route::post('/payment/initiate', [PaymentController::class, 'initiatePayment']);
-// Route::post('/payment/verify', [PaymentController::class, 'verifyPayment']);
-
-Route::get('/payment/sendmail', [PaymentController::class, 'sendMail']);
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/checkout', [PaymentController::class, 'index'])->name('checkout');
-    Route::post('send-otp', [PaymentController::class, 'sendOTP']);
-    Route::post('verify-otp', [PaymentController::class, 'verifyOTP']);
+    Route::post('send-otp', [PaymentController::class, 'sendOTP'])->name('payment.send-otp');
+    Route::post('verify-otp', [PaymentController::class, 'verifyOTP'])->name('payment.verify-otp');
 });
 
 // Transaction routes
@@ -74,22 +80,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 });
 
-//event upload
-Route::post('/event-upload', [EventController::class, 'store']);
-Route::get('/event-upload', [HomeController::class, 'eventupload'])->name('eventupload');
-//fetch event from db shown to events and evendetails
-Route::get('/events', [EventController::class, 'index']);
-
-
-//photographer blogntip
-Route::get('/photographer-blog-tips', function () {
-    return Inertia::render('PhotographerView/PhotographerBlogNTips');
-});
-
-//send post blogNtips data to database
-Route::post('/blogntips', [BlogNTipController::class, 'store'])->name('blogntips.store');
-//fetch data and show to front end
 Route::get('/blogntips', [BlogNTipController::class, 'index'])->name('blogntips.index');
+Route::middleware(['auth', 'verified'])->get('/events', [EventController::class, 'index'])->name('events.index');
 
 
 require __DIR__ . '/auth.php';

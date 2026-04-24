@@ -17,7 +17,7 @@ class PhotoSellController extends Controller
      */
     public function index()
     {
-        $query = PhotoSell::query();
+        $query = PhotoSell::query()->with('createdBy');
 
         if (request('title')) {
             $query->where('title', 'like', '%' . request('title') . '%');
@@ -48,7 +48,13 @@ class PhotoSellController extends Controller
      */
     public function store(Request $request)
     {
-       
+        $user = $request->user();
+
+        if (!$user || !$user->isPhotographer()) {
+            return redirect()->route($user?->dashboardRoute() ?? 'dashboard')
+                ->with(['error' => 'Only photographers can list photos for sale.']);
+        }
+
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string|max:1000',
@@ -67,10 +73,10 @@ class PhotoSellController extends Controller
             'price' => $request->price,
             'category' => $request->category,
             'image_url' => $photoPath, // Save the file path
-            'created_by' => Auth::id()
+            'created_by' => $user->id,
         ]);
 
-        return redirect()->route('photomarket')->with(['success' => 'Photo uploaded successfully']);
+        return redirect()->route('photomarket')->with(['success' => 'Photo uploaded successfully.']);
     }
 
     /**

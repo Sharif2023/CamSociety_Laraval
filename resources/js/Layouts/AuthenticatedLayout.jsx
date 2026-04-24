@@ -72,7 +72,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                 <div className="flex h-16 justify-between">
                                     <NavLink
                                         href={route("cart.index")}
-                                        active={route().current("blogsntips")}
+                                        active={route().current("cart.index")}
                                         class="text-white hover:text-primary"
                                     >
                                         <svg

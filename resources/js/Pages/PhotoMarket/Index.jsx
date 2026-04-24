@@ -132,7 +132,7 @@ export default function Index({ auth, photoSells, queryParams = null , flash}) {
                 {/* Product Grid */}
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                     {photos.map((photo) => (
-                        <ProductCard key={photos.id} product={photo} />
+                        <ProductCard key={photo.id} product={photo} />
                     ))}
                 </div>
 

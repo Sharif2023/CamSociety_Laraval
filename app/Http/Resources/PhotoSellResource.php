@@ -22,7 +22,7 @@ class PhotoSellResource extends JsonResource
             'price' => $this->price,
             'photo' => $this->image_url,
             'category' => $this->category,
-            'created_by' => new UserResource($this->createdBy),
+            'created_by' => UserResource::make($this->whenLoaded('createdBy')),
             'created_at' => (new Carbon($this->created_at))->format('d-m-Y'),
         ];
     }

@@ -1,14 +1,15 @@
 import { Head, router } from "@inertiajs/react";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import Sidebar from "./Components/Sidebar";
+import { useEffect } from "react";
 
 export default function Dashboard({ auth }) {
+    useEffect(() => {
+        if (auth.is_active === false) {
+            router.get(route("admin.notactive"));
+        }
+    }, [auth.is_active]);
 
-    // if not active route to notActive page
-    if (auth.is_active === 0) {
-        router.get(route("admin.notactive"));
-        
-    }
     return (
         <>
             <Head title="Admin Dashboard" />

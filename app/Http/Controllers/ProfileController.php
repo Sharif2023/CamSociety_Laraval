@@ -8,11 +8,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
-
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
 
 class ProfileController extends Controller
 {
@@ -32,29 +30,26 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $user = $request->user();
+        $data = $request->validated();
 
         if ($request->hasFile('profile_picture')) {
-            $profilePic = $request->file('profile_picture');
-            $profilePicPath = $profilePic->store('profile_pictures', 'public');
-            
-            // Delete old profile picture if exists
             if ($user->profile_picture) {
                 Storage::disk('public')->delete($user->profile_picture);
             }
-    
-            $data['profile_picture'] = $profilePicPath;
+
+            $data['profile_picture'] = $request->file('profile_picture')
+                ->store('profile_pictures', 'public');
         }
 
-        $user->update($data);
-        
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        if (($data['email'] ?? $user->email) !== $user->email) {
+            $user->email_verified_at = null;
         }
 
-        $request->user()->save();
+        $user->fill($data);
+        $user->save();
 
-        return Redirect::route('profile.edit');
+        return Redirect::route('profile.edit')->with('success', 'Profile updated successfully.');
     }
 
     /**
@@ -75,6 +70,6 @@ class ProfileController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return Redirect::to('landing');
+        return Redirect::route('landing');
     }
 }

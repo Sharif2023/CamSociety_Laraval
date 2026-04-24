@@ -6,8 +6,8 @@ use App\Models\PhotoSell;
 use App\Models\User;
 use App\Models\Admin;
 use App\Models\BookEvent;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -16,34 +16,52 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        Admin::factory()->create(
+        Admin::updateOrCreate(
+            ['email' => 'sharif@admin.com'],
             [
-            'name' => 'Admin',
-            'email' => 'adnan@admin.com',
-            'password' => bcrypt('12345678'),
-            'is_active' => 1,
+                'name' => 'Sharif Admin',
+                'password' => Hash::make('sharif123'),
+                'email_verified_at' => now(),
+                'is_active' => true,
             ]
-    );
+        );
 
-        User::factory()->create([
-            'name' => 'User',
-            'email' => 'adnan@user.com',
-            'password' => bcrypt('12345678'),
-            'role' => 0,
-        ]);
+        User::updateOrCreate(
+            ['email' => 'sharif@user.com'],
+            [
+                'name' => 'Sharif Client',
+                'password' => Hash::make('sharif123'),
+                'role' => User::ROLE_CLIENT,
+                'email_verified_at' => now(),
+                'is_active' => true,
+            ]
+        );
 
-        User::factory()->create([
-            'name' => 'Photographer',
-            'email' => 'adnan@photo.com',
-            'password' => bcrypt('12345678'),
-            'role' => 1,
-        ]);
-
+        User::updateOrCreate(
+            ['email' => 'sharif@photographer.com'],
+            [
+                'name' => 'Sharif Photographer',
+                'password' => Hash::make('sharif123'),
+                'role' => User::ROLE_PHOTOGRAPHER,
+                'email_verified_at' => now(),
+                'is_active' => true,
+            ]
+        );
 
         User::factory()
-            ->count(50)
+            ->count(15)
+            ->state([
+                'role' => User::ROLE_CLIENT,
+                'email_verified_at' => now(),
+            ])
+            ->create();
+
+        User::factory()
+            ->count(15)
+            ->state([
+                'role' => User::ROLE_PHOTOGRAPHER,
+                'email_verified_at' => now(),
+            ])
             ->create();
 
         PhotoSell::factory()

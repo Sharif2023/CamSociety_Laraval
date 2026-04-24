@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\PhotographerApplicationMail;
 use App\Models\BookEvent;
-use App\Models\Event;
+use App\Models\PhotographerApplication;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -34,7 +34,17 @@ class EventController extends Controller
 
     public function store(Request $request)
     {
-        // Validate the form data
+        $request->merge([
+            'address' => $request->input('address', $request->input('location')),
+        ]);
+
+        $user = $request->user();
+
+        if (!$user || !$user->isClient()) {
+            return redirect()->route($user?->dashboardRoute() ?? 'dashboard')
+                ->with(['error' => 'Only clients can create events.']);
+        }
+
         $validatedData = $request->validate([
             'event_name' => 'required|string|max:255',
             'address' => 'required|string|max:255',
@@ -44,18 +54,16 @@ class EventController extends Controller
             'end_time' => 'required|date_format:H:i|after:start_time',
             'rate' => 'required|numeric|min:0',
             'description' => 'nullable|string',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Optional file validation
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        // Handle file upload if photo is provided
         $photoPath = null;
         if ($request->hasFile('photo')) {
             $photoPath = $request->file('photo')->store('eventsPhotos', 'events_photos');
         }
 
-        // Create the event in the database
         try {
-            $bookevent = BookEvent::create([
+            BookEvent::create([
                 'event_name' => $validatedData['event_name'],
                 'address' => $validatedData['address'],
                 'start_date' => $validatedData['start_date'],
@@ -64,14 +72,18 @@ class EventController extends Controller
                 'end_time' => $validatedData['end_time'],
                 'rate' => $validatedData['rate'],
                 'description' => $validatedData['description'] ?? null,
-                'photo_url' => $photoPath, // Store the file path or null
-                'created_by' => Auth::id() // Ensure the user is authenticated
+                'photo_url' => $photoPath,
+                'created_by' => $user->id,
             ]);
 
-            return redirect()->route('eventbook')->with(['success'=> 'Event created successfully']);
+            return redirect()->route('eventbook')->with(['success' => 'Event created successfully.']);
         } catch (\Exception $e) {
-            // Handle any errors (e.g., database issues)
-            return redirect()->route('eventbook')->with(['error'=> 'An error occurred while creating the event']);
+            Log::error('Failed to create event', [
+                'error' => $e->getMessage(),
+            ]);
+
+            return redirect()->route('eventbook')
+                ->with(['error' => 'An error occurred while creating the event.']);
         }
     }
 
@@ -79,23 +91,63 @@ class EventController extends Controller
     public function show($id)
     {
         $bookevent = BookEvent::findOrFail($id);
+        $user = Auth::user();
+
+        $hasApplied = $user?->isPhotographer()
+            ? PhotographerApplication::where('event_id', $bookevent->id)
+                ->where('user_id', $user->id)
+                ->exists()
+            : false;
 
         return Inertia::render('BookEvent/Show', [
             'event' => $bookevent,
+            'canApply' => $user?->isPhotographer() && $bookevent->created_by !== $user->id && !$hasApplied,
+            'hasApplied' => $hasApplied,
         ]);
     }
 
     public function apply($eventId)
     {
-        $event = BookEvent::findOrFail($eventId); // Find the event or fail if not found
-        $photographer = Auth::user(); // Get the authenticated user
+        $event = BookEvent::findOrFail($eventId);
+        $photographer = Auth::user();
 
-        // Increment the application count in the event
+        if (!$photographer || !$photographer->isPhotographer()) {
+            return back()->with('error', 'Only photographers can apply to events.');
+        }
+
+        if ($event->created_by === $photographer->id) {
+            return back()->with('error', 'You cannot apply to your own event.');
+        }
+
+        if ($event->hiring_status !== 'open') {
+            return back()->with('error', 'This event is no longer accepting applications.');
+        }
+
+        $application = PhotographerApplication::firstOrCreate([
+            'event_id' => $event->id,
+            'user_id' => $photographer->id,
+        ]);
+
+        if (!$application->wasRecentlyCreated) {
+            return back()->with('error', 'You have already applied to this event.');
+        }
+
         $event->increment('application_count');
 
-        // Send email to the event creator
-        Mail::to($event->creator->email)->send(new PhotographerApplicationMail($event, $photographer));
+        if ($event->creator?->email) {
+            try {
+                Mail::to($event->creator->email)->send(
+                    new PhotographerApplicationMail($event, $photographer)
+                );
+            } catch (\Throwable $exception) {
+                Log::warning('Event application email failed', [
+                    'event_id' => $event->id,
+                    'photographer_id' => $photographer->id,
+                    'error' => $exception->getMessage(),
+                ]);
+            }
+        }
 
-        return redirect()->route('eventbook')->with('success', 'Application submitted successfully!');
+        return back()->with('success', 'Application submitted successfully!');
     }
 }

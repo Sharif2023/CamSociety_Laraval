@@ -5,6 +5,11 @@ import { ToastContainer, toast } from "react-toastify";
 
 export default function Dashboard({ auth, flash }) {
     const user = auth.user;
+    const profilePicture = user.profile_picture
+        ? user.profile_picture.startsWith("http")
+            ? user.profile_picture
+            : `/storage/${user.profile_picture}`
+        : "https://picsum.photos/200/300";
 
     useEffect(() => {
         if (flash.message.success) {
@@ -31,11 +36,7 @@ export default function Dashboard({ auth, flash }) {
                     <section className="bg-white p-6 rounded-lg shadow-md flex items-center justify-between">
                         <div className="flex items-center space-x-6">
                         <img
-                            src={
-                                user.profile_picture
-                                    ? user.profile_picture
-                                    : "https://picsum.photos/200/300"
-                            }
+                            src={profilePicture}
                             alt="Profile"
                             className="w-64 h-64 rounded-full shadow-md"
                         />

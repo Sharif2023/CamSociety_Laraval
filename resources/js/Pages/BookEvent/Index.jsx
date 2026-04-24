@@ -71,12 +71,14 @@ export default function index({ auth, bookevents, queryParams = null, flash }) {
             }
             onKeyPress={(e) => onKeyPress("address", e)}
           />
-          <button
-            onClick={handleModalOpen}
-            className="py-2 px-6 bg-primary text-white rounded-full hover:bg-dark transition duration-300"
-          >
-            ADD EVENT
-          </button>
+          {auth.role === "user" && (
+            <button
+              onClick={handleModalOpen}
+              className="py-2 px-6 bg-primary text-white rounded-full hover:bg-dark transition duration-300"
+            >
+              ADD EVENT
+            </button>
+          )}
         </div>
         <EventGrid events={events} />
 

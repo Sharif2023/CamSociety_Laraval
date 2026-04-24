@@ -57,7 +57,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                 
                                 {auth.user ? (
                                     <Link
-                                        href={route("dashboard")}
+                                        href={route(auth.role === "photographer" ? "photographer.dashboard" : "dashboard")}
                                         className="flex items-center justify-center px-5 py-2.5 bg-gray-900 text-white text-sm font-semibold rounded-full hover:bg-gray-800 hover:shadow-lg transition-all transform hover:-translate-y-0.5"
                                     >
                                         Dashboard

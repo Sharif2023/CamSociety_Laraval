@@ -2,32 +2,144 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\OTP;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\SendOTP;
 use App\Models\Cart;
+use App\Models\OTP;
 use App\Models\Transaction;
+use App\Models\User;
+use App\Mail\SendOTP;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class PaymentController extends Controller
 {
-    // Generate and send OTP
-    public function sendOTP(Request $request)
+    public function sendOTP(Request $request): JsonResponse
     {
-        $request->validate([
-            'email' => 'required|email'
+        $validated = $request->validate([
+            'email' => 'required|email',
         ]);
 
-        $email = $request->input('email');
-        $otp = rand(100000, 999999);
+        [$status, $message] = $this->dispatchOtp($validated['email']);
 
-        // Throttle OTP generation
-        $recentOtp = OTP::where('email', $email)->where('created_at', '>=', now()->subMinute())->first();
-        if ($recentOtp) {
-            return response()->json(['message' => 'Please wait before requesting another OTP'], 429);
+        return response()->json(['message' => $message], $status);
+    }
+
+    public function verifyOTP(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'email' => 'required|email',
+            'otp' => 'required|digits:6',
+        ]);
+
+        $otp = OTP::where('email', $validated['email'])
+            ->where('otp', $validated['otp'])
+            ->where('expires_at', '>=', now())
+            ->first();
+
+        if (!$otp) {
+            throw ValidationException::withMessages([
+                'otp' => 'Invalid or expired OTP.',
+            ]);
         }
+
+        $cartItems = $this->pendingCartItems($request->user());
+
+        if ($cartItems->isEmpty()) {
+            throw ValidationException::withMessages([
+                'otp' => 'Your cart is empty.',
+            ]);
+        }
+
+        $otp->delete();
+
+        $total = $this->calculateTotal($cartItems);
+        $photoIds = $cartItems->pluck('cart_item_id')->values()->all();
+
+        $transaction = Transaction::create([
+            'email' => $validated['email'],
+            'total_amount' => $total,
+            'transaction_id' => uniqid('txn_'),
+            'transaction_date' => now(),
+            'made_by' => Auth::id(),
+            'status' => 'success',
+            'photo_ids' => $photoIds,
+        ]);
+
+        Cart::where('user_id', Auth::id())
+            ->where('status', 'pending')
+            ->delete();
+
+        return redirect()->route('transaction.success')->with([
+            'success' => 'Payment verified successfully.',
+            'transaction' => $transaction,
+        ]);
+    }
+
+
+    public function index(Request $request): Response|RedirectResponse
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email',
+            'phone' => 'required|string|max:20',
+        ]);
+
+        $cartItems = $this->pendingCartItems($request->user());
+
+        if ($cartItems->isEmpty()) {
+            return redirect()->route('cart.index')->with('error', 'Your cart is empty.');
+        }
+
+        [$status, $message] = $this->dispatchOtp($validated['email']);
+
+        if ($status !== 200) {
+            return redirect()->route('cart.index')->with('error', $message);
+        }
+
+        return Inertia::render('Payment/OTPVerification', [
+            'email' => $validated['email'],
+            'photoIds' => $cartItems->pluck('cart_item_id')->values(),
+            'total' => $this->calculateTotal($cartItems),
+        ]);
+    }
+
+    protected function pendingCartItems(User $user): Collection
+    {
+        return Cart::where('user_id', $user->id)
+            ->where('status', 'pending')
+            ->with('photoSell')
+            ->get();
+    }
+
+    protected function calculateTotal(Collection $cartItems): float
+    {
+        $subtotal = $cartItems->sum(function (Cart $item) {
+            return ((float) $item->photoSell?->price) * (int) $item->quantity;
+        });
+
+        $shipping = $subtotal > 0 ? 2.00 : 0.00;
+        $tax = $subtotal * 0.10;
+
+        return round($subtotal + $shipping + $tax, 2);
+    }
+
+    protected function dispatchOtp(string $email): array
+    {
+        $recentOtp = OTP::where('email', $email)
+            ->where('created_at', '>=', now()->subMinute())
+            ->first();
+
+        if ($recentOtp) {
+            return [429, 'Please wait before requesting another OTP.'];
+        }
+
+        $otp = (string) random_int(100000, 999999);
 
         OTP::updateOrCreate(
             ['email' => $email],
@@ -36,71 +148,12 @@ class PaymentController extends Controller
 
         try {
             Mail::to($email)->send(new SendOTP($otp));
-        } catch (\Exception $e) {
-            \Log::error('Failed to send OTP email: ' . $e->getMessage());
-            return response()->json(['message' => 'Failed to send OTP'], 500);
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return [500, 'Failed to send OTP. Please try again.'];
         }
 
-        return response()->json(['message' => 'OTP sent successfully']);
-    }
-
-
-
-
-
-    // Verify OTP
-    public function verifyOTP(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email',
-            'otp' => 'required|numeric',
-            'photoIds' => 'required|array', // Validate that photoIds is an array
-            'total' => 'required|numeric', // Ensure total amount is provided
-        ]);
-
-        $otp = OTP::where('email', $request->email)
-            ->where('otp', $request->otp)
-            ->where('expires_at', '>=', now())
-            ->first();
-
-        if (!$otp) {
-            return response()->json(['message' => 'Invalid or expired OTP'], 400);
-        }
-
-        $otp->delete();
-
-        // delete cart item from database
-        $cart = Cart::where('user_id', Auth::id())->delete();
-
-        $transaction = Transaction::create([
-            'email' => $request->email,
-            'total_amount' => $request->total,
-            'transaction_id' => uniqid('txn_'),
-            'transaction_date' => now(),
-            'made_by' => Auth::id(),
-            'status' => 'success',
-            'photo_ids' => $request->photoIds,
-        ]);
-
-        return redirect()->route('transaction.success')->with('transaction', $transaction);
-    }
-
-
-    public function index(Request $request)
-    {
-        $email = $request->email;
-        $photoIds = $request->photo_sell_id;
-        $total = $request->total;
-
-        // Store email in session for verification
-        $request->session()->put('email', $email);
-
-        $this->sendOTP($request);
-
-        return Inertia::render('Payment/OTPVerification', [
-            'email' => $email,
-            'photoIds' => $photoIds,
-            'total' => $total
-        ]);
+        return [200, 'OTP sent successfully.'];
     }
 }

@@ -1,8 +1,10 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
+import { Head, router } from "@inertiajs/react";
 import PhotographerLayout from "../Photographer/Layout/PhotographerLayout";
+import { useState } from "react";
 
 export default function Index({ auth }) {
+    const [searchTerm, setSearchTerm] = useState("");
 
     const photographers = [
         {
@@ -63,6 +65,16 @@ export default function Index({ auth }) {
         },
     ];
     
+    const normalizedSearch = searchTerm.trim().toLowerCase();
+    const filteredPhotographers = normalizedSearch
+        ? photographers.filter((photographer) =>
+              [photographer.name, photographer.profession, photographer.location]
+                  .join(" ")
+                  .toLowerCase()
+                  .includes(normalizedSearch)
+          )
+        : photographers;
+    
     
     const Layout = auth.role === "photographer" ? PhotographerLayout : AuthenticatedLayout;
     
@@ -79,7 +91,7 @@ export default function Index({ auth }) {
             <Head title="Hire Photographer" />
 
             <div className="py-4">
-                <form class="flex items-center max-w-lg mx-auto py-5 ">
+                <form className="flex items-center max-w-lg mx-auto py-5 " onSubmit={(e) => e.preventDefault()}>
                     <label for="voice-search" class="sr-only">
                         Search
                     </label>
@@ -103,9 +115,10 @@ export default function Index({ auth }) {
                         <input
                             type="text"
                             id="voice-search"
-                            class="bg-[#e5e7eb] border border-[#FF3300] text-black text-sm rounded-lg focus:ring-[#FF3300] focus:border-[#FF3300] block w-full ps-10 p-2.5"
+                            className="bg-[#e5e7eb] border border-[#FF3300] text-black text-sm rounded-lg focus:ring-[#FF3300] focus:border-[#FF3300] block w-full ps-10 p-2.5"
                             placeholder="Search photographers"
-                            required
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
                         />
                         <button
                             type="button"
@@ -153,7 +166,7 @@ export default function Index({ auth }) {
 
 
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                    {photographers.map((photographer, index) => (
+                    {filteredPhotographers.map((photographer, index) => (
                         <div
                             key={index}
                             className="overflow-hidden bg-white rounded-lg p-5 text-center shadow-sm sm:rounded-lg"
@@ -176,7 +189,13 @@ export default function Index({ auth }) {
                                 <p className="text-sm text-yellow-500 font-bold">
                                     {photographer.rating}
                                 </p>
-                                <button class="bg-[#1F1F1F] text-white mt-4 px-4 py-2 rounded hover:bg-[#FF3300]">Hire Me</button>
+                                <button
+                                    type="button"
+                                    onClick={() => router.visit(route("eventbook"))}
+                                    className="bg-[#1F1F1F] text-white mt-4 px-4 py-2 rounded hover:bg-[#FF3300]"
+                                >
+                                    Hire Me
+                                </button>
                             </div>
                         </div>
                     ))}

@@ -3,13 +3,13 @@ import { Head } from "@inertiajs/react";
 import PhotographerLayout from "../Photographer/Layout/PhotographerLayout";
 import { useState } from "react";
 
-export default function BlogAndTips({ auth }) {
+export default function BlogAndTips({ auth, posts = [] }) {
   const [activeModal, setActiveModal] = useState(null);
 
   const openModal = (modalId) => setActiveModal(modalId);
   const closeModal = () => setActiveModal(null);
 
-  const posts = [
+  const defaultPosts = [
     {
       id: 1,
       title: "Top Tips for Wedding Photography",
@@ -83,13 +83,13 @@ export default function BlogAndTips({ auth }) {
     },
   ];
 
+  const postsToRender = posts.length ? posts : defaultPosts;
   const Layout = auth?.role === "photographer" ? PhotographerLayout : AuthenticatedLayout;
 
   return (
     <Layout>
       <Head title="Blog & Tips" />
 
-      {/* Page Header */}
       <section className="bg-dark text-white py-8 text-center">
         <h1 className="text-3xl sm:text-4xl font-bold">Blog & Tips</h1>
         <p className="mt-2 text-gray-300">
@@ -97,17 +97,18 @@ export default function BlogAndTips({ auth }) {
         </p>
       </section>
 
-      <section className="text-primary text-end pr-5 py-3">
-        <a href="/photographer-blog-tips" className="hover:underline font-medium">
-          Add Blog or Post as Photographer →
-        </a>
-      </section>
+      {auth?.role === "photographer" && (
+        <section className="text-primary text-end pr-5 py-3">
+          <a href="/photographer-blog-tips" className="hover:underline font-medium">
+            Add Blog or Post as Photographer
+          </a>
+        </section>
+      )}
 
-      {/* Main Content */}
       <main className="max-w-6xl mx-auto p-6">
         <h2 className="text-2xl font-bold mb-6 text-dark">Recent Posts</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {posts.map((post) => (
+          {postsToRender.map((post) => (
             <div
               key={post.id}
               className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105 cursor-pointer"
@@ -135,8 +136,7 @@ export default function BlogAndTips({ auth }) {
         </div>
       </main>
 
-      {/* Modal */}
-      {posts.map(
+      {postsToRender.map(
         (post) =>
           activeModal === post.id && (
             <div
@@ -157,7 +157,7 @@ export default function BlogAndTips({ auth }) {
                     className="text-gray-400 hover:text-gray-600 text-2xl"
                     onClick={closeModal}
                   >
-                    ✕
+                    ×
                   </button>
                 </div>
                 <div className="p-6 space-y-4">
@@ -166,12 +166,17 @@ export default function BlogAndTips({ auth }) {
                     alt={post.modalContent.title}
                     className="w-full h-60 object-cover rounded-lg"
                   />
-                  <div className="text-gray-700">
-                    {post.modalContent.content}
-                  </div>
+                  {typeof post.modalContent.content === "string" ? (
+                    <div className="text-gray-700 whitespace-pre-line">
+                      {post.modalContent.content}
+                    </div>
+                  ) : (
+                    <div className="text-gray-700">
+                      {post.modalContent.content}
+                    </div>
+                  )}
                 </div>
                 <div className="flex items-center justify-between p-5 border-t">
-                  {/* Like Button */}
                   <div className="cursor-pointer flex items-center space-x-2 rounded-full text-gray-400 hover:text-primary border border-gray-300 hover:border-primary py-1 px-3 transition-colors">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -189,7 +194,6 @@ export default function BlogAndTips({ auth }) {
                     </svg>
                     <span className="font-medium text-sm">{post.modalContent.likes}</span>
                   </div>
-                  {/* Close Button */}
                   <button
                     onClick={closeModal}
                     className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-dark font-semibold transition-colors"

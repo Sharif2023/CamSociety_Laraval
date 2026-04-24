@@ -22,5 +22,6 @@ class Transaction extends Model
 
     protected $casts = [
         'photo_ids' => 'array', // Automatically handles the JSON array
+        'transaction_date' => 'datetime',
     ];
 }

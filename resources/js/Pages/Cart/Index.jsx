@@ -65,11 +65,9 @@ export default function Cart({ auth, cartItems, cartId, flash }) {
     const [errors, setErrors] = useState({});
 
     const [userDetails, setUserDetails] = useState({
-        name: "",
-        email: "",
+        name: auth.user?.name || "",
+        email: auth.user?.email || "",
         phone: "",
-        photo_sell_id: cartItems.map((item) => item.id),
-        total: total,
     });
 
     const handleInputChange = (e) => {
@@ -168,9 +166,8 @@ export default function Cart({ auth, cartItems, cartId, flash }) {
                                             {/* Accessing photo_sell and formatting the price */}
                                         </h4>
 
-                                        <button
-                                            type="button"
-                                            class="mt-6 flex items-center px-3 py-1.5 border border-gray-300 text-gray-800 text-xs outline-none bg-transparent rounded-md"
+                                        <div
+                                            className="mt-6 flex items-center px-3 py-1.5 border border-gray-300 text-gray-800 text-xs outline-none bg-transparent rounded-md"
                                         >
                                             <button
                                                 onClick={() =>
@@ -179,7 +176,7 @@ export default function Cart({ auth, cartItems, cartId, flash }) {
                                             >
                                                 <svg
                                                     xmlns="http://www.w3.org/2000/svg"
-                                                    class="w-2.5 fill-current"
+                                                    className="w-2.5 fill-current"
                                                     viewBox="0 0 124 124"
                                                 >
                                                     <path
@@ -188,7 +185,7 @@ export default function Cart({ auth, cartItems, cartId, flash }) {
                                                     ></path>
                                                 </svg>
                                             </button>
-                                            <span class="mx-3 font-bold">
+                                            <span className="mx-3 font-bold">
                                                 {item.quantity}
                                             </span>
 
@@ -199,7 +196,7 @@ export default function Cart({ auth, cartItems, cartId, flash }) {
                                             >
                                                 <svg
                                                     xmlns="http://www.w3.org/2000/svg"
-                                                    class="w-2.5 fill-current"
+                                                    className="w-2.5 fill-current"
                                                     viewBox="0 0 42 42"
                                                 >
                                                     <path
@@ -208,7 +205,7 @@ export default function Cart({ auth, cartItems, cartId, flash }) {
                                                     ></path>
                                                 </svg>
                                             </button>
-                                        </button>
+                                        </div>
                                     </div>
                                 </div>
                             ))
@@ -382,7 +379,8 @@ export default function Cart({ auth, cartItems, cartId, flash }) {
                             </button>
                             <button
                                 type="button"
-                                class="text-sm px-4 py-2.5 w-full font-semibold tracking-wide bg-transparent text-gray-800 border border-gray-300 rounded-md"
+                                onClick={() => router.get(route("photomarket"))}
+                                className="text-sm px-4 py-2.5 w-full font-semibold tracking-wide bg-transparent text-gray-800 border border-gray-300 rounded-md"
                             >
                                 Continue Shopping{" "}
                             </button>

@@ -30,8 +30,8 @@ export default function PhotographerLayout({ header, children }) {
                         </div>
                         <nav class="hidden md:flex items-center gap-8">
                             <NavLink
-                                href={route("dashboard")}
-                                active={route().current("dashboard")}
+                                href={route("photographer.dashboard")}
+                                active={route().current("photographer.dashboard")}
                             >
                                 Home
                             </NavLink>
@@ -189,8 +189,8 @@ export default function PhotographerLayout({ header, children }) {
                             >
                                 <div className="space-y-1 pb-3 pt-2">
                                     <ResponsiveNavLink
-                                        href={route("dashboard")}
-                                        active={route().current("dashboard")}
+                                        href={route("photographer.dashboard")}
+                                        active={route().current("photographer.dashboard")}
                                     >
                                         Dashboard
                                     </ResponsiveNavLink>

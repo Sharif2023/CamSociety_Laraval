@@ -2,7 +2,7 @@ import { useState } from "react";
 import OTPInput from "react-otp-input";
 import { router } from "@inertiajs/react";
 
-const OTPVerification = ({ email, photoIds, total }) => {
+const OTPVerification = ({ email }) => {
     const [otp, setOtp] = useState(""); // The state for OTP input
     const [error, setError] = useState(""); // For handling errors
 
@@ -15,18 +15,14 @@ const OTPVerification = ({ email, photoIds, total }) => {
     const handleVerifyOtp = () => {
         if (otp.length === 6) {
             router.post(
-                "/verify-otp",
-                { email, otp, photoIds, total},
+                route("payment.verify-otp"),
+                { email, otp },
                 {
-                    onSuccess: (page) => {
-                        alert(
-                            page.props.flash.success ||
-                                "OTP Verified Successfully!"
-                        );
-                    },
                     onError: (errors) => {
                         setError(
-                            errors.message || "Invalid OTP. Please try again."
+                            errors.otp ||
+                                errors.email ||
+                                "Invalid OTP. Please try again."
                         );
                     },
                 }
