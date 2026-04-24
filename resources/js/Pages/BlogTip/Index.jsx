@@ -3,13 +3,13 @@ import { Head, Link } from "@inertiajs/react";
 import PhotographerLayout from "../Photographer/Layout/PhotographerLayout";
 import { useState } from "react";
 
-export default function BlogAndTips({ auth }) {
+export default function BlogAndTips({ auth, posts = [] }) {
   const [activeModal, setActiveModal] = useState(null);
 
   const openModal = (modalId) => setActiveModal(modalId);
   const closeModal = () => setActiveModal(null);
 
-  const posts = [
+  const fallbackPosts = [
     {
       id: 1,
       title: "Top Tips for Wedding Photography",
@@ -105,7 +105,8 @@ export default function BlogAndTips({ auth }) {
     },
   ];
 
-  const Layout = auth?.role === 1 ? PhotographerLayout : AuthenticatedLayout;
+  const postsToRender = posts.length ? posts : fallbackPosts;
+  const Layout = auth?.role === "photographer" ? PhotographerLayout : AuthenticatedLayout;
 
   return (
     <Layout
@@ -117,12 +118,14 @@ export default function BlogAndTips({ auth }) {
                     </h2>
                     <p className="text-gray-500 text-xs font-bold uppercase tracking-widest mt-1">Wisdom from the Elite Masters</p>
                 </div>
-                <Link
-                    href="/photographer-blog-tips"
-                    className="px-8 py-3 bg-[#FF3300] text-white text-[10px] font-black uppercase tracking-widest rounded-full hover:bg-white hover:text-black transition-all shadow-[0_0_30px_rgba(255,51,0,0.3)]"
-                >
-                    Contribute Mastery
-                </Link>
+                {auth?.role === "photographer" && (
+                    <Link
+                        href="/photographer-blog-tips"
+                        className="px-8 py-3 bg-[#FF3300] text-white text-[10px] font-black uppercase tracking-widest rounded-full hover:bg-white hover:text-black transition-all shadow-[0_0_30px_rgba(255,51,0,0.3)]"
+                    >
+                        Contribute Mastery
+                    </Link>
+                )}
             </div>
         }
     >
@@ -130,10 +133,8 @@ export default function BlogAndTips({ auth }) {
 
       <div className="min-h-screen bg-[#050505] py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            
-            {/* Featured Article Indicator */}
             <div className="mb-20 grid grid-cols-1 lg:grid-cols-3 gap-10">
-                {posts.map((post) => (
+                {postsToRender.map((post) => (
                     <div
                         key={post.id}
                         className="group relative cursor-pointer"
@@ -146,7 +147,7 @@ export default function BlogAndTips({ auth }) {
                                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 grayscale hover:grayscale-0"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 transition-opacity group-hover:opacity-40"></div>
-                            
+
                             <div className="absolute bottom-10 left-10 right-10">
                                 <span className="text-[#FF3300] text-[10px] font-black uppercase tracking-[0.3em] mb-4 block translate-y-4 group-hover:translate-y-0 transition-transform">
                                     {post.author} • Master Class
@@ -160,7 +161,6 @@ export default function BlogAndTips({ auth }) {
                 ))}
             </div>
 
-            {/* More Insights Marker */}
             <div className="flex items-center gap-10 opacity-30">
                 <div className="h-px flex-grow bg-white"></div>
                 <span className="text-[10px] font-black uppercase tracking-[0.5em] text-white">Archives of Excellence</span>
@@ -169,8 +169,7 @@ export default function BlogAndTips({ auth }) {
         </div>
       </div>
 
-      {/* Modal - Ultra Premium Dark */}
-      {posts.map(
+      {postsToRender.map(
         (post) =>
           activeModal === post.id && (
             <div
@@ -215,7 +214,7 @@ export default function BlogAndTips({ auth }) {
                                     </svg>
                                     <span className="text-white font-black text-[10px] uppercase tracking-widest">{post.modalContent.likes} Appreciations</span>
                                 </div>
-                                
+
                                 <div className="flex items-center gap-4">
                                     <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Share Mastery</span>
                                     <div className="flex gap-2">
@@ -223,7 +222,7 @@ export default function BlogAndTips({ auth }) {
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div className="max-w-3xl font-medium prose prose-invert mx-auto">
                                 {post.modalContent.content}
                             </div>

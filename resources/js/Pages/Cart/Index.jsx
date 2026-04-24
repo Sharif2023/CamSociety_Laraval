@@ -5,17 +5,16 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { ToastContainer, toast } from 'react-toastify';
 
 export default function Cart({ auth, cartItems, cartId, flash }) {
-
     useEffect(() => {
-        if (flash.message.success) {
+        if (flash.message?.success) {
             toast.success(flash.message.success);
         }
-        if (flash.message.error) {
+        if (flash.message?.error) {
             toast.error(flash.message.error);
         }
     }, [flash]);
 
-    const Layout = auth.role === 1 ? PhotographerLayout : AuthenticatedLayout;
+    const Layout = auth.role === "photographer" ? PhotographerLayout : AuthenticatedLayout;
 
     const handleRemove = (id) => {
         router.delete(route("cart.destroy", id));
@@ -36,24 +35,21 @@ export default function Cart({ auth, cartItems, cartId, flash }) {
         }
     };
 
-    // Calculate the Subtotal (Multiplier is 100 as per requirement)
     const subtotal = cartItems.reduce((total, item) => {
-        const itemPrice = (parseFloat(item.photo_sell?.price) || 0) * 100;
+        const itemPrice = parseFloat(item.photo_sell?.price) || 0;
         return total + itemPrice * item.quantity;
     }, 0);
 
-    const shipping = 500.00; // Flat premium shipping
-    const taxRate = 0.05; // 5% luxury tax
+    const shipping = subtotal > 0 ? 2.0 : 0;
+    const taxRate = 0.1;
     const tax = subtotal * taxRate;
-    const total = subtotal + shipping + tax;
+    const total = Number((subtotal + shipping + tax).toFixed(2));
 
     const [errors, setErrors] = useState({});
     const [userDetails, setUserDetails] = useState({
-        name: auth.user.name,
-        email: auth.user.email,
+        name: auth.user?.name || "",
+        email: auth.user?.email || "",
         phone: "",
-        photo_sell_id: cartItems.map((item) => item.id),
-        total: total,
     });
 
     const handleInputChange = (e) => {
@@ -67,7 +63,7 @@ export default function Cart({ auth, cartItems, cartId, flash }) {
         const newErrors = {};
         if (!userDetails.name.trim()) newErrors.name = "Verification of identity required.";
         if (!userDetails.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userDetails.email)) newErrors.email = "Valid communication channel required.";
-        if (!userDetails.phone || !/^\d+$/.test(userDetails.phone)) newErrors.phone = "Secure contact number required.";
+        if (!userDetails.phone || !/^[0-9+\-\s()]+$/.test(userDetails.phone)) newErrors.phone = "Secure contact number required.";
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -95,8 +91,6 @@ export default function Cart({ auth, cartItems, cartId, flash }) {
             <div className="min-h-screen bg-[#050505] py-20">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
-                        
-                        {/* Cart Items */}
                         <div className="lg:col-span-8 space-y-10">
                             {cartItems.length === 0 ? (
                                 <div className="py-40 text-center rounded-[3rem] border-2 border-dashed border-white/5 bg-white/[0.01]">
@@ -127,7 +121,7 @@ export default function Cart({ auth, cartItems, cartId, flash }) {
                                             <p className="text-gray-500 text-sm font-medium line-clamp-2 leading-relaxed">
                                                 {item.photo_sell?.description}
                                             </p>
-                                            
+
                                             <div className="flex items-center justify-center sm:justify-start gap-8 pt-4">
                                                 <div className="flex items-center gap-4 px-4 py-2 rounded-full bg-white/5 border border-white/10 uppercase font-black text-[10px] tracking-widest text-white">
                                                     <button onClick={() => minusQuantity(item.id)} className="hover:text-[#FF3300] transition-colors">—</button>
@@ -139,19 +133,18 @@ export default function Cart({ auth, cartItems, cartId, flash }) {
                                         </div>
 
                                         <div className="text-center sm:text-right">
-                                            <p className="text-3xl font-black text-white font-['Playfair_Display'] tracking-tighter">৳{((item.photo_sell?.price * 100) * item.quantity).toLocaleString()}</p>
-                                            <p className="text-[10px] font-black text-gray-600 uppercase tracking-widest mt-1">Single Unit: ৳{(item.photo_sell?.price * 100).toLocaleString()}</p>
+                                            <p className="text-3xl font-black text-white font-['Playfair_Display'] tracking-tighter">৳{(Number(item.photo_sell?.price || 0) * item.quantity).toLocaleString()}</p>
+                                            <p className="text-[10px] font-black text-gray-600 uppercase tracking-widest mt-1">Single Unit: ৳{Number(item.photo_sell?.price || 0).toLocaleString()}</p>
                                         </div>
                                     </div>
                                 ))
                             )}
                         </div>
 
-                        {/* Order Summary */}
                         <div className="lg:col-span-4">
                             <div className="sticky top-32 p-10 rounded-[3rem] bg-gradient-to-br from-white/[0.04] to-white/[0.01] border border-white/10 backdrop-blur-3xl space-y-10">
                                 <h3 className="text-2xl font-black text-white font-['Playfair_Display'] tracking-tight">Financial Summary</h3>
-                                
+
                                 <div className="space-y-6">
                                     <div className="space-y-4">
                                         <div>
@@ -193,11 +186,11 @@ export default function Cart({ auth, cartItems, cartId, flash }) {
                                             <span className="text-white font-black">৳{subtotal.toLocaleString()}</span>
                                         </div>
                                         <div className="flex justify-between text-sm">
-                                            <span className="text-gray-500 font-bold uppercase tracking-widest">Premium Logistics</span>
+                                            <span className="text-gray-500 font-bold uppercase tracking-widest">Processing Fee</span>
                                             <span className="text-white font-black">৳{shipping.toLocaleString()}</span>
                                         </div>
                                         <div className="flex justify-between text-sm">
-                                            <span className="text-gray-500 font-bold uppercase tracking-widest">Luxury Processing</span>
+                                            <span className="text-gray-500 font-bold uppercase tracking-widest">Service Tax (10%)</span>
                                             <span className="text-white font-black">৳{tax.toLocaleString()}</span>
                                         </div>
                                         <div className="h-px bg-white/10"></div>

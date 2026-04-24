@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Admin>
@@ -19,7 +20,10 @@ class AdminFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'password' => 'password', // Auto-hashed by model cast
+            'email_verified_at' => now(),
+            'password' => 'password',
+            'is_active' => true,
+            'remember_token' => Str::random(10),
         ];
     }
 }

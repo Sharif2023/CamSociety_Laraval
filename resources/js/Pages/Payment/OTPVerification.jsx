@@ -1,9 +1,8 @@
 import { useState } from "react";
 import OTPInput from "react-otp-input";
 import { router, Head } from "@inertiajs/react";
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 
-const OTPVerification = ({ auth, email, photoIds, total }) => {
+const OTPVerification = ({ email }) => {
     const [otp, setOtp] = useState("");
     const [error, setError] = useState("");
 
@@ -15,11 +14,15 @@ const OTPVerification = ({ auth, email, photoIds, total }) => {
     const handleVerifyOtp = () => {
         if (otp.length === 6) {
             router.post(
-                "/verify-otp",
-                { email, otp, photoIds, total},
+                route("payment.verify-otp"),
+                { email, otp },
                 {
                     onError: (errors) => {
-                        setError(errors.message || "Security protocols invalid. Re-verify OTP.");
+                        setError(
+                            errors.otp ||
+                                errors.email ||
+                                "Security protocols invalid. Re-verify OTP."
+                        );
                     },
                 }
             );
@@ -31,10 +34,10 @@ const OTPVerification = ({ auth, email, photoIds, total }) => {
     return (
         <div className="min-h-screen bg-[#050505] flex items-center justify-center p-6 bg-gradient-to-br from-black via-[#050505] to-indigo-950/20">
             <Head title="Secure Verification" />
-            
+
             <div className="relative w-full max-w-xl p-16 rounded-[4rem] bg-white/[0.02] border border-white/10 backdrop-blur-3xl shadow-2xl overflow-hidden group">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-[#FF3300]/10 blur-[120px] rounded-full translate-x-1/2 -translate-y-1/2 group-hover:bg-[#FF3300]/20 transition-all duration-700"></div>
-                
+
                 <div className="relative z-10 text-center space-y-10">
                     <div className="space-y-4">
                         <div className="inline-block p-4 rounded-3xl bg-white/5 border border-white/5 mb-4">
@@ -79,9 +82,9 @@ const OTPVerification = ({ auth, email, photoIds, total }) => {
                         >
                             Confirm Identity
                         </button>
-                        
+
                         <p className="text-[9px] font-bold text-gray-700 uppercase tracking-widest">
-                            Issue with the dispatch? <button className="text-[#FF3300] hover:text-white transition-colors ml-1">Request New Protocol</button>
+                            Issue with the dispatch? <span className="text-[#FF3300] ml-1">Request New Protocol</span>
                         </p>
                     </div>
                 </div>

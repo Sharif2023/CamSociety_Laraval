@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,21 +22,21 @@ class RoleManager
             return redirect()->route('login');
         }
 
-        $authUserRole = Auth::user()->role; // Assume `role` is an integer: 0 = admin, 1 = user
+        $user = Auth::user();
 
-        // Role-based access control
-        if (($role === 'user' && $authUserRole === 0) || ($role === 'photographer' && $authUserRole === 1)) {
+        $roleMatched = $user instanceof User && (
+            ($role === 'user' && $user->isClient()) ||
+            ($role === 'photographer' && $user->isPhotographer())
+        );
+
+        if ($roleMatched) {
             return $next($request);
         }
 
-        // Redirect to respective dashboards if unauthorized
-        if ($authUserRole === 0) {
-            return redirect()->route('dashboard');
-        } elseif ($authUserRole === 1) {
-            return redirect()->route('photographer.dashboard');
+        if ($user instanceof User) {
+            return redirect()->route($user->dashboardRoute());
         }
 
-        // Fallback for unexpected roles
-        return redirect()->route('login');
+        return redirect()->route('landing');
     }
 }

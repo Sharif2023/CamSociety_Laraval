@@ -2,13 +2,18 @@ import React from "react";
 import { Link, usePage, Head } from "@inertiajs/react";
 
 const TransactionSuccess = () => {
+    const { auth, flash } = usePage().props;
+    const dashboardRoute =
+        auth.role === "photographer" ? "photographer.dashboard" : "dashboard";
+    const transaction = flash.transaction;
+
     return (
         <div className="min-h-screen bg-[#050505] flex items-center justify-center p-6 bg-gradient-to-br from-black via-[#050505] to-indigo-950/20">
             <Head title="Execution Successful" />
-            
+
             <div className="relative w-full max-w-2xl p-20 rounded-[4rem] bg-white/[0.02] border border-white/10 backdrop-blur-3xl shadow-2xl overflow-hidden group text-center">
                 <div className="absolute top-0 right-0 w-80 h-80 bg-green-500/10 blur-[120px] rounded-full translate-x-1/2 -translate-y-1/2 group-hover:bg-green-500/20 transition-all duration-700"></div>
-                
+
                 <div className="relative z-10 space-y-10">
                     <div className="space-y-6">
                         <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-green-500/10 border border-green-500/20 mb-4 animate-bounce">
@@ -24,9 +29,17 @@ const TransactionSuccess = () => {
                         </p>
                     </div>
 
+                    {transaction && (
+                        <div className="rounded-[2rem] border border-white/10 bg-white/[0.03] p-6 text-left space-y-2">
+                            <p className="text-xs font-black uppercase tracking-widest text-gray-500">Transaction Summary</p>
+                            <p className="text-sm text-white"><span className="text-gray-500">Reference:</span> {transaction.transaction_id}</p>
+                            <p className="text-sm text-white"><span className="text-gray-500">Total:</span> ৳{Number(transaction.total_amount || 0).toLocaleString()}</p>
+                        </div>
+                    )}
+
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <Link
-                            href={route('dashboard')}
+                            href={route(dashboardRoute)}
                             className="group relative overflow-hidden py-6 rounded-[2rem] bg-white text-black text-[10px] font-black uppercase tracking-[0.3em] transition-all hover:bg-green-500 hover:text-white transform active:scale-95 shadow-[0_20px_40px_rgba(0,0,0,0.3)]"
                         >
                             Return to Command
@@ -38,7 +51,7 @@ const TransactionSuccess = () => {
                             Audit History
                         </Link>
                     </div>
-                    
+
                     <div className="pt-8 border-t border-white/5">
                         <p className="text-[9px] font-bold text-gray-700 uppercase tracking-widest">
                             Ref: {Math.random().toString(36).substr(2, 9).toUpperCase()} • CamSociety Elite Network

@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Admin;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -29,13 +31,32 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $currentUser = $request->user() ?: $request->user('admin');
+
+        $role = match (true) {
+            $currentUser instanceof User => $currentUser->roleName(),
+            $currentUser instanceof Admin => 'admin',
+            default => null,
+        };
+
         return [
             ...parent::share($request),
             'auth' => [
-                'user' => $request->user(),
+                'user' => $currentUser,
+                'role' => $role,
+                'is_active' => $currentUser?->is_active,
+                'guard' => $role === 'admin' ? 'admin' : 'web',
             ],
             'flash' => [
-                'message' => $request->session()->all(),
+                'success' => $request->session()->get('success'),
+                'error' => $request->session()->get('error'),
+                'status' => $request->session()->get('status'),
+                'transaction' => $request->session()->get('transaction'),
+                'message' => [
+                    'success' => $request->session()->get('success'),
+                    'error' => $request->session()->get('error'),
+                    'status' => $request->session()->get('status'),
+                ],
             ],
         ];
     }

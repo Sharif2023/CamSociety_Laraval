@@ -2,27 +2,22 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 
 class OTP extends Model
 {
+    use HasFactory;
+
+    protected $table = 'o_t_p_s';
 
     protected $fillable = [
-        'email', 
+        'email',
         'otp',
-        'expires_at'
+        'expires_at',
     ];
 
-    public function up()
-    {
-        Schema::create('otps', function (Blueprint $table) {
-            $table->id();
-            $table->string('email')->notNullable();
-            $table->string('otp');
-            $table->timestamp('expires_at')->nullable();
-            $table->timestamps();
-        });
-    }
+    protected $casts = [
+        'expires_at' => 'datetime',
+    ];
 }

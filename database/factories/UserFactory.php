@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 /**
@@ -28,7 +28,7 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= 'password',
-            'role' => fake()->randomElement([0, 1]),
+            'role' => User::ROLE_CLIENT,
             'profile_picture' => 'https://i.pravatar.cc/300?u=' . fake()->unique()->numberBetween(1, 1000),
             'bio' => fake()->sentence(),
             'rating' => fake()->randomFloat(2, 3, 5),
@@ -43,6 +43,13 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
+        ]);
+    }
+
+    public function photographer(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => User::ROLE_PHOTOGRAPHER,
         ]);
     }
 }

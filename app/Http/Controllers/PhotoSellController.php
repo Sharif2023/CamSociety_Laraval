@@ -4,13 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePhotoSellRequest;
 use App\Http\Requests\UpdatePhotoSellRequest;
-use App\Models\PhotoSell;
-use Inertia\Inertia;
 use App\Http\Resources\PhotoSellResource;
-use Illuminate\Support\Facades\Auth;
+use App\Models\PhotoSell;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class PhotoSellController extends Controller
 {
@@ -19,7 +18,7 @@ class PhotoSellController extends Controller
      */
     public function index()
     {
-        $query = PhotoSell::query();
+        $query = PhotoSell::query()->with('creator');
 
         if (request('title')) {
             $query->where('title', 'like', '%' . request('title') . '%');
@@ -28,8 +27,7 @@ class PhotoSellController extends Controller
             $query->where('category', request('category'));
         }
 
-
-        $photoSells = $query->with('creator')->paginate(12)->onEachSide(1);
+        $photoSells = $query->paginate(12)->onEachSide(1);
 
         return Inertia::render('PhotoMarket/Index', [
             'photoSells' => PhotoSellResource::collection($photoSells),
@@ -50,7 +48,13 @@ class PhotoSellController extends Controller
      */
     public function store(Request $request)
     {
-       
+        $user = $request->user();
+
+        if (!$user || !$user->isPhotographer()) {
+            return redirect()->route($user?->dashboardRoute() ?? 'dashboard')
+                ->with(['error' => 'Only photographers can list photos for sale.']);
+        }
+
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string|max:1000',
@@ -59,25 +63,31 @@ class PhotoSellController extends Controller
             'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:40000',
         ]);
 
-        // Handle file upload
         $photoPath = $request->file('photo')->store('PhotoSells', 'photo_sells');
 
-        // Create a new photo sell record in the database
         try {
             DB::beginTransaction();
-            $photoSell = PhotoSell::create([
+
+            PhotoSell::create([
                 'title' => $request->title,
                 'description' => $request->description,
                 'price' => $request->price,
                 'category' => $request->category,
-                'image_url' => $photoPath, // Save the file path
-                'created_by' => Auth::id()
+                'image_url' => $photoPath,
+                'created_by' => $user->id,
             ]);
+
             DB::commit();
-            return redirect()->route('photomarket')->with(['success' => 'Masterpiece uploaded to the market.']);
-        } catch (\Exception $e) {
+
+            return redirect()->route('photomarket')->with(['success' => 'Photo uploaded successfully.']);
+        } catch (\Throwable $exception) {
             DB::rollBack();
-            Log::error("Photo upload failure: " . $e->getMessage());
+
+            Log::error('Photo upload failure', [
+                'user_id' => $user->id,
+                'error' => $exception->getMessage(),
+            ]);
+
             return redirect()->route('photomarket')->with(['error' => 'Asset synchronization failed.']);
         }
     }

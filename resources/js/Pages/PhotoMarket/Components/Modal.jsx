@@ -1,7 +1,7 @@
 import { router } from "@inertiajs/react";
 import { useState } from "react";
 
-export default function PhotoSellModal({ isOpen, onClose, onSubmit }) {
+export default function PhotoSellModal({ isOpen, onClose, onSubmit = () => {} }) {
     const [formData, setFormData] = useState({
         title: "",
         description: "",
@@ -45,10 +45,16 @@ export default function PhotoSellModal({ isOpen, onClose, onSubmit }) {
             router.post("/photomarket", formDataToSend, {
                 onStart: () => {},
                 onFinish: () => {},
-                onSuccess: (response) => {
-                    alert("Photo submitted for sale successfully!");
-                    onSubmit(formData); 
-                    onClose(); 
+                onSuccess: () => {
+                    onSubmit(formData);
+                    setFormData({
+                        title: "",
+                        description: "",
+                        price: "",
+                        photo: null,
+                        category: "All",
+                    });
+                    onClose();
                 },
                 onError: (errors) => {
                     console.log(errors); // Log any errors
@@ -59,7 +65,7 @@ export default function PhotoSellModal({ isOpen, onClose, onSubmit }) {
             alert("There was an error submitting the photo.");
         }
 
-        if(isOpen) {
+        if (isOpen) {
             onClose();
         }
     };

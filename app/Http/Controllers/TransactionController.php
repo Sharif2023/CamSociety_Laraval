@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Inertia\Inertia;
 use App\Models\Transaction;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class TransactionController extends Controller
 {
@@ -13,7 +13,6 @@ class TransactionController extends Controller
     {
         $userId = Auth::id();
 
-        // Fetch all transactions for the authenticated user
         $transactions = Transaction::where('made_by', $userId)
             ->orderBy('transaction_date', 'desc')
             ->get();

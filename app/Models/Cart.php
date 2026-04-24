@@ -17,6 +17,7 @@ class Cart extends Model
         'cart_item_id',
         'quantity',
         'price',
+        'status',
     ];
 
 

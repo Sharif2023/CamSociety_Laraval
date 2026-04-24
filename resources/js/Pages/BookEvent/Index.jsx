@@ -64,12 +64,14 @@ export default function index({ auth, bookevents, queryParams = null, flash }) {
                     />
                 </div>
 
-                <button
-                    onClick={handleModalOpen}
-                    className="px-10 py-2.5 bg-[#FF3300] text-white font-black rounded-full hover:bg-[#CC2900] shadow-[0_4px_20px_rgba(255,51,0,0.3)] transition-all transform hover:-translate-y-0.5 active:scale-95"
-                >
-                    POST ASSIGNMENT
-                </button>
+                {auth.role === "user" && (
+                    <button
+                        onClick={handleModalOpen}
+                        className="px-10 py-2.5 bg-[#FF3300] text-white font-black rounded-full hover:bg-[#CC2900] shadow-[0_4px_20px_rgba(255,51,0,0.3)] transition-all transform hover:-translate-y-0.5 active:scale-95"
+                    >
+                        POST ASSIGNMENT
+                    </button>
+                )}
             </div>
         </div>
       }
@@ -79,7 +81,6 @@ export default function index({ auth, bookevents, queryParams = null, flash }) {
 
       <div className="min-h-screen bg-[#050505] py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {/* Event Stats - Minimalist Premium */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-16">
                 {[
                     { label: 'Open Gigs', value: bookevents?.meta?.total || 0, icon: '📸' },

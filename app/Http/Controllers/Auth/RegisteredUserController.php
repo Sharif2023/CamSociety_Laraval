@@ -8,7 +8,6 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -34,15 +33,15 @@ class RegisteredUserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'role' => ['required', 'integer', 'in:0,1'],
+            'role' => ['nullable', 'integer', 'in:0,1'],
         ]);
 
         try {
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
-                'password' => $request->password, // 'hashed' cast on User model handles bcrypt
-                'role' => $request->role,
+                'password' => $request->password,
+                'role' => $request->integer('role', User::ROLE_CLIENT),
                 'is_active' => 1,
             ]);
 
@@ -50,15 +49,15 @@ class RegisteredUserController extends Controller
 
             Auth::login($user);
 
-            $url = $user->role === 1 ? route('photographer.dashboard') : route('dashboard');
-
-            return redirect($url)->with(['success' => 'Account created. Welcome!']);
-        } catch (\Exception $e) {
-            \Log::error('Registration Error: ' . $e->getMessage(), [
+            return redirect(route($user->dashboardRoute(), absolute: false))
+                ->with(['success' => 'Account created. Welcome!']);
+        } catch (\Throwable $exception) {
+            \Log::error('Registration Error: ' . $exception->getMessage(), [
                 'email' => $request->email,
-                'trace' => $e->getTraceAsString()
+                'trace' => $exception->getTraceAsString(),
             ]);
-            throw $e; // Re-throw to show the 500 error but with details in logs
+
+            throw $exception;
         }
     }
 }

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BlogNTip;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class HomeController extends Controller
@@ -52,7 +55,34 @@ class HomeController extends Controller
 
     public function blogsntips()
     {
-        return Inertia::render('BlogTip/Index');
+        $posts = BlogNTip::with('user')
+            ->latest()
+            ->take(12)
+            ->get()
+            ->map(function (BlogNTip $post) {
+                $imageUrl = $post->image
+                    ? Storage::disk('public')->url($post->image)
+                    : 'https://picsum.photos/400/200?random='.$post->id;
+
+                return [
+                    'id' => $post->id,
+                    'title' => $post->title,
+                    'description' => Str::limit(strip_tags($post->content), 110),
+                    'author' => $post->user?->name ?? 'CamSociety',
+                    'image' => $imageUrl,
+                    'modalContent' => [
+                        'title' => $post->title,
+                        'image' => $imageUrl,
+                        'content' => $post->content,
+                        'likes' => 0,
+                    ],
+                ];
+            })
+            ->values();
+
+        return Inertia::render('BlogTip/Index', [
+            'posts' => $posts,
+        ]);
     }
 
     public function eventupload()

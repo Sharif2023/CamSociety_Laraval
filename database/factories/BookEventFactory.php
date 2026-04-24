@@ -70,8 +70,16 @@ class BookEventFactory extends Factory
 
         $photoUrl = 'https://loremflickr.com/600/400/' . $keyword . ',bangladesh?lock=' . $this->faker->unique()->numberBetween(1, 10000);
 
+        $clientId = User::query()
+            ->where('role', User::ROLE_CLIENT)
+            ->inRandomOrder()
+            ->value('id') ?? User::factory()->create([
+                'role' => User::ROLE_CLIENT,
+                'email_verified_at' => now(),
+            ])->id;
+
         return [
-            'created_by' => User::inRandomOrder()->first()->id,
+            'created_by' => $clientId,
             'event_name' => $eventType,
             'address' => $this->faker->randomElement($bdLocations),
             'start_date' => $this->faker->dateTimeBetween('now', '+2 months')->format('Y-m-d'),

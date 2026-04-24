@@ -16,12 +16,15 @@ export default function UpdateProfileInformation({
         useForm({
             name: user.name,
             email: user.email,
+            profile_picture: null,
         });
 
     const submit = (e) => {
         e.preventDefault();
 
-        patch(route('profile.update'));
+        patch(route('profile.update'), {
+            forceFormData: true,
+        });
     };
 
     return (
@@ -67,6 +70,20 @@ export default function UpdateProfileInformation({
                     />
 
                     <InputError className="mt-2" message={errors.email} />
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="profile_picture" value="Profile Picture" />
+
+                    <input
+                        id="profile_picture"
+                        type="file"
+                        className="mt-1 block w-full"
+                        accept="image/*"
+                        onChange={(e) => setData('profile_picture', e.target.files[0])}
+                    />
+
+                    <InputError className="mt-2" message={errors.profile_picture} />
                 </div>
 
                 {mustVerifyEmail && user.email_verified_at === null && (

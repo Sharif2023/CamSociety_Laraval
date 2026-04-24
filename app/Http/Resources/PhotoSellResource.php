@@ -23,7 +23,7 @@ class PhotoSellResource extends JsonResource
             'image_url' => $this->image_url,
             'created_by' => $this->created_by,
             'created_at' => $this->created_at ? $this->created_at->format('M d, Y') : null,
-            'creator' => $this->creator ? new UserResource($this->creator) : null,
+            'creator' => UserResource::make($this->whenLoaded('creator')),
         ];
     }
 }
