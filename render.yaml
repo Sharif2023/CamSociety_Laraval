@@ -15,7 +15,7 @@ services:
       - key: DB_CONNECTION
         value: sqlite
       - key: APP_KEY
-        generateValue: true
+        value: base64:natLseq+3S9jnCN+XO17BHzgM7WhcY/EPZ2x3epAIVE=
       - key: DB_DATABASE
         value: /var/www/database/database.sqlite
       - key: ASSET_URL
